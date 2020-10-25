@@ -1,0 +1,41 @@
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+name: 'Docker Metadata'
+description: "GitHub Action to extract metadata (tags, labels) for Docker"
+author: 'crazy-max'
+branding:
+  color: 'blue'
+  icon: 'layers'
+
+inputs:
+  images:
+    description: 'List of Docker images to use as base name for tags'
+    required: true
+  tag-sha:
+    description: 'Add git short SHA as Docker tag'
+    default: 'false'
+    required: false
+  tag-edge:
+    description: 'Branch that will be tagged as edge (default ${{ repo.default_branch }})'
+    required: false
+  sep-tags:
+    description: 'Separator to use for tags output (default \n)'
+    default: '\n'
+    required: false
+  sep-labels:
+    description: 'Separator to use for labels output (default \n)'
+    default: '\n'
+    required: false
+  github-token:
+    description: 'GitHub Token as provided by secrets'
+    default: ${{ github.token }}
+    required: true
+
+outputs:
+  tags:
+    description: 'Generated Docker tags'
+  labels:
+    description: 'Generated Docker labels'
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

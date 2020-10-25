@@ -1,0 +1,42 @@
+{
+  "name": "docker-meta",
+  "description": "GitHub Action to extract metadata (tags, labels) for Docker",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc && ncc build",
+    "test": "jest --coverage",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "pre-checkin": "yarn run format && yarn run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crazy-max/ghaction-docker-meta.git"
+  },
+  "keywords": [
+    "actions",
+    "docker",
+    "meta",
+    "tag",
+    "label"
+  ],
+  "author": "CrazyMax",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "semver": "^7.3.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.11.2",
+    "@vercel/ncc": "^0.24.1",
+    "jest": "^26.0.1",
+    "jest-circus": "^26.0.1",
+    "jest-runtime": "^26.0.1",
+    "prettier": "^2.0.4",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
+  }
+}
