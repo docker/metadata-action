@@ -103,7 +103,7 @@ export class Meta {
     const currentDate = this.date;
     return {
       date: function (format) {
-        return moment(currentDate).format(format);
+        return moment(currentDate).utc().format(format);
       }
     };
   }
