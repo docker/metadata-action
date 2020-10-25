@@ -15,6 +15,10 @@ inputs:
     default: 'false'
     required: false
   tag-edge:
+    description: 'Enable edge branch tagging'
+    default: 'false'
+    required: false
+  tag-edge-branch:
     description: 'Branch that will be tagged as edge (default repo.default_branch)'
     required: false
   tag-schedule:

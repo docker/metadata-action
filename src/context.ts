@@ -3,7 +3,8 @@ import * as core from '@actions/core';
 export interface Inputs {
   images: string[];
   tagSha: boolean;
-  tagEdge: string;
+  tagEdge: boolean;
+  tagEdgeBranch: string;
   tagSchedule: string;
   sepTags: string;
   sepLabels: string;
@@ -13,8 +14,9 @@ export interface Inputs {
 export function getInputs(): Inputs {
   return {
     images: getInputList('images'),
-    tagSha: /true/i.test(core.getInput('tag-sha')),
-    tagEdge: core.getInput('tag-edge'),
+    tagSha: /true/i.test(core.getInput('tag-sha') || 'false'),
+    tagEdge: /true/i.test(core.getInput('tag-edge') || 'false'),
+    tagEdgeBranch: core.getInput('tag-edge-branch'),
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,

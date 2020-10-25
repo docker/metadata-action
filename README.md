@@ -112,7 +112,8 @@ Following inputs can be used as `step.with` keys
 |---------------------|----------|------------------------------------|
 | `images`            | List/CSV | List of Docker images to use as base name for tags |
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
-| `tag-edge`          | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
+| `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
+| `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
 | `tag-schedule`      | String   | [Handlebars template](https://handlebarsjs.com/guide/) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |

@@ -14,8 +14,8 @@ export class Meta {
 
   constructor(inputs: Inputs, context: Context, repo: ReposGetResponseData) {
     this.inputs = inputs;
-    if (!this.inputs.tagEdge) {
-      this.inputs.tagEdge = repo.default_branch;
+    if (!this.inputs.tagEdgeBranch) {
+      this.inputs.tagEdgeBranch = repo.default_branch;
     }
     this.context = context;
     this.repo = repo;
@@ -31,7 +31,7 @@ export class Meta {
       return sver ? sver : tag;
     } else if (/^refs\/heads\//.test(this.context.ref)) {
       const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-      return this.inputs.tagEdge === branch ? 'edge' : branch;
+      return this.inputs.tagEdge && this.inputs.tagEdgeBranch === branch ? 'edge' : branch;
     } else if (/^refs\/pull\//.test(this.context.ref)) {
       const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
       return `pr-${pr}`;
@@ -88,7 +88,7 @@ export class Meta {
 
   private eventBranch(image: string): Array<string> {
     const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-    if (this.inputs.tagEdge === branch) {
+    if (this.inputs.tagEdge && this.inputs.tagEdgeBranch === branch) {
       return [`${image}:edge`];
     }
     return [`${image}:${branch}`];
