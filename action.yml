@@ -1,5 +1,5 @@
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
-name: 'Docker Metadata'
+name: 'Docker Meta'
 description: "GitHub Action to extract metadata (tags, labels) for Docker"
 author: 'crazy-max'
 branding:
