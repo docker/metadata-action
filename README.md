@@ -12,6 +12,8 @@ GitHub Action to extract metadata (tags, labels) for Docker. This action is part
 
 If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitHub Actions!
 
+![Screenshot](.github/ghaction-docker-meta.png)
+
 ___
 
 * [Features](#features)
@@ -25,7 +27,7 @@ ___
 
 ## Features
 
-* Docker tags generated through GitHub action event and Git metadata
+* Docker tags generated from GitHub action event and Git metadata
 * [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md) used to generate Docker labels
 
 ## Usage
@@ -104,7 +106,7 @@ Following inputs can be used as `step.with` keys
 |---------------------|----------|------------------------------------|
 | `images`            | List/CSV | List of Docker images to use as base name for tags |
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
-| `tag-edge`          | String   | Branch that will be tagged as edge (default `${{ repo.default_branch }}` |
+| `tag-edge`          | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
 

@@ -15,15 +15,13 @@ inputs:
     default: 'false'
     required: false
   tag-edge:
-    description: 'Branch that will be tagged as edge (default ${{ repo.default_branch }})'
+    description: 'Branch that will be tagged as edge (default repo.default_branch)'
     required: false
   sep-tags:
     description: 'Separator to use for tags output (default \n)'
-    default: '\n'
     required: false
   sep-labels:
     description: 'Separator to use for labels output (default \n)'
-    default: '\n'
     required: false
   github-token:
     description: 'GitHub Token as provided by secrets'

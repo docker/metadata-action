@@ -15,7 +15,6 @@ async function run() {
     const context: Context = github.context();
     const repo: ReposGetResponseData = await github.repo(inputs.githubToken);
     core.startGroup(`Context info`);
-    core.info(`repo: ${context.repo}`);
     core.info(`eventName: ${context.eventName}`);
     core.info(`sha: ${context.sha}`);
     core.info(`ref: ${context.ref}`);
@@ -36,13 +35,17 @@ async function run() {
 
     const tags: Array<string> = meta.tags();
     core.startGroup(`Docker tags`);
-    core.info(JSON.stringify(tags));
+    for (let tag of tags) {
+      core.info(tag);
+    }
     core.endGroup();
     core.setOutput('tags', tags.join(inputs.sepTags));
 
     const labels: Array<string> = meta.labels();
     core.startGroup(`Docker labels`);
-    core.info(JSON.stringify(labels));
+    for (let label of labels) {
+      core.info(label);
+    }
     core.endGroup();
     core.setOutput('labels', labels.join(inputs.sepTags));
   } catch (error) {

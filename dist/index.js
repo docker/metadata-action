@@ -115,7 +115,6 @@ function run() {
             const context = github.context();
             const repo = yield github.repo(inputs.githubToken);
             core.startGroup(`Context info`);
-            core.info(`repo: ${context.repo}`);
             core.info(`eventName: ${context.eventName}`);
             core.info(`sha: ${context.sha}`);
             core.info(`ref: ${context.ref}`);
@@ -133,12 +132,16 @@ function run() {
             core.setOutput('version', version);
             const tags = meta.tags();
             core.startGroup(`Docker tags`);
-            core.info(JSON.stringify(tags));
+            for (let tag of tags) {
+                core.info(tag);
+            }
             core.endGroup();
             core.setOutput('tags', tags.join(inputs.sepTags));
             const labels = meta.labels();
             core.startGroup(`Docker labels`);
-            core.info(JSON.stringify(labels));
+            for (let label of labels) {
+                core.info(label);
+            }
             core.endGroup();
             core.setOutput('labels', labels.join(inputs.sepTags));
         }

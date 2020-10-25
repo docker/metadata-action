@@ -20,6 +20,7 @@ FROM base AS build
 RUN yarn build
 
 FROM deps AS test
+COPY . .
 RUN yarn run test
 
 FROM base AS run-format
