@@ -17,6 +17,10 @@ inputs:
   tag-edge:
     description: 'Branch that will be tagged as edge (default repo.default_branch)'
     required: false
+  tag-schedule:
+    description: 'Handlebars template to apply to schedule tag'
+    default: 'nightly'
+    required: false
   sep-tags:
     description: 'Separator to use for tags output (default \n)'
     required: false
