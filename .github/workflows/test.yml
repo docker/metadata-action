@@ -26,14 +26,7 @@ jobs:
         run: docker buildx bake test
 
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macOS-latest
-          - windows-latest
+    runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
