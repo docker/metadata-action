@@ -20,17 +20,6 @@ FROM base AS build
 RUN yarn build
 
 FROM deps AS test
-COPY --from=docker /usr/local/bin/docker /usr/bin/
-ARG TARGETOS
-ARG TARGETARCH
-ARG BUILDX_VERSION=v0.4.2
-ENV RUNNER_TEMP=/tmp/github_runner
-ENV RUNNER_TOOL_CACHE=/tmp/github_tool_cache
-RUN mkdir -p /usr/local/lib/docker/cli-plugins && \
-  curl -fsSL https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.$TARGETOS-$TARGETARCH > /usr/local/lib/docker/cli-plugins/docker-buildx && \
-  chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx && \
-  docker buildx version
-COPY . .
 RUN yarn run test
 
 FROM base AS run-format

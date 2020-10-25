@@ -116,6 +116,7 @@ Following outputs are available
 
 | Name          | Type    | Description                           |
 |---------------|---------|---------------------------------------|
+| `version`     | String  | Generated Docker image version |
 | `tags`        | String  | Generated Docker tags |
 | `labels`      | String  | Generated Docker labels |
 

@@ -126,13 +126,18 @@ function run() {
             core.info(`runId: ${context.runId}`);
             core.endGroup();
             const meta = new meta_1.Meta(inputs, context, repo);
+            const version = meta.version();
+            core.startGroup(`Docker image version`);
+            core.info(`${version}`);
+            core.endGroup();
+            core.setOutput('version', version);
             const tags = meta.tags();
-            core.startGroup(`Generated Docker tags`);
+            core.startGroup(`Docker tags`);
             core.info(JSON.stringify(tags));
             core.endGroup();
             core.setOutput('tags', tags.join(inputs.sepTags));
             const labels = meta.labels();
-            core.startGroup(`Generated Docker labels`);
+            core.startGroup(`Docker labels`);
             core.info(JSON.stringify(labels));
             core.endGroup();
             core.setOutput('labels', labels.join(inputs.sepTags));
@@ -165,6 +170,24 @@ class Meta {
         this.context = context;
         this.repo = repo;
     }
+    version() {
+        if (/schedule/.test(this.context.eventName)) {
+            return 'nightly';
+        }
+        else if (/^refs\/tags\//.test(this.context.ref)) {
+            const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+            const sver = semver.clean(tag);
+            return sver ? sver : tag;
+        }
+        else if (/^refs\/heads\//.test(this.context.ref)) {
+            const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
+            return this.inputs.tagEdge === branch ? 'edge' : branch;
+        }
+        else if (/^refs\/pull\//.test(this.context.ref)) {
+            const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
+            return `pr-${pr}`;
+        }
+    }
     tags() {
         let tags = [];
         for (const image of this.inputs.images) {
@@ -196,7 +219,7 @@ class Meta {
             `org.opencontainers.image.description=${this.repo.description || ''}`,
             `org.opencontainers.image.url=${this.repo.html_url || ''}`,
             `org.opencontainers.image.source=${this.repo.clone_url || ''}`,
-            `org.opencontainers.image.version=${this.labelVersion() || ''}`,
+            `org.opencontainers.image.version=${this.version() || ''}`,
             `org.opencontainers.image.created=${new Date().toISOString()}`,
             `org.opencontainers.image.revision=${this.context.sha || ''}`,
             `org.opencontainers.image.licenses=${((_a = this.repo.license) === null || _a === void 0 ? void 0 : _a.spdx_id) || ''}`
@@ -223,24 +246,6 @@ class Meta {
     eventPullRequest(image) {
         const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
         return [`${image}:pr-${pr}`];
-    }
-    labelVersion() {
-        if (/schedule/.test(this.context.eventName)) {
-            return 'nightly';
-        }
-        else if (/^refs\/tags\//.test(this.context.ref)) {
-            const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
-            const sver = semver.clean(tag);
-            return sver ? sver : tag;
-        }
-        else if (/^refs\/heads\//.test(this.context.ref)) {
-            const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-            return this.inputs.tagEdge === branch ? 'edge' : branch;
-        }
-        else if (/^refs\/pull\//.test(this.context.ref)) {
-            const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
-            return `pr-${pr}`;
-        }
     }
 }
 exports.Meta = Meta;

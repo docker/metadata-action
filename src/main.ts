@@ -28,14 +28,20 @@ async function run() {
 
     const meta: Meta = new Meta(inputs, context, repo);
 
+    const version: string | undefined = meta.version();
+    core.startGroup(`Docker image version`);
+    core.info(`${version}`);
+    core.endGroup();
+    core.setOutput('version', version);
+
     const tags: Array<string> = meta.tags();
-    core.startGroup(`Generated Docker tags`);
+    core.startGroup(`Docker tags`);
     core.info(JSON.stringify(tags));
     core.endGroup();
     core.setOutput('tags', tags.join(inputs.sepTags));
 
     const labels: Array<string> = meta.labels();
-    core.startGroup(`Generated Docker labels`);
+    core.startGroup(`Docker labels`);
     core.info(JSON.stringify(labels));
     core.endGroup();
     core.setOutput('labels', labels.join(inputs.sepTags));

@@ -18,6 +18,22 @@ export class Meta {
     this.repo = repo;
   }
 
+  public version(): string | undefined {
+    if (/schedule/.test(this.context.eventName)) {
+      return 'nightly';
+    } else if (/^refs\/tags\//.test(this.context.ref)) {
+      const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+      const sver = semver.clean(tag);
+      return sver ? sver : tag;
+    } else if (/^refs\/heads\//.test(this.context.ref)) {
+      const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
+      return this.inputs.tagEdge === branch ? 'edge' : branch;
+    } else if (/^refs\/pull\//.test(this.context.ref)) {
+      const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
+      return `pr-${pr}`;
+    }
+  }
+
   public tags(): Array<string> {
     let tags: Array<string> = [];
     for (const image of this.inputs.images) {
@@ -45,7 +61,7 @@ export class Meta {
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
       `org.opencontainers.image.source=${this.repo.clone_url || ''}`,
-      `org.opencontainers.image.version=${this.labelVersion() || ''}`,
+      `org.opencontainers.image.version=${this.version() || ''}`,
       `org.opencontainers.image.created=${new Date().toISOString()}`,
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
@@ -76,21 +92,5 @@ export class Meta {
   private eventPullRequest(image: string): Array<string> {
     const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
     return [`${image}:pr-${pr}`];
-  }
-
-  private labelVersion(): string | undefined {
-    if (/schedule/.test(this.context.eventName)) {
-      return 'nightly';
-    } else if (/^refs\/tags\//.test(this.context.ref)) {
-      const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
-      const sver = semver.clean(tag);
-      return sver ? sver : tag;
-    } else if (/^refs\/heads\//.test(this.context.ref)) {
-      const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-      return this.inputs.tagEdge === branch ? 'edge' : branch;
-    } else if (/^refs\/pull\//.test(this.context.ref)) {
-      const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
-      return `pr-${pr}`;
-    }
   }
 }

@@ -39,6 +39,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      undefined,
       [],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -56,6 +57,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      undefined,
       [],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -73,6 +75,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      'pr-2',
       [
         'user/app:pr-2'
       ],
@@ -92,6 +95,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      'dev',
       [
         'user/app:dev'
       ],
@@ -111,6 +115,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      'edge',
       [
         'user/app:edge'
       ],
@@ -130,6 +135,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      '1.1.1',
       [
         'user/app:1.1.1',
         'user/app:latest'
@@ -150,6 +156,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      'nightly',
       [
         'user/app:nightly'
       ],
@@ -169,6 +176,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      'release1',
       [
         'user/app:release1'
       ],
@@ -188,6 +196,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      '1.1.1',
       [
         'user/app:1.1.1',
         'user/app:latest'
@@ -208,6 +217,7 @@ describe('tags and labels', () => {
       {
         images: ['user/app'],
       },
+      'edge',
       [
         'user/app:edge'
       ],
@@ -227,6 +237,7 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
       },
+      'pr-2',
       [
         'org/app:pr-2',
         'ghcr.io/user/app:pr-2'
@@ -247,6 +258,7 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
       },
+      'dev',
       [
         'org/app:dev',
         'ghcr.io/user/app:dev'
@@ -267,6 +279,7 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
       },
+      'edge',
       [
         'org/app:edge',
         'ghcr.io/user/app:edge'
@@ -287,6 +300,7 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
       },
+      'nightly',
       [
         'org/app:nightly',
         'ghcr.io/user/app:nightly'
@@ -307,6 +321,7 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
       },
+      '1.1.1',
       [
         'org/app:1.1.1',
         'org/app:latest',
@@ -330,6 +345,7 @@ describe('tags and labels', () => {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
       },
+      'pr-2',
       [
         'org/app:pr-2',
         'org/app:sha-1e9249f',
@@ -353,6 +369,7 @@ describe('tags and labels', () => {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
       },
+      'dev',
       [
         'org/app:dev',
         'org/app:sha-90dd603',
@@ -376,6 +393,7 @@ describe('tags and labels', () => {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
       },
+      'edge',
       [
         'org/app:edge',
         'org/app:sha-90dd603',
@@ -399,6 +417,7 @@ describe('tags and labels', () => {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
       },
+      'nightly',
       [
         'org/app:nightly',
         'org/app:sha-90dd603',
@@ -422,6 +441,7 @@ describe('tags and labels', () => {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
       },
+      '1.1.1',
       [
         'org/app:1.1.1',
         'org/app:latest',
@@ -448,6 +468,7 @@ describe('tags and labels', () => {
         tagSha: true,
         tagEdge: 'dev'
       },
+      'edge',
       [
         'org/app:edge',
         'org/app:sha-90dd603',
@@ -472,6 +493,7 @@ describe('tags and labels', () => {
         tagSha: true,
         tagEdge: 'dev'
       },
+      'master',
       [
         'org/app:master',
         'org/app:sha-90dd603',
@@ -489,7 +511,7 @@ describe('tags and labels', () => {
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
-  ])('given %p event ', async (envFile, inputs, exTags, exLabels) => {
+  ])('given %p event ', async (envFile, inputs, exVersion, exTags, exLabels) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     console.log(process.env);
 
@@ -498,6 +520,10 @@ describe('tags and labels', () => {
 
     const repo = await github.repo(process.env.GITHUB_TOKEN || '');
     const meta = new Meta(inputs as Inputs, context, repo);
+
+    const version = meta.version();
+    console.log(version)
+    expect(version).toEqual(exVersion);
 
     const tags = meta.tags();
     console.log(tags)
