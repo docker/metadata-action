@@ -36,9 +36,9 @@ jobs:
       matrix:
         tag-schedule:
           - ""
-          - cron-{{date 'YYYYMMDD'}}
-          - {{date 'YYYYMMDD-HHmmss'}}
-          - schedule
+          - "cron-{{date 'YYYYMMDD'}}"
+          - "{{date 'YYYYMMDD-HHmmss'}}"
+          - "schedule"
     steps:
       -
         name: Checkout

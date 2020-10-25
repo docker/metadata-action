@@ -21,6 +21,8 @@ ___
 * [Customizing](#customizing)
   * [inputs](#inputs)
   * [outputs](#outputs)
+* [Notes](#notes)
+  * [Templates available for schedule tag](#templates-available-for-schedule-tag)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 * [How can I help?](#how-can-i-help)
 * [License](#license)
