@@ -34,13 +34,13 @@ ___
 
 | Event           | Ref                           | Commit SHA | Docker Tag                         | Pushed |
 |-----------------|-------------------------------|------------|------------------------------------|--------|
-| `schedule`      |                               |            | `nightly`                          | Yes    |
+| `schedule`      |                               | `45f132a`  | `sha-45f132a`, `nightly`           | Yes    |
 | `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-a123b57`, `pr-2`              | No     |
 | `push`          | `refs/heads/<default_branch>` | `676cae2`  | `sha-676cae2`, `edge`              | Yes    |
 | `push`          | `refs/heads/dev`              | `cf20257`  | `sha-cf20257`, `dev`               | Yes    |
 | `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-a5df687`, `my-branch`         | Yes    |
-| `push tag`      | `refs/tags/v1.2.3`            |            | `1.2.3`, `latest`                  | Yes    |
-| `push tag`      | `refs/tags/mytag`             |            | `mytag`                            | Yes    |
+| `push tag`      | `refs/tags/v1.2.3`            | `bf4565b`  | `sha-bf4565b`, `1.2.3`, `latest`   | Yes    |
+| `push tag`      | `refs/tags/mytag`             | `afb7833`  | `sha-afb7833`, `mytag`             | Yes    |
 
 ```yaml
 name: ci
@@ -107,6 +107,7 @@ Following inputs can be used as `step.with` keys
 | `images`            | List/CSV | List of Docker images to use as base name for tags |
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
 | `tag-edge`          | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
+| `tag-schedule`      | String   | [Handlebars template](https://handlebarsjs.com/guide/) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
 
@@ -121,6 +122,19 @@ Following outputs are available
 | `version`     | String  | Generated Docker image version |
 | `tags`        | String  | Generated Docker tags |
 | `labels`      | String  | Generated Docker labels |
+
+## Notes
+
+### Templates available for schedule tag
+
+`tag-schedule` is specially crafted input to support [Handlebars template](https://handlebarsjs.com/guide/) with
+the following expressions:
+
+| Expression              | Example                                   | Description                              |
+|-------------------------|-------------------------------------------|------------------------------------------|
+| `{{date 'format'}}`     | `{{date 'YYYYMMDD'}}` > `20200110`        | Render date by its [moment format](https://momentjs.com/docs/#/displaying/format/) 
+
+You can find more examples in the [CI workflow](.github/workflows/ci.yml).
 
 ## Keep up-to-date with GitHub Dependabot
 

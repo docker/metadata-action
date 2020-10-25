@@ -2,7 +2,7 @@ name: ci
 
 on:
   schedule:
-    - cron: '0 10 * * 0' # everyday sunday at 10am
+    - cron: '0 * * * *' # every hours
   push:
     branches:
       - '**'
@@ -22,13 +22,36 @@ jobs:
         uses: actions/checkout@v2.3.3
       -
         name: Docker meta
-        id: docker_meta
         uses: ./
         with:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
           tag-sha: true
+
+  tag-schedule:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tag-schedule:
+          - ""
+          - cron-{{date 'YYYYMMDD'}}
+          - {{date 'YYYYMMDD-HHmmss'}}
+          - schedule
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2.3.3
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          tag-sha: true
+          tag-schedule: ${{ matrix.tag-schedule }}
 
   docker-push:
     runs-on: ubuntu-latest

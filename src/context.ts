@@ -4,6 +4,7 @@ export interface Inputs {
   images: string[];
   tagSha: boolean;
   tagEdge: string;
+  tagSchedule: string;
   sepTags: string;
   sepLabels: string;
   githubToken: string;
@@ -14,6 +15,7 @@ export function getInputs(): Inputs {
     images: getInputList('images'),
     tagSha: /true/i.test(core.getInput('tag-sha')),
     tagEdge: core.getInput('tag-edge'),
+    tagSchedule: core.getInput('tag-schedule') || 'nightly',
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
     githubToken: core.getInput('github-token')
