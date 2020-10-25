@@ -22,8 +22,9 @@ const core = __webpack_require__(2186);
 function getInputs() {
     return {
         images: getInputList('images'),
-        tagSha: /true/i.test(core.getInput('tag-sha')),
-        tagEdge: core.getInput('tag-edge'),
+        tagSha: /true/i.test(core.getInput('tag-sha') || 'false'),
+        tagEdge: /true/i.test(core.getInput('tag-edge') || 'false'),
+        tagEdgeBranch: core.getInput('tag-edge-branch'),
         tagSchedule: core.getInput('tag-schedule') || 'nightly',
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
@@ -170,8 +171,8 @@ const core = __webpack_require__(2186);
 class Meta {
     constructor(inputs, context, repo) {
         this.inputs = inputs;
-        if (!this.inputs.tagEdge) {
-            this.inputs.tagEdge = repo.default_branch;
+        if (!this.inputs.tagEdgeBranch) {
+            this.inputs.tagEdgeBranch = repo.default_branch;
         }
         this.context = context;
         this.repo = repo;
@@ -188,7 +189,7 @@ class Meta {
         }
         else if (/^refs\/heads\//.test(this.context.ref)) {
             const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-            return this.inputs.tagEdge === branch ? 'edge' : branch;
+            return this.inputs.tagEdge && this.inputs.tagEdgeBranch === branch ? 'edge' : branch;
         }
         else if (/^refs\/pull\//.test(this.context.ref)) {
             const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
@@ -246,7 +247,7 @@ class Meta {
     }
     eventBranch(image) {
         const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-        if (this.inputs.tagEdge === branch) {
+        if (this.inputs.tagEdge && this.inputs.tagEdgeBranch === branch) {
             return [`${image}:edge`];
         }
         return [`${image}:${branch}`];

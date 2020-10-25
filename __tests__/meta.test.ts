@@ -119,6 +119,7 @@ describe('tags and labels', () => {
       'event_push_defbranch.env',
       {
         images: ['user/app'],
+        tagEdge: true,
       } as Inputs,
       'edge',
       [
@@ -130,6 +131,26 @@ describe('tags and labels', () => {
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World.git",
         "org.opencontainers.image.version=edge",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_push_defbranch.env',
+      {
+        images: ['user/app'],
+      } as Inputs,
+      'master',
+      [
+        'user/app:master'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World.git",
+        "org.opencontainers.image.version=master",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
@@ -263,6 +284,7 @@ describe('tags and labels', () => {
       'event_workflow_dispatch.env',
       {
         images: ['user/app'],
+        tagEdge: true,
       } as Inputs,
       'edge',
       [
@@ -325,6 +347,7 @@ describe('tags and labels', () => {
       'event_push_defbranch.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
+        tagEdge: true,
       } as Inputs,
       'edge',
       [
@@ -439,6 +462,7 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
+        tagEdge: true,
       } as Inputs,
       'edge',
       [
@@ -513,7 +537,8 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
-        tagEdge: 'dev'
+        tagEdge: true,
+        tagEdgeBranch: 'dev'
       } as Inputs,
       'edge',
       [
@@ -538,7 +563,8 @@ describe('tags and labels', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tagSha: true,
-        tagEdge: 'dev'
+        tagEdge: true,
+        tagEdgeBranch: 'dev'
       } as Inputs,
       'master',
       [
