@@ -17,6 +17,7 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 ___
 
 * [Features](#features)
+* [Overview](#overview)
 * [Usage](#usage)
 * [Customizing](#customizing)
   * [inputs](#inputs)
@@ -31,18 +32,21 @@ ___
 
 * Docker tags generated from GitHub action event and Git metadata
 * [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md) used to generate Docker labels
+* [Handlebars template](https://handlebarsjs.com/guide/) to apply to schedule tag
+
+## Overview
+
+| Event           | Ref                           | Commit SHA | Docker Tags                         |
+|-----------------|-------------------------------|------------|------------------------------------|
+| `schedule`      |                               | `45f132a`  | `sha-45f132a`, `nightly`           |
+| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-a123b57`, `pr-2`              |
+| `push`          | `refs/heads/<default_branch>` | `676cae2`  | `sha-676cae2`, `edge`              |
+| `push`          | `refs/heads/dev`              | `cf20257`  | `sha-cf20257`, `dev`               |
+| `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-a5df687`, `my-branch`         |
+| `push tag`      | `refs/tags/v1.2.3`            | `bf4565b`  | `sha-bf4565b`, `1.2.3`, `latest`   |
+| `push tag`      | `refs/tags/mytag`             | `afb7833`  | `sha-afb7833`, `mytag`             |
 
 ## Usage
-
-| Event           | Ref                           | Commit SHA | Docker Tag                         | Pushed |
-|-----------------|-------------------------------|------------|------------------------------------|--------|
-| `schedule`      |                               | `45f132a`  | `sha-45f132a`, `nightly`           | Yes    |
-| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-a123b57`, `pr-2`              | No     |
-| `push`          | `refs/heads/<default_branch>` | `676cae2`  | `sha-676cae2`, `edge`              | Yes    |
-| `push`          | `refs/heads/dev`              | `cf20257`  | `sha-cf20257`, `dev`               | Yes    |
-| `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-a5df687`, `my-branch`         | Yes    |
-| `push tag`      | `refs/tags/v1.2.3`            | `bf4565b`  | `sha-bf4565b`, `1.2.3`, `latest`   | Yes    |
-| `push tag`      | `refs/tags/mytag`             | `afb7833`  | `sha-afb7833`, `mytag`             | Yes    |
 
 ```yaml
 name: ci
