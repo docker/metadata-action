@@ -6,8 +6,8 @@ import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
 
 export interface Version {
-  version: string | undefined,
-  latest: boolean
+  version: string | undefined;
+  latest: boolean;
 }
 
 export class Meta {
@@ -38,7 +38,7 @@ export class Meta {
         date: function (format) {
           return moment(currentDate).utc().format(format);
         }
-      })
+      });
     } else if (/^refs\/tags\//.test(this.context.ref)) {
       const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
       const sver = semver.clean(tag);
