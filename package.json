@@ -26,8 +26,7 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
     "handlebars": "^4.7.6",
-    "moment": "^2.29.1",
-    "semver": "^7.3.2"
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.0",

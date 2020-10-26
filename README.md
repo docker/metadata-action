@@ -23,8 +23,7 @@ ___
   * [inputs](#inputs)
   * [outputs](#outputs)
 * [Notes](#notes)
-  * [Latest tag](#latest-tag)
-  * [Coerces Git tag](#coerces-git-tag)
+  * [`tag-match` examples](#tag-match-examples)
   * [Schedule tag](#schedule-tag)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 * [How can I help?](#how-can-i-help)
@@ -75,10 +74,9 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: |
-            name/app
-            ghcr.io/name/app
+          images: name/app
           tag-sha: true
+          tag-match: \\d{1,3}.\\d{1,3}.\\d{1,3}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -116,8 +114,8 @@ Following inputs can be used as `step.with` keys
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
 | `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
 | `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
-| `tag-coerce-tag`    | String   | Coerces Git tag to semver if possible using [template](#coerces-git-tag) |
-| `tag-latest-match`  | String   | Set `latest` tag only if [matches with a pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) |
+| `tag-match`         | String   | RegExp to match against a Git tag and use match group as Docker tag |
+| `tag-match-latest`  | Bool     | Set `latest` Docker tag if `tag-match` matches (default `true`) |
 | `tag-schedule`      | String   | [Template](#schedule-tag) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
@@ -136,28 +134,15 @@ Following outputs are available
 
 ## Notes
 
-### Latest tag
+### `tag-match` examples
 
-`latest` tag is created with the following conditions:
-
-* Git tag is a valid [semver](https://semver.org/)
-* Provided `tag-coerce-tag` is valid
-
-If `tag-latest-match` is filled, then it has priority over the creation of the tag. 
-
-### Coerces Git tag
-
-Provides a very forgiving translation of a non-semver tag to semver. For more information see
-[Coercion section](https://www.npmjs.com/package/semver#coercion). `tag-coerce-tag` supports
-[Handlebars template](https://handlebarsjs.com/guide/) with the following inputs:
-
-| `tag-coerce-tag`        | Git tag  | Version |
-|-------------------------|----------|---------|
-| `{{raw}}`               | `v1.2.3` | `1.2.3` |
-| `{{major}}.{{minor}}`   | `v1.2.3` | `1.2`   |
-| `{{major}}`             | `v1.2.3` | `1`     |
-| `{{minor}}`             | `v1.2.3` | `2`     |
-| `{{patch}}`             | `v1.2.3` | `3`     |
+| Git tag                 | `tag-match`                    | Docker tag
+|-------------------------|--------------------------------|-------------------|
+| `v1.2.3`                | `\\d{1,3}.\\d{1,3}.\\d{1,3}`   | `1.2.3`           |
+| `v2.0.8-beta.67`        | `\\d{1,3}.\\d{1,3}.\\d{1,3}.*` | `2.0.8-beta.67`   |
+| `v2.0.8-beta.67`        | `\\d{1,3}.\\d{1,3}`            | `2.0`             |
+| `release1`              | `\\d{1,3}.\\d{1,3}`            | `release1`        |
+| `20200110-RC2`          | `\\d+`                         | `20200110`        |
 
 ### Schedule tag
 

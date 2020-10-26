@@ -1,6 +1,5 @@
 import * as handlebars from 'handlebars';
 import * as moment from 'moment';
-import * as semver from 'semver';
 import {Inputs} from './context';
 import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
@@ -40,24 +39,13 @@ export class Meta {
         }
       });
     } else if (/^refs\/tags\//.test(this.context.ref)) {
-      const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
-      const sver = semver.clean(tag);
-      if (this.inputs.tagCoerceTag) {
-        const coerce = semver.coerce(tag);
-        if (coerce) {
-          version.version = handlebars.compile(this.inputs.tagCoerceTag)(coerce);
-          version.latest = true;
-        } else if (sver) {
-          version.version = sver;
-          version.latest = true;
-        } else {
-          version.version = tag;
+      version.version = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+      if (this.inputs.tagMatch) {
+        const tagMatch = version.version.match(this.inputs.tagMatch);
+        if (tagMatch) {
+          version.version = tagMatch[0];
+          version.latest = this.inputs.tagMatchLatest;
         }
-      } else if (sver) {
-        version.version = sver;
-        version.latest = true;
-      } else {
-        version.version = tag;
       }
     } else if (/^refs\/heads\//.test(this.context.ref)) {
       version.version = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
@@ -66,11 +54,6 @@ export class Meta {
       }
     } else if (/^refs\/pull\//.test(this.context.ref)) {
       version.version = `pr-${this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '')}`;
-    }
-
-    if (this.inputs.tagLatestMatch) {
-      const match = version.version?.match(new RegExp(this.inputs.tagLatestMatch));
-      version.latest = match !== null;
     }
 
     return version;

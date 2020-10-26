@@ -21,11 +21,12 @@ inputs:
   tag-edge-branch:
     description: 'Branch that will be tagged as edge (default repo.default_branch)'
     required: false
-  tag-coerce-tag:
-    description: 'Coerces Git tag to semver if possible using template'
+  tag-match:
+    description: 'RegExp to match against a Git tag and use match group as Docker tag'
     required: false
-  tag-latest-match:
-    description: 'Set latest tag only if matches with a pattern'
+  tag-match-latest:
+    description: 'Set latest Docker tag if tag-match matches'
+    default: 'true'
     required: false
   tag-schedule:
     description: 'Template to apply to schedule tag'
