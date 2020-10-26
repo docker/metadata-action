@@ -132,7 +132,7 @@ function run() {
             core.startGroup(`Docker image version`);
             core.info(version.version || '');
             core.endGroup();
-            core.setOutput('version', version || '');
+            core.setOutput('version', version.version || '');
             const tags = meta.tags();
             core.startGroup(`Docker tags`);
             for (let tag of tags) {
