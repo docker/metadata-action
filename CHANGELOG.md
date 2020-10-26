@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (2020/10/26)
+
+* Coerces Git tag to semver (#3)
+
 ## 1.1.0 (2020/10/25)
 
 * Allow to templatize schedule tag (#1)
