@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 (2020/10/26)
+
+* Set latest tag only if matches with a pattern
+
 ## 1.2.0 (2020/10/26)
 
 * Coerces Git tag to semver (#3)
