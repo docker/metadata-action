@@ -1,6 +1,6 @@
 import {getInputs, Inputs} from './context';
 import * as github from './github';
-import {Meta} from './meta';
+import {Meta, Version} from './meta';
 import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
@@ -27,9 +27,9 @@ async function run() {
 
     const meta: Meta = new Meta(inputs, context, repo);
 
-    const version: string | undefined = meta.version();
+    const version: Version = meta.version();
     core.startGroup(`Docker image version`);
-    core.info(`${version}`);
+    core.info(version.version || '');
     core.endGroup();
     core.setOutput('version', version || '');
 

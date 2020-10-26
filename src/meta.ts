@@ -2,9 +2,13 @@ import * as handlebars from 'handlebars';
 import * as moment from 'moment';
 import * as semver from 'semver';
 import {Inputs} from './context';
-import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
+
+export interface Version {
+  version: string | undefined,
+  latest: boolean
+}
 
 export class Meta {
   private readonly inputs: Inputs;
@@ -22,35 +26,62 @@ export class Meta {
     this.date = new Date();
   }
 
-  public version(): string | undefined {
+  public version(): Version {
+    const currentDate = this.date;
+    const version: Version = {
+      version: undefined,
+      latest: false
+    };
+
     if (/schedule/.test(this.context.eventName)) {
-      return handlebars.compile(this.inputs.tagSchedule)(this.scheduleTplContext());
+      version.version = handlebars.compile(this.inputs.tagSchedule)({
+        date: function (format) {
+          return moment(currentDate).utc().format(format);
+        }
+      })
     } else if (/^refs\/tags\//.test(this.context.ref)) {
       const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
       const sver = semver.clean(tag);
-      return sver ? sver : tag;
+      if (this.inputs.tagCoerceTag) {
+        const coerce = semver.coerce(tag);
+        if (coerce) {
+          version.version = handlebars.compile(this.inputs.tagCoerceTag)(coerce);
+          version.latest = true;
+        } else if (sver) {
+          version.version = sver;
+          version.latest = true;
+        } else {
+          version.version = tag;
+        }
+      } else if (sver) {
+        version.version = sver;
+        version.latest = true;
+      } else {
+        version.version = tag;
+      }
     } else if (/^refs\/heads\//.test(this.context.ref)) {
-      const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-      return this.inputs.tagEdge && this.inputs.tagEdgeBranch === branch ? 'edge' : branch;
+      version.version = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
+      if (this.inputs.tagEdge && this.inputs.tagEdgeBranch === version.version) {
+        version.version = 'edge';
+      }
     } else if (/^refs\/pull\//.test(this.context.ref)) {
-      const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
-      return `pr-${pr}`;
+      version.version = `pr-${this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '')}`;
     }
+
+    return version;
   }
 
   public tags(): Array<string> {
+    const version: Version = this.version();
+    if (!version.version) {
+      return [];
+    }
+
     let tags: Array<string> = [];
     for (const image of this.inputs.images) {
-      if (/schedule/.test(this.context.eventName)) {
-        tags.push.apply(tags, this.eventSchedule(image));
-      } else if (/^refs\/tags\//.test(this.context.ref)) {
-        tags.push.apply(tags, this.eventTag(image));
-      } else if (/^refs\/heads\//.test(this.context.ref)) {
-        tags.push.apply(tags, this.eventBranch(image));
-      } else if (/^refs\/pull\//.test(this.context.ref)) {
-        tags.push.apply(tags, this.eventPullRequest(image));
-      } else {
-        core.warning(`Unknown event "${this.context.eventName}" with ref "${this.context.ref}"`);
+      tags.push(`${image}:${version.version}`);
+      if (version.latest) {
+        tags.push(`${image}:latest`);
       }
       if (this.context.sha && this.inputs.tagSha) {
         tags.push(`${image}:sha-${this.context.sha.substr(0, 7)}`);
@@ -65,46 +96,10 @@ export class Meta {
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
       `org.opencontainers.image.source=${this.repo.clone_url || ''}`,
-      `org.opencontainers.image.version=${this.version() || ''}`,
+      `org.opencontainers.image.version=${this.version().version || ''}`,
       `org.opencontainers.image.created=${this.date.toISOString()}`,
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
-  }
-
-  private eventSchedule(image: string): Array<string> {
-    const schedule = handlebars.compile(this.inputs.tagSchedule)(this.scheduleTplContext());
-    return [`${image}:${schedule}`];
-  }
-
-  private eventTag(image: string): Array<string> {
-    const tag = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
-    const version = semver.clean(tag);
-    if (version) {
-      return [`${image}:${version}`, `${image}:latest`];
-    }
-    return [`${image}:${tag}`];
-  }
-
-  private eventBranch(image: string): Array<string> {
-    const branch = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
-    if (this.inputs.tagEdge && this.inputs.tagEdgeBranch === branch) {
-      return [`${image}:edge`];
-    }
-    return [`${image}:${branch}`];
-  }
-
-  private eventPullRequest(image: string): Array<string> {
-    const pr = this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '');
-    return [`${image}:pr-${pr}`];
-  }
-
-  private scheduleTplContext(): any {
-    const currentDate = this.date;
-    return {
-      date: function (format) {
-        return moment(currentDate).utc().format(format);
-      }
-    };
   }
 }
