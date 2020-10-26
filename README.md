@@ -25,7 +25,7 @@ ___
 * [Notes](#notes)
   * [Latest tag](#latest-tag)
   * [Coerces Git tag](#coerces-git-tag)
-  * [Templates available for schedule tag](#templates-available-for-schedule-tag)
+  * [Schedule tag](#schedule-tag)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 * [How can I help?](#how-can-i-help)
 * [License](#license)
@@ -117,6 +117,7 @@ Following inputs can be used as `step.with` keys
 | `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
 | `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
 | `tag-coerce-tag`    | String   | Coerces Git tag to semver if possible using [Handlebars template](https://handlebarsjs.com/guide/) |
+| `tag-latest-match`  | String   | Set `latest` tag only if [matches with a pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) |
 | `tag-schedule`      | String   | [Handlebars template](https://handlebarsjs.com/guide/) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
@@ -137,10 +138,12 @@ Following outputs are available
 
 ### Latest tag
 
-`latest` tag is created only on `push tag` event and resolves one of the following conditions:
+`latest` tag is created with the following conditions:
 
 * Git tag is a valid [semver](https://semver.org/)
 * Provided `tag-coerce-tag` is valid
+
+If `tag-latest-match` is filled, then it has priority over the creation of the tag. 
 
 ### Coerces Git tag
 
@@ -156,7 +159,7 @@ Provides a very forgiving translation of a non-semver tag to semver. For more in
 | `{{minor}}`             | `v1.2.3` | `2`     |
 | `{{patch}}`             | `v1.2.3` | `3`     |
 
-### Templates available for schedule tag
+### Schedule tag
 
 `tag-schedule` is specially crafted input to support [Handlebars template](https://handlebarsjs.com/guide/) with
 the following expressions:

@@ -6,6 +6,7 @@ export interface Inputs {
   tagEdge: boolean;
   tagEdgeBranch: string;
   tagCoerceTag: string;
+  tagLatestMatch: string;
   tagSchedule: string;
   sepTags: string;
   sepLabels: string;
@@ -19,6 +20,7 @@ export function getInputs(): Inputs {
     tagEdge: /true/i.test(core.getInput('tag-edge') || 'false'),
     tagEdgeBranch: core.getInput('tag-edge-branch'),
     tagCoerceTag: core.getInput('tag-coerce-tag'),
+    tagLatestMatch: core.getInput('tag-latest-match'),
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,

@@ -26,6 +26,7 @@ function getInputs() {
         tagEdge: /true/i.test(core.getInput('tag-edge') || 'false'),
         tagEdgeBranch: core.getInput('tag-edge-branch'),
         tagCoerceTag: core.getInput('tag-coerce-tag'),
+        tagLatestMatch: core.getInput('tag-latest-match'),
         tagSchedule: core.getInput('tag-schedule') || 'nightly',
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
@@ -179,6 +180,7 @@ class Meta {
         this.date = new Date();
     }
     version() {
+        var _a;
         const currentDate = this.date;
         const version = {
             version: undefined,
@@ -224,6 +226,10 @@ class Meta {
         }
         else if (/^refs\/pull\//.test(this.context.ref)) {
             version.version = `pr-${this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '')}`;
+        }
+        if (this.inputs.tagLatestMatch) {
+            const match = (_a = version.version) === null || _a === void 0 ? void 0 : _a.match(new RegExp(this.inputs.tagLatestMatch));
+            version.latest = match !== null;
         }
         return version;
     }

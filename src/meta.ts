@@ -68,6 +68,11 @@ export class Meta {
       version.version = `pr-${this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '')}`;
     }
 
+    if (this.inputs.tagLatestMatch) {
+      const match = version.version?.match(new RegExp(this.inputs.tagLatestMatch));
+      version.latest = match !== null;
+    }
+
     return version;
   }
 
