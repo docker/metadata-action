@@ -22,13 +22,13 @@ inputs:
     description: 'Branch that will be tagged as edge (default repo.default_branch)'
     required: false
   tag-coerce-tag:
-    description: 'Coerces Git tag to semver if possible using Handlebars template'
+    description: 'Coerces Git tag to semver if possible using template'
     required: false
   tag-latest-match:
     description: 'Set latest tag only if matches with a pattern'
     required: false
   tag-schedule:
-    description: 'Handlebars template to apply to schedule tag'
+    description: 'Template to apply to schedule tag'
     default: 'nightly'
     required: false
   sep-tags:

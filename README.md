@@ -116,9 +116,9 @@ Following inputs can be used as `step.with` keys
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
 | `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
 | `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
-| `tag-coerce-tag`    | String   | Coerces Git tag to semver if possible using [Handlebars template](https://handlebarsjs.com/guide/) |
+| `tag-coerce-tag`    | String   | Coerces Git tag to semver if possible using [template](#coerces-git-tag) |
 | `tag-latest-match`  | String   | Set `latest` tag only if [matches with a pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) |
-| `tag-schedule`      | String   | [Handlebars template](https://handlebarsjs.com/guide/) to apply to schedule tag (default `nightly`) |
+| `tag-schedule`      | String   | [Template](#schedule-tag) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
 
