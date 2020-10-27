@@ -53,15 +53,14 @@ jobs:
           tag-sha: true
           tag-schedule: ${{ matrix.tag-schedule }}
 
-  coerce:
+  tag-match:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        tag-coerce-tag:
-          - "{{raw}}"
-          - "{{major}}.{{minor}}"
-          - "{{patch}}"
+        tag-match:
+          - \\d{1,3}.\\d{1,3}.\\d{1,3}
+          - \\d{1,3}.\\d{1,3}
     steps:
       -
         name: Checkout
@@ -73,8 +72,8 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
-          tag-coerce-tag: ${{ matrix.tag-coerce-tag }}
           tag-sha: true
+          tag-match: ${{ matrix.tag-match }}
 
   docker-push:
     runs-on: ubuntu-latest
@@ -92,9 +91,9 @@ jobs:
         id: docker_meta
         uses: ./
         with:
-          images: |
-            ${{ env.DOCKER_IMAGE }}
+          images: ${{ env.DOCKER_IMAGE }}
           tag-sha: true
+          tag-match: \\d{1,3}.\\d{1,3}.\\d{1,3}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
