@@ -25,6 +25,7 @@ ___
 * [Notes](#notes)
   * [`tag-match` examples](#tag-match-examples)
   * [Schedule tag](#schedule-tag)
+  * [Overwrite labels](#overwrite-labels)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 * [How can I help?](#how-can-i-help)
 * [License](#license)
@@ -156,6 +157,28 @@ the following expressions:
 | `{{date 'format'}}`     | `{{date 'YYYYMMDD'}}` > `20200110`        | Render date by its [moment format](https://momentjs.com/docs/#/displaying/format/) 
 
 You can find more examples in the [CI workflow](.github/workflows/ci.yml).
+
+### Overwrite labels
+
+If some of the [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
+labels generated are not suitable, you can overwrite them like this:
+
+```yaml
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/386
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: |
+            ${{ steps.docker_meta.outputs.labels }}
+            org.opencontainers.image.title=MyCustomTitle
+            org.opencontainers.image.description=Another description
+            org.opencontainers.image.vendor=MyCompany
+```
 
 ## Keep up-to-date with GitHub Dependabot
 
