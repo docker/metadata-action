@@ -76,8 +76,8 @@ jobs:
         with:
           images: name/app
           tag-sha: true
-          tag-match: v(.*)
-          tag-match-group: 1
+          tag-match: 'v(.*)'
+          tag-match-group: '1'
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -140,11 +140,11 @@ Following outputs are available
 
 | Git tag                 | `tag-match`                        | `tag-match-group` | Docker tag
 |-------------------------|------------------------------------|-------------------|------------------|
-| `v1.2.3`                | `\\d{1,3}.\\d{1,3}.\\d{1,3}`       | `0`               | `1.2.3`          |
+| `v1.2.3`                | `\d{1,3}.\d{1,3}.\d{1,3}`          | `0`               | `1.2.3`          |
 | `v2.0.8-beta.67`        | `v(.*)`                            | `1`               | `2.0.8-beta.67`  |
-| `v2.0.8-beta.67`        | `v(\\d.\\d)`                       | `1`               | `2.0`            |
-| `release1`              | `\\d{1,3}.\\d{1,3}`                | `0`               | `release1`       |
-| `20200110-RC2`          | `\\d+`                             | `0`               | `20200110`       |
+| `v2.0.8-beta.67`        | `v(\d.\d)`                         | `1`               | `2.0`            |
+| `release1`              | `\d{1,3}.\d{1,3}`                  | `0`               | `release1`       |
+| `20200110-RC2`          | `\d+`                              | `0`               | `20200110`       |
 
 ### Schedule tag
 
