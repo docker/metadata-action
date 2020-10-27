@@ -77,6 +77,7 @@ jobs:
         with:
           images: name/app
           tag-sha: true
+          tag-edge: true
           tag-match: 'v(.*)'
           tag-match-group: '1'
       -
