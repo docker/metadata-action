@@ -58,9 +58,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag-match:
-          - \\d{1,3}.\\d{1,3}.\\d{1,3}
-          - \\d{1,3}.\\d{1,3}
+        include:
+          - tag-match: '\d{1,3}.\d{1,3}.\d{1,3}'
+            tag-match-group: '0'
+          - tag-match: '\d{1,3}.\d{1,3}'
+            tag-match-group: '0'
+          - tag-match: 'v(.*)'
+            tag-match-group: '1'
     steps:
       -
         name: Checkout
@@ -74,6 +78,7 @@ jobs:
             ghcr.io/name/app
           tag-sha: true
           tag-match: ${{ matrix.tag-match }}
+          tag-match-group: ${{ matrix.tag-match-group }}
 
   docker-push:
     runs-on: ubuntu-latest

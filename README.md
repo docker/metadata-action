@@ -76,7 +76,8 @@ jobs:
         with:
           images: name/app
           tag-sha: true
-          tag-match: \\d{1,3}.\\d{1,3}.\\d{1,3}
+          tag-match: v(.*)
+          tag-match-group: 1
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -114,7 +115,8 @@ Following inputs can be used as `step.with` keys
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
 | `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
 | `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
-| `tag-match`         | String   | RegExp to match against a Git tag and use match group as Docker tag |
+| `tag-match`         | String   | RegExp to match against a Git tag and use first match as Docker tag |
+| `tag-match-group`   | Number   | Group to get if `tag-match` matches (default `0`) |
 | `tag-match-latest`  | Bool     | Set `latest` Docker tag if `tag-match` matches (default `true`) |
 | `tag-schedule`      | String   | [Template](#schedule-tag) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
@@ -136,13 +138,13 @@ Following outputs are available
 
 ### `tag-match` examples
 
-| Git tag                 | `tag-match`                    | Docker tag
-|-------------------------|--------------------------------|-------------------|
-| `v1.2.3`                | `\\d{1,3}.\\d{1,3}.\\d{1,3}`   | `1.2.3`           |
-| `v2.0.8-beta.67`        | `\\d{1,3}.\\d{1,3}.\\d{1,3}.*` | `2.0.8-beta.67`   |
-| `v2.0.8-beta.67`        | `\\d{1,3}.\\d{1,3}`            | `2.0`             |
-| `release1`              | `\\d{1,3}.\\d{1,3}`            | `release1`        |
-| `20200110-RC2`          | `\\d+`                         | `20200110`        |
+| Git tag                 | `tag-match`                        | `tag-match-group` | Docker tag
+|-------------------------|------------------------------------|-------------------|------------------|
+| `v1.2.3`                | `\\d{1,3}.\\d{1,3}.\\d{1,3}`       | `0`               | `1.2.3`          |
+| `v2.0.8-beta.67`        | `v(.*)`                            | `1`               | `2.0.8-beta.67`  |
+| `v2.0.8-beta.67`        | `v(\\d.\\d)`                       | `1`               | `2.0`            |
+| `release1`              | `\\d{1,3}.\\d{1,3}`                | `0`               | `release1`       |
+| `20200110-RC2`          | `\\d+`                             | `0`               | `20200110`       |
 
 ### Schedule tag
 

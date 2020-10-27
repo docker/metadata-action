@@ -442,6 +442,32 @@ describe('push tag', () => {
       ]
     ],
     [
+      'event_tag_20200110-RC2.env',
+      {
+        images: ['user/app'],
+        tagMatch: `(.*)-RC`,
+        tagMatchGroup: 1,
+        tagMatchLatest: false,
+      } as Inputs,
+      {
+        version: '20200110',
+        latest: false
+      } as Version,
+      [
+        'user/app:20200110'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World.git",
+        "org.opencontainers.image.version=20200110",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
       'event_tag_v1.1.1.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],

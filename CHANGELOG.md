@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (2020/10/27)
+
+* Add `tag-match-group` input to choose group to get if `tag-match` matches
+* Check `tag-match` is a valid regex 
+
 ## 1.4.0 (2020/10/27)
 
 * Use RegExp to match against a Git tag instead of coerce

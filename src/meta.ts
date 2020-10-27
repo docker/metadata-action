@@ -41,9 +41,15 @@ export class Meta {
     } else if (/^refs\/tags\//.test(this.context.ref)) {
       version.version = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
       if (this.inputs.tagMatch) {
-        const tagMatch = version.version.match(this.inputs.tagMatch);
+        let tagMatch;
+        const isRegEx = this.inputs.tagMatch.match(/^\/(.+)\/(.*)$/);
+        if (isRegEx) {
+          tagMatch = version.version.match(new RegExp(isRegEx[1], isRegEx[2]));
+        } else {
+          tagMatch = version.version.match(this.inputs.tagMatch);
+        }
         if (tagMatch) {
-          version.version = tagMatch[0];
+          version.version = tagMatch[this.inputs.tagMatchGroup];
           version.latest = this.inputs.tagMatchLatest;
         }
       }

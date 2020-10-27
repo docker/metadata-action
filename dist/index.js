@@ -26,6 +26,7 @@ function getInputs() {
         tagEdge: /true/i.test(core.getInput('tag-edge') || 'false'),
         tagEdgeBranch: core.getInput('tag-edge-branch'),
         tagMatch: core.getInput('tag-match'),
+        tagMatchGroup: Number(core.getInput('tag-match-group')) || 0,
         tagMatchLatest: /true/i.test(core.getInput('tag-match-latest') || 'true'),
         tagSchedule: core.getInput('tag-schedule') || 'nightly',
         sepTags: core.getInput('sep-tags') || `\n`,
@@ -194,9 +195,16 @@ class Meta {
         else if (/^refs\/tags\//.test(this.context.ref)) {
             version.version = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
             if (this.inputs.tagMatch) {
-                const tagMatch = version.version.match(this.inputs.tagMatch);
+                let tagMatch;
+                const isRegEx = this.inputs.tagMatch.match(/^\/(.+)\/(.*)$/);
+                if (isRegEx) {
+                    tagMatch = version.version.match(new RegExp(isRegEx[1], isRegEx[2]));
+                }
+                else {
+                    tagMatch = version.version.match(this.inputs.tagMatch);
+                }
                 if (tagMatch) {
-                    version.version = tagMatch[0];
+                    version.version = tagMatch[this.inputs.tagMatchGroup];
                     version.latest = this.inputs.tagMatchLatest;
                 }
             }

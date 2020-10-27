@@ -24,6 +24,10 @@ inputs:
   tag-match:
     description: 'RegExp to match against a Git tag and use match group as Docker tag'
     required: false
+  tag-match-group:
+    description: 'Group to get if tag-match matches (default 0)'
+    default: '0'
+    required: false
   tag-match-latest:
     description: 'Set latest Docker tag if tag-match matches'
     default: 'true'
