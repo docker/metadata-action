@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 (2020/10/28)
+
+* Generate latest tag by default on push tag event (#5)
+
 ## 1.5.0 (2020/10/27)
 
 * Add `tag-match-group` input to choose group to get if `tag-match` matches
