@@ -688,11 +688,13 @@ describe('latest', () => {
       } as Inputs,
       {
         version: 'v1.1.1',
-        latest: false
+        latest: true
       } as Version,
       [
         'org/app:v1.1.1',
+        'org/app:latest',
         'ghcr.io/user/app:v1.1.1',
+        'ghcr.io/user/app:latest',
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -953,10 +955,11 @@ describe('release', () => {
       } as Inputs,
       {
         version: 'v1.1.1',
-        latest: false
+        latest: true
       } as Version,
       [
         'user/app:v1.1.1',
+        'user/app:latest',
       ],
       [
         "org.opencontainers.image.title=Hello-World",
