@@ -377,10 +377,11 @@ describe('push tag', () => {
       } as Inputs,
       {
         version: 'release1',
-        latest: false
+        latest: true
       } as Version,
       [
-        'user/app:release1'
+        'user/app:release1',
+        'user/app:latest'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -400,10 +401,11 @@ describe('push tag', () => {
       } as Inputs,
       {
         version: '20200110-RC2',
-        latest: false
+        latest: true
       } as Version,
       [
-        'user/app:20200110-RC2'
+        'user/app:20200110-RC2',
+        'user/app:latest'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
