@@ -46,7 +46,6 @@ ___
 | `push`          | `refs/heads/master`           | `cf20257`  | `sha-cf20257`, `master`             |
 | `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-a5df687`, `my-branch`          |
 | `push tag`      | `refs/tags/v1.2.3`            | `bf4565b`  | `sha-bf4565b`, `v1.2.3`, `latest`   |
-| `push tag`      | `refs/tags/mytag`             | `afb7833`  | `sha-afb7833`, `mytag`              |
 
 ## Usage
 
@@ -142,13 +141,13 @@ generated only if the Git tag matches a regular expression with the [`tag-match`
 
 ### `tag-match` examples
 
-| Git tag                 | `tag-match`                        | `tag-match-group` | Docker tag
-|-------------------------|------------------------------------|-------------------|------------------|
-| `v1.2.3`                | `\d{1,3}.\d{1,3}.\d{1,3}`          | `0`               | `1.2.3`          |
-| `v2.0.8-beta.67`        | `v(.*)`                            | `1`               | `2.0.8-beta.67`  |
-| `v2.0.8-beta.67`        | `v(\d.\d)`                         | `1`               | `2.0`            |
-| `release1`              | `\d{1,3}.\d{1,3}`                  | `0`               | `release1`       |
-| `20200110-RC2`          | `\d+`                              | `0`               | `20200110`       |
+| Git tag                 | `tag-match`                        | `tag-match-group` | Match                | Docker tags               |
+|-------------------------|------------------------------------|-------------------|----------------------|---------------------------|
+| `v1.2.3`                | `\d{1,3}.\d{1,3}.\d{1,3}`          | `0`               | :white_check_mark:   | `1.2.3`, `latest`         |
+| `v2.0.8-beta.67`        | `v(.*)`                            | `1`               | :white_check_mark:   | `2.0.8-beta.67`, `latest` |
+| `v2.0.8-beta.67`        | `v(\d.\d)`                         | `1`               | :white_check_mark:   | `2.0`, `latest`           |
+| `release1`              | `\d{1,3}.\d{1,3}`                  | `0`               | :x:                  | `release1`                |
+| `20200110-RC2`          | `\d+`                              | `0`               | :white_check_mark:   | `20200110`, `latest`      |
 
 ### Schedule tag
 
