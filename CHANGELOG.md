@@ -3,7 +3,7 @@
 ## 1.7.0 (2020/10/31)
 
 * Use `repo.html_url` for `org.opencontainers.image.source` label to be able to display README on GHCR
-* Handle tag-match-latest on Git tag event (#8)
+* Handle `tag-match-latest` on Git tag event (#8)
 
 ## 1.6.0 (2020/10/28)
 
