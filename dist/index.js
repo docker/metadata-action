@@ -209,7 +209,7 @@ class Meta {
                 }
             }
             else {
-                version.latest = true;
+                version.latest = this.inputs.tagMatchLatest;
             }
         }
         else if (/^refs\/heads\//.test(this.context.ref)) {
