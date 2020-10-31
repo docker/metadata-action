@@ -53,7 +53,7 @@ export class Meta {
           version.latest = this.inputs.tagMatchLatest;
         }
       } else {
-        version.latest = true;
+        version.latest = this.inputs.tagMatchLatest;
       }
     } else if (/^refs\/heads\//.test(this.context.ref)) {
       version.version = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');

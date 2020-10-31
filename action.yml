@@ -29,7 +29,7 @@ inputs:
     default: '0'
     required: false
   tag-match-latest:
-    description: 'Set latest Docker tag if tag-match matches'
+    description: 'Set latest Docker tag if tag-match matches or on Git tag event'
     default: 'true'
     required: false
   tag-schedule:
