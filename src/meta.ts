@@ -91,7 +91,7 @@ export class Meta {
       `org.opencontainers.image.title=${this.repo.name || ''}`,
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
-      `org.opencontainers.image.source=${this.repo.clone_url || ''}`,
+      `org.opencontainers.image.source=${this.repo.html_url || ''}`,
       `org.opencontainers.image.version=${this.version().version || ''}`,
       `org.opencontainers.image.created=${this.date.toISOString()}`,
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
