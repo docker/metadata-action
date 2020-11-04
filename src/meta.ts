@@ -81,7 +81,7 @@ export class Meta {
         const major: number = semver.major(semver.coerce(version.version));
         const minor: number = semver.minor(semver.coerce(version.version));
         const patch: number = semver.patch(semver.coerce(version.version));
-        const prerelease: string[] | null = semver.patch(version.version);
+        const prerelease: string[] | null = semver.prerelease(version.version);
         tags.push(`${image}:${this.inputs.semverPrefix}${major}`);
         tags.push(`${image}:${this.inputs.semverPrefix}${major}.${minor}`);
         if (prerelease !== null) {
