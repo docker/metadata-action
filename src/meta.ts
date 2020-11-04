@@ -1,5 +1,6 @@
 import * as handlebars from 'handlebars';
 import * as moment from 'moment';
+import * as semver from 'semver';
 import {Inputs} from './context';
 import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
@@ -76,6 +77,17 @@ export class Meta {
     let tags: Array<string> = [];
     for (const image of this.inputs.images) {
       tags.push(`${image}:${version.version}`);
+      if(this.inputs.fullSemver && semver.valid(version.version)) {
+        const major: number = semver.major(semver.coerce(version.version));
+        const minor: number = semver.minor(semver.coerce(version.version));
+        const patch: number = semver.patch(semver.coerce(version.version));
+        const prerelease: string[] | null = semver.patch(version.version);
+        tags.push(`${image}:${major}`);
+        tags.push(`${image}:${major}.${minor}`);
+        if(prerelease !== null) {
+          tags.push(`${image}:${major}.${minor}.${patch}`);
+        }        
+      }
       if (version.latest) {
         tags.push(`${image}:latest`);
       }
