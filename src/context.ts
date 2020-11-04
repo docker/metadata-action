@@ -12,6 +12,7 @@ export interface Inputs {
   sepTags: string;
   sepLabels: string;
   githubToken: string;
+  fullSemver: boolean;
 }
 
 export function getInputs(): Inputs {
@@ -26,7 +27,8 @@ export function getInputs(): Inputs {
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
-    githubToken: core.getInput('github-token')
+    githubToken: core.getInput('github-token'),
+    fullSemver: /true/i.test(core.getInput('full-semver') || 'false'),
   };
 }
 
