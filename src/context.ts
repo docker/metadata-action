@@ -13,6 +13,7 @@ export interface Inputs {
   sepLabels: string;
   githubToken: string;
   fullSemver: boolean;
+  semverPrefix: string;
 }
 
 export function getInputs(): Inputs {
@@ -29,6 +30,7 @@ export function getInputs(): Inputs {
     sepLabels: core.getInput('sep-labels') || `\n`,
     githubToken: core.getInput('github-token'),
     fullSemver: /true/i.test(core.getInput('full-semver') || 'false'),
+    semverPrefix: core.getInput('semver-prefix')
   };
 }
 
