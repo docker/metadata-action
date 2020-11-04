@@ -77,16 +77,16 @@ export class Meta {
     let tags: Array<string> = [];
     for (const image of this.inputs.images) {
       tags.push(`${image}:${version.version}`);
-      if(this.inputs.fullSemver && semver.valid(version.version)) {
+      if (this.inputs.fullSemver && semver.valid(version.version)) {
         const major: number = semver.major(semver.coerce(version.version));
         const minor: number = semver.minor(semver.coerce(version.version));
         const patch: number = semver.patch(semver.coerce(version.version));
         const prerelease: string[] | null = semver.patch(version.version);
         tags.push(`${image}:${this.inputs.semverPrefix}${major}`);
         tags.push(`${image}:${this.inputs.semverPrefix}${major}.${minor}`);
-        if(prerelease !== null) {
+        if (prerelease !== null) {
           tags.push(`${image}:${this.inputs.semverPrefix}${major}.${minor}.${patch}`);
-        }        
+        }
       }
       if (version.latest) {
         tags.push(`${image}:latest`);
