@@ -80,6 +80,22 @@ jobs:
           tag-match: ${{ matrix.tag-match }}
           tag-match-group: ${{ matrix.tag-match-group }}
 
+  tag-semver:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Docker meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          tag-semver: |
+            {{raw}}
+            {{version}}
+            {{major}}.{{minor}}.{{patch}}
+
   docker-push:
     runs-on: ubuntu-latest
     services:
