@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0 (2020/11/17)
+
+* Handle semver tags (#14)
+
 ## 1.7.0 (2020/10/31)
 
 * Use `repo.html_url` for `org.opencontainers.image.source` label to be able to display README on GHCR
