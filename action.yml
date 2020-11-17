@@ -21,6 +21,9 @@ inputs:
   tag-edge-branch:
     description: 'Branch that will be tagged as edge (default repo.default_branch)'
     required: false
+  tag-semver:
+    description: 'Handle Git tag as semver template if possible'
+    required: false
   tag-match:
     description: 'RegExp to match against a Git tag and use match group as Docker tag'
     required: false
