@@ -17,14 +17,17 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 ___
 
 * [Features](#features)
-* [Overview](#overview)
 * [Usage](#usage)
+  * [Basic](#basic)
+  * [Semver](#semver)
+  * [Complete](#complete)
 * [Customizing](#customizing)
   * [inputs](#inputs)
   * [outputs](#outputs)
 * [Notes](#notes)
   * [Latest tag](#latest-tag)
   * [`tag-match` examples](#tag-match-examples)
+  * [Handle semver tag](#handle-semver-tag)
   * [Schedule tag](#schedule-tag)
   * [Overwrite labels](#overwrite-labels)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
@@ -37,29 +40,27 @@ ___
 * [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md) used to generate Docker labels
 * [Handlebars template](https://handlebarsjs.com/guide/) to apply to schedule tag
 
-## Overview
+## Usage
+
+### Basic
 
 | Event           | Ref                           | Commit SHA | Docker Tags                         |
 |-----------------|-------------------------------|------------|-------------------------------------|
-| `schedule`      | `refs/heads/master`           | `45f132a`  | `sha-45f132a`, `nightly`            |
-| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-a123b57`, `pr-2`               |
-| `push`          | `refs/heads/master`           | `cf20257`  | `sha-cf20257`, `master`             |
-| `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-a5df687`, `my-branch`          |
-| `push tag`      | `refs/tags/v1.2.3`            | `bf4565b`  | `sha-bf4565b`, `v1.2.3`, `latest`   |
-
-## Usage
+| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `pr-2`                              |
+| `push`          | `refs/heads/master`           | `cf20257`  | `master`                            |
+| `push`          | `refs/heads/my/branch`        | `a5df687`  | `my-branch`                         |
+| `push tag`      | `refs/tags/v1.2.3`            | `ad132f5`  | `v1.2.3`, `latest`                  |
+| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `fc89efd`  | `v2.0.8-beta.67`, `latest`          |
 
 ```yaml
 name: ci
 
 on:
-  schedule:
-    - cron: '0 10 * * *' # everyday at 10am
   push:
     branches:
       - '**'
     tags:
-      - 'v*.*.*'
+      - 'v*'
   pull_request:
 
 jobs:
@@ -100,6 +101,133 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
 ```
 
+### Semver
+
+| Event           | Ref                           | Commit SHA | Docker Tags                         |
+|-----------------|-------------------------------|------------|-------------------------------------|
+| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `pr-2`                              |
+| `push`          | `refs/heads/master`           | `cf20257`  | `master`                            |
+| `push`          | `refs/heads/my/branch`        | `a5df687`  | `my-branch`                         |
+| `push tag`      | `refs/tags/v1.2.3`            | `ad132f5`  | `1.2.3`, `1.2`, `latest`            |
+| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `fc89efd`  | `2.0.8-beta.67`                     |
+
+```yaml
+name: ci
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: name/app
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/386
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+```
+
+### Complete
+
+| Event           | Ref                           | Commit SHA | Docker Tags                             |
+|-----------------|-------------------------------|------------|-----------------------------------------|
+| `schedule`      | `refs/heads/master`           | `45f132a`  | `sha-45f132a`, `nightly`                |
+| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-45f132a`, `pr-2`                   |
+| `push`          | `refs/heads/master`           | `cf20257`  | `sha-45f132a`, `master`                 |
+| `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-45f132a`, `my-branch`              |
+| `push tag`      | `refs/tags/v1.2.3`            | `ad132f5`  | `sha-45f132a`, `1.2.3`, `1.2`, `latest` |
+| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `fc89efd`  | `sha-45f132a`, `2.0.8-beta.67`          |
+
+```yaml
+name: ci
+
+on:
+  schedule:
+    - cron: '0 10 * * *' # everyday at 10am
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: name/app
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/386
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+```
+
 ## Customizing
 
 ### inputs
@@ -112,6 +240,7 @@ Following inputs can be used as `step.with` keys
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
 | `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
 | `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
+| `tag-semver`        | List     | Handle Git tag as semver [template](#handle-semver-tag) if possible |
 | `tag-match`         | String   | RegExp to match against a Git tag and use first match as Docker tag |
 | `tag-match-group`   | Number   | Group to get if `tag-match` matches (default `0`) |
 | `tag-match-latest`  | Bool     | Set `latest` Docker tag if `tag-match` matches or on Git tag event (default `true`) |
@@ -135,9 +264,10 @@ Following outputs are available
 
 ### Latest tag
 
-Latest Docker tag will be generated by default on `push tag` event. So if for example you push the `v1.2.3` Git tag,
+Latest Docker tag will be generated by default on `push tag` event. If for example you push the `v1.2.3` Git tag,
 you will have at the output of this action the Docker tags `v1.2.3` and `latest`. But you can allow the latest tag to be
-generated only if the Git tag matches a regular expression with the [`tag-match` input](#tag-match-examples).
+generated only if the Git tag matches a regular expression with the [`tag-match` input](#tag-match-examples) or if
+`tag-semver` is valid [semver](https://semver.org/).
 
 ### `tag-match` examples
 
@@ -148,6 +278,25 @@ generated only if the Git tag matches a regular expression with the [`tag-match`
 | `v2.0.8-beta.67`        | `v(\d.\d)`                         | `1`               | :white_check_mark:   | `2.0`, `latest`           |
 | `release1`              | `\d{1,3}.\d{1,3}`                  | `0`               | :x:                  | `release1`                |
 | `20200110-RC2`          | `\d+`                              | `0`               | :white_check_mark:   | `20200110`, `latest`      |
+
+### Handle semver tag
+
+If Git tag is a valid [semver](https://semver.org/) you can handle it to output multi Docker tags at once.
+`tag-semver` supports multi-line [Handlebars template](https://handlebarsjs.com/guide/) with the following inputs:
+
+| Git tag            | `tag-semver`                                             | Valid              | Docker tags        |
+|--------------------|----------------------------------------------------------|--------------------|--------------------|
+| `v1.2.3`           | `{{raw}}`                                                | :white_check_mark: | `v1.2.3`, `latest` |
+| `v1.2.3`           | `{{version}}`                                            | :white_check_mark: | `1.2.3`, `latest`  |
+| `v1.2.3`           | `{{major}}.{{minor}}`                                    | :white_check_mark: | `1.2`, `latest`    |
+| `v1.2.3`           | `v{{major}}`                                             | :white_check_mark: | `v1`, `latest`     |
+| `v1.2.3`           | `{{minor}}`                                              | :white_check_mark: | `2`, `latest`      |
+| `v1.2.3`           | `{{patch}}`                                              | :white_check_mark: | `3`, `latest`      |
+| `v1.2.3`           | `{{major}}.{{minor}}`<br>`{{major}}.{{minor}}.{{patch}}` | :white_check_mark: | `1.2`, `1.2.3`, `latest`   |
+| `v2.0.8-beta.67`   | `{{raw}}`                                                | :white_check_mark: | `v2.0.8-beta.67`   |
+| `v2.0.8-beta.67`   | `{{version}}`                                            | :white_check_mark: | `2.0.8-beta.67`    |
+| `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | :white_check_mark: | `2.0`              |
+| `release1`         | `{{raw}}`                                                | :x:                | `release1`         |
 
 ### Schedule tag
 

@@ -66,7 +66,8 @@ describe('null', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: undefined,
+        main: undefined,
+        partial: [],
         latest: false
       } as Version,
       [],
@@ -87,7 +88,8 @@ describe('null', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: undefined,
+        main: undefined,
+        partial: [],
         latest: false
       } as Version,
       [],
@@ -114,7 +116,8 @@ describe('push', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: 'dev',
+        main: 'dev',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -138,7 +141,8 @@ describe('push', () => {
         tagEdge: true,
       } as Inputs,
       {
-        version: 'edge',
+        main: 'edge',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -161,7 +165,8 @@ describe('push', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: 'master',
+        main: 'master',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -185,7 +190,8 @@ describe('push', () => {
         tagEdge: true,
       } as Inputs,
       {
-        version: 'edge',
+        main: 'edge',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -208,7 +214,8 @@ describe('push', () => {
         images: ['org/app', 'ghcr.io/user/app'],
       } as Inputs,
       {
-        version: 'dev',
+        main: 'dev',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -233,7 +240,8 @@ describe('push', () => {
         tagEdge: true,
       } as Inputs,
       {
-        version: 'edge',
+        main: 'edge',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -258,7 +266,8 @@ describe('push', () => {
         tagSha: true,
       } as Inputs,
       {
-        version: 'dev',
+        main: 'dev',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -286,7 +295,8 @@ describe('push', () => {
         tagEdge: true,
       } as Inputs,
       {
-        version: 'edge',
+        main: 'edge',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -315,7 +325,8 @@ describe('push', () => {
         tagEdgeBranch: 'dev'
       } as Inputs,
       {
-        version: 'edge',
+        main: 'edge',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -344,7 +355,8 @@ describe('push', () => {
         tagEdgeBranch: 'dev'
       } as Inputs,
       {
-        version: 'master',
+        main: 'master',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -376,7 +388,8 @@ describe('push tag', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: 'release1',
+        main: 'release1',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -400,7 +413,8 @@ describe('push tag', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: '20200110-RC2',
+        main: '20200110-RC2',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -426,7 +440,8 @@ describe('push tag', () => {
         tagMatchLatest: false,
       } as Inputs,
       {
-        version: '20200110',
+        main: '20200110',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -452,7 +467,8 @@ describe('push tag', () => {
         tagMatchLatest: false,
       } as Inputs,
       {
-        version: '20200110',
+        main: '20200110',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -476,7 +492,37 @@ describe('push tag', () => {
         tagMatch: `\\d{1,3}.\\d{1,3}.\\d{1,3}`,
       } as Inputs,
       {
-        version: '1.1.1',
+        main: '1.1.1',
+        partial: [],
+        latest: true
+      } as Version,
+      [
+        'org/app:1.1.1',
+        'org/app:latest',
+        'ghcr.io/user/app:1.1.1',
+        'ghcr.io/user/app:latest'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tagMatch: `^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$`,
+        tagMatchGroup: 1,
+      } as Inputs,
+      {
+        main: '1.1.1',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -503,7 +549,8 @@ describe('push tag', () => {
         tagMatch: `\\d{1,3}.\\d{1,3}.\\d{1,3}-(alpha|beta).\\d{1,3}`,
       } as Inputs,
       {
-        version: '2.0.8-beta.67',
+        main: '2.0.8-beta.67',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -530,7 +577,8 @@ describe('push tag', () => {
         tagMatch: `\\d{1,3}.\\d{1,3}`,
       } as Inputs,
       {
-        version: '2.0',
+        main: '2.0',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -551,13 +599,41 @@ describe('push tag', () => {
       ]
     ],
     [
+      'event_tag_v2.0.8-beta.67.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tagMatch: `^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$`,
+        tagMatchGroup: 1,
+      } as Inputs,
+      {
+        main: 'v2.0.8-beta.67',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:v2.0.8-beta.67',
+        'ghcr.io/user/app:v2.0.8-beta.67'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v2.0.8-beta.67",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
       'event_tag_sometag.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tagMatch: `\\d{1,3}.\\d{1,3}`,
       } as Inputs,
       {
-        version: 'sometag',
+        main: 'sometag',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -570,6 +646,64 @@ describe('push tag', () => {
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sometag",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tagSemver: ['{{version}}', '{{major}}.{{minor}}', '{{major}}'],
+      } as Inputs,
+      {
+        main: '1.1.1',
+        partial: ['1.1', '1'],
+        latest: true
+      } as Version,
+      [
+        'org/app:1.1.1',
+        'org/app:1.1',
+        'org/app:1',
+        'org/app:latest',
+        'ghcr.io/user/app:1.1.1',
+        'ghcr.io/user/app:1.1',
+        'ghcr.io/user/app:1',
+        'ghcr.io/user/app:latest'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_tag_v2.0.8-beta.67.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tagSemver: ['{{version}}', '{{major}}.{{minor}}', '{{major}}'],
+      } as Inputs,
+      {
+        main: '2.0.8-beta.67',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:2.0.8-beta.67',
+        'ghcr.io/user/app:2.0.8-beta.67'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=2.0.8-beta.67",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
@@ -588,7 +722,8 @@ describe('latest', () => {
         tagMatch: `^release\\d{1,2}`,
       } as Inputs,
       {
-        version: 'release1',
+        main: 'release1',
+        partial: [],
         latest: true,
       } as Version,
       [
@@ -613,7 +748,8 @@ describe('latest', () => {
         tagMatch: `^\\d+-RC\\d{1,2}`,
       } as Inputs,
       {
-        version: '20200110-RC2',
+        main: '20200110-RC2',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -638,7 +774,8 @@ describe('latest', () => {
         tagMatch: `\\d{8}`,
       } as Inputs,
       {
-        version: '20200110',
+        main: '20200110',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -663,7 +800,8 @@ describe('latest', () => {
         tagMatch: `\\d{1,3}.\\d{1,3}.\\d{1,3}`,
       } as Inputs,
       {
-        version: '1.1.1',
+        main: '1.1.1',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -687,7 +825,8 @@ describe('latest', () => {
         images: ['org/app', 'ghcr.io/user/app'],
       } as Inputs,
       {
-        version: 'v1.1.1',
+        main: 'v1.1.1',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -714,7 +853,8 @@ describe('latest', () => {
         tagMatch: `\\d{1,3}.\\d{1,3}.\\d{1,3}`,
       } as Inputs,
       {
-        version: '2.0.8',
+        main: '2.0.8',
+        partial: [],
         latest: true
       } as Version,
       [
@@ -741,7 +881,8 @@ describe('latest', () => {
         tagMatchLatest: false,
       } as Inputs,
       {
-        version: 'v1.1.1',
+        main: 'v1.1.1',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -771,7 +912,8 @@ describe('pull_request', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: 'pr-2',
+        main: 'pr-2',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -794,7 +936,8 @@ describe('pull_request', () => {
         images: ['org/app', 'ghcr.io/user/app'],
       } as Inputs,
       {
-        version: 'pr-2',
+        main: 'pr-2',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -819,7 +962,8 @@ describe('pull_request', () => {
         tagSha: true,
       } as Inputs,
       {
-        version: 'pr-2',
+        main: 'pr-2',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -851,7 +995,8 @@ describe('schedule', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: 'nightly',
+        main: 'nightly',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -875,7 +1020,8 @@ describe('schedule', () => {
         tagSchedule: `{{date 'YYYYMMDD'}}`
       } as Inputs,
       {
-        version: '20200110',
+        main: '20200110',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -899,7 +1045,8 @@ describe('schedule', () => {
         tagSchedule: `{{date 'YYYYMMDD-HHmmss'}}`
       } as Inputs,
       {
-        version: '20200110-003000',
+        main: '20200110-003000',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -922,7 +1069,8 @@ describe('schedule', () => {
         images: ['org/app', 'ghcr.io/user/app'],
       } as Inputs,
       {
-        version: 'nightly',
+        main: 'nightly',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -947,7 +1095,8 @@ describe('schedule', () => {
         tagSha: true,
       } as Inputs,
       {
-        version: 'nightly',
+        main: 'nightly',
+        partial: [],
         latest: false
       } as Version,
       [
@@ -979,7 +1128,8 @@ describe('release', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        version: 'v1.1.1',
+        main: 'v1.1.1',
+        partial: [],
         latest: true
       } as Version,
       [
