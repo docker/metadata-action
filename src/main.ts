@@ -29,9 +29,9 @@ async function run() {
 
     const version: Version = meta.version();
     core.startGroup(`Docker image version`);
-    core.info(version.version || '');
+    core.info(version.main || '');
     core.endGroup();
-    core.setOutput('version', version.version || '');
+    core.setOutput('version', version.main || '');
 
     const tags: Array<string> = meta.tags();
     core.startGroup(`Docker tags`);

@@ -5,6 +5,7 @@ export interface Inputs {
   tagSha: boolean;
   tagEdge: boolean;
   tagEdgeBranch: string;
+  tagSemver: string[];
   tagMatch: string;
   tagMatchGroup: number;
   tagMatchLatest: boolean;
@@ -20,6 +21,7 @@ export function getInputs(): Inputs {
     tagSha: /true/i.test(core.getInput('tag-sha') || 'false'),
     tagEdge: /true/i.test(core.getInput('tag-edge') || 'false'),
     tagEdgeBranch: core.getInput('tag-edge-branch'),
+    tagSemver: getInputList('tag-semver'),
     tagMatch: core.getInput('tag-match'),
     tagMatchGroup: Number(core.getInput('tag-match-group')) || 0,
     tagMatchLatest: /true/i.test(core.getInput('tag-match-latest') || 'true'),
