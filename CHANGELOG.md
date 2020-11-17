@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.1 (2020/11/18)
+
+* Missing input in `action.yml`
+
 ## 1.8.0 (2020/11/17)
 
 * Handle semver tags (#14)
