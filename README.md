@@ -292,11 +292,15 @@ If Git tag is a valid [semver](https://semver.org/) you can handle it to output 
 | `v1.2.3`           | `v{{major}}`                                             | :white_check_mark: | `v1`, `latest`             | `v1`                         |
 | `v1.2.3`           | `{{minor}}`                                              | :white_check_mark: | `2`, `latest`              | `2`                          |
 | `v1.2.3`           | `{{patch}}`                                              | :white_check_mark: | `3`, `latest`              | `3`                          |
-| `v1.2.3`           | `{{major}}.{{minor}}`<br>`{{major}}.{{minor}}.{{patch}}` | :white_check_mark: | `1.2`, `1.2.3`, `latest`   | `1.2`                        |
-| `v2.0.8-beta.67`   | `{{raw}}`                                                | :white_check_mark: | `v2.0.8-beta.67`           | `v2.0.8-beta.67`             |
+| `v1.2.3`           | `{{major}}.{{minor}}`<br>`{{major}}.{{minor}}.{{patch}}` | :white_check_mark: | `1.2`, `1.2.3`, `latest`   | `1.2`*                       |
+| `v2.0.8-beta.67`   | `{{raw}}`                                                | :white_check_mark: | `2.0.8-beta.67`            | `2.0.8-beta.67`             |
 | `v2.0.8-beta.67`   | `{{version}}`                                            | :white_check_mark: | `2.0.8-beta.67`            | `2.0.8-beta.67`              |
-| `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | :white_check_mark: | `2.0`                      | `2.0`                        |
+| `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | :white_check_mark: | `2.0.8-beta.67`**          | `2.0.8-beta.67`              |
 | `release1`         | `{{raw}}`                                                | :x:                | `release1`                 | `release1`                   |
+
+> *First occurrence of `tag-semver` will be taken as `output.version`
+
+> **Pre-release (rc, beta, alpha) will only extend `{{version}}` as tag
 
 ### Schedule tag
 
