@@ -271,32 +271,32 @@ generated only if the Git tag matches a regular expression with the [`tag-match`
 
 ### `tag-match` examples
 
-| Git tag                 | `tag-match`                        | `tag-match-group` | Match                | Docker tags               |
-|-------------------------|------------------------------------|-------------------|----------------------|---------------------------|
-| `v1.2.3`                | `\d{1,3}.\d{1,3}.\d{1,3}`          | `0`               | :white_check_mark:   | `1.2.3`, `latest`         |
-| `v2.0.8-beta.67`        | `v(.*)`                            | `1`               | :white_check_mark:   | `2.0.8-beta.67`, `latest` |
-| `v2.0.8-beta.67`        | `v(\d.\d)`                         | `1`               | :white_check_mark:   | `2.0`, `latest`           |
-| `release1`              | `\d{1,3}.\d{1,3}`                  | `0`               | :x:                  | `release1`                |
-| `20200110-RC2`          | `\d+`                              | `0`               | :white_check_mark:   | `20200110`, `latest`      |
+| Git tag                 | `tag-match`                        | `tag-match-group` | Match                | Output tags               | Output version               |
+|-------------------------|------------------------------------|-------------------|----------------------|---------------------------|------------------------------|
+| `v1.2.3`                | `\d{1,3}.\d{1,3}.\d{1,3}`          | `0`               | :white_check_mark:   | `1.2.3`, `latest`         | `1.2.3`                      |
+| `v2.0.8-beta.67`        | `v(.*)`                            | `1`               | :white_check_mark:   | `2.0.8-beta.67`, `latest` | `2.0.8-beta.67`              |
+| `v2.0.8-beta.67`        | `v(\d.\d)`                         | `1`               | :white_check_mark:   | `2.0`, `latest`           | `2.0`                        |
+| `release1`              | `\d{1,3}.\d{1,3}`                  | `0`               | :x:                  | `release1`                | `release1`                   |
+| `20200110-RC2`          | `\d+`                              | `0`               | :white_check_mark:   | `20200110`, `latest`      | `20200110`                   |
 
 ### Handle semver tag
 
 If Git tag is a valid [semver](https://semver.org/) you can handle it to output multi Docker tags at once.
 `tag-semver` supports multi-line [Handlebars template](https://handlebarsjs.com/guide/) with the following inputs:
 
-| Git tag            | `tag-semver`                                             | Valid              | Docker tags        |
-|--------------------|----------------------------------------------------------|--------------------|--------------------|
-| `v1.2.3`           | `{{raw}}`                                                | :white_check_mark: | `v1.2.3`, `latest` |
-| `v1.2.3`           | `{{version}}`                                            | :white_check_mark: | `1.2.3`, `latest`  |
-| `v1.2.3`           | `{{major}}.{{minor}}`                                    | :white_check_mark: | `1.2`, `latest`    |
-| `v1.2.3`           | `v{{major}}`                                             | :white_check_mark: | `v1`, `latest`     |
-| `v1.2.3`           | `{{minor}}`                                              | :white_check_mark: | `2`, `latest`      |
-| `v1.2.3`           | `{{patch}}`                                              | :white_check_mark: | `3`, `latest`      |
-| `v1.2.3`           | `{{major}}.{{minor}}`<br>`{{major}}.{{minor}}.{{patch}}` | :white_check_mark: | `1.2`, `1.2.3`, `latest`   |
-| `v2.0.8-beta.67`   | `{{raw}}`                                                | :white_check_mark: | `v2.0.8-beta.67`   |
-| `v2.0.8-beta.67`   | `{{version}}`                                            | :white_check_mark: | `2.0.8-beta.67`    |
-| `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | :white_check_mark: | `2.0`              |
-| `release1`         | `{{raw}}`                                                | :x:                | `release1`         |
+| Git tag            | `tag-semver`                                             | Valid              | Output tags                | Output version               |
+|--------------------|----------------------------------------------------------|--------------------|----------------------------|------------------------------|
+| `v1.2.3`           | `{{raw}}`                                                | :white_check_mark: | `v1.2.3`, `latest`         | `v1.2.3`                     |
+| `v1.2.3`           | `{{version}}`                                            | :white_check_mark: | `1.2.3`, `latest`          | `1.2.3`                      |
+| `v1.2.3`           | `{{major}}.{{minor}}`                                    | :white_check_mark: | `1.2`, `latest`            | `1.2`                        |
+| `v1.2.3`           | `v{{major}}`                                             | :white_check_mark: | `v1`, `latest`             | `v1`                         |
+| `v1.2.3`           | `{{minor}}`                                              | :white_check_mark: | `2`, `latest`              | `2`                          |
+| `v1.2.3`           | `{{patch}}`                                              | :white_check_mark: | `3`, `latest`              | `3`                          |
+| `v1.2.3`           | `{{major}}.{{minor}}`<br>`{{major}}.{{minor}}.{{patch}}` | :white_check_mark: | `1.2`, `1.2.3`, `latest`   | `1.2`                        |
+| `v2.0.8-beta.67`   | `{{raw}}`                                                | :white_check_mark: | `v2.0.8-beta.67`           | `v2.0.8-beta.67`             |
+| `v2.0.8-beta.67`   | `{{version}}`                                            | :white_check_mark: | `2.0.8-beta.67`            | `2.0.8-beta.67`              |
+| `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | :white_check_mark: | `2.0`                      | `2.0`                        |
+| `release1`         | `{{raw}}`                                                | :x:                | `release1`                 | `release1`                   |
 
 ### Schedule tag
 
