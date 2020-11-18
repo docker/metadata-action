@@ -82,6 +82,7 @@ export class Meta {
       version.main = `pr-${this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '')}`;
     }
 
+    version.partial = version.partial.filter((item, index) => version.partial.indexOf(item) === index);
     return version;
   }
 
