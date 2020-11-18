@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.2 (2020/11/18)
+
+* Remove duplicated tags
+
 ## 1.8.1 (2020/11/18)
 
 * Missing input in `action.yml`
