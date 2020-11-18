@@ -1229,3 +1229,206 @@ describe('release', () => {
     ],
   ])('given %p event ', tagsLabelsTest);
 });
+
+describe('flavor', () => {
+  // prettier-ignore
+  test.each([
+    [
+      'event_release.env',
+      {
+        images: ['user/app'],
+        flavor: 'debian',
+        mainFlavor: true,
+      } as Inputs,
+      {
+        main: 'v1.1.1',
+        partial: [],
+        latest: true
+      } as Version,
+      [
+        'user/app:v1.1.1',
+        'user/app:v1.1.1-debian',
+        'user/app:latest',
+        'user/app:debian',
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_release.env',
+      {
+        images: ['user/app'],
+        flavor: 'debian',
+        mainFlavor: true,
+        tagLatest: false,
+      } as Inputs,
+      {
+        main: 'v1.1.1',
+        partial: [],
+        latest: false,
+      } as Version,
+      [
+        'user/app:v1.1.1',
+        'user/app:v1.1.1-debian',
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_release.env',
+      {
+        images: ['user/app'],
+        flavor: 'alpine',
+        mainFlavor: false,
+      } as Inputs,
+      {
+        main: 'v1.1.1',
+        partial: [],
+        latest: true
+      } as Version,
+      [
+        'user/app:v1.1.1-alpine',
+        'user/app:alpine',
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_release.env',
+      {
+        images: ['user/app'],
+        flavor: 'alpine',
+        mainFlavor: false,
+        tagLatest: false,
+      } as Inputs,
+      {
+        main: 'v1.1.1',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'user/app:v1.1.1-alpine',
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_release.env',
+      {
+        images: ['user/app'],
+        flavor: '',
+        mainFlavor: true,
+        tagLatest: false,
+      } as Inputs,
+      {
+        main: 'v1.1.1',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'user/app:v1.1.1',
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_release.env',
+      {
+        images: ['user/app'],
+        flavor: '',
+        mainFlavor: false,
+        tagLatest: false,
+      } as Inputs,
+      {
+        main: 'v1.1.1',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'user/app:v1.1.1',
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_release.env',
+      {
+        images: ['user/app'],
+        tagSemver: ['{{version}}', '{{major}}.{{minor}}', '{{major}}'],
+        tagSha: true,
+        flavor: 'alpine',
+        mainFlavor: false,
+      } as Inputs,
+      {
+        main: '1.1.1',
+        partial: ['1.1', '1'],
+        latest: true
+      } as Version,
+      [
+        'user/app:1.1.1-alpine',
+        'user/app:1.1-alpine',
+        'user/app:1-alpine',
+        'user/app:alpine',
+        'user/app:sha-90dd603-alpine',
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+  ])('given %p event ', tagsLabelsTest);
+});

@@ -100,18 +100,41 @@ export class Meta {
       return [];
     }
 
+    let flavor = this.inputs.flavor;
+    let main = !flavor || this.inputs.mainFlavor;
+
     let tags: Array<string> = [];
     for (const image of this.inputs.images) {
       const imageLc = image.toLowerCase();
-      tags.push(`${imageLc}:${this.version.main}`);
+      if (main) {
+        tags.push(`${imageLc}:${this.version.main}`);
+      }
+      if (flavor) {
+        tags.push(`${imageLc}:${this.version.main}-${flavor}`);
+      }
       for (const partial of this.version.partial) {
-        tags.push(`${imageLc}:${partial}`);
+        if (main) {
+          tags.push(`${imageLc}:${partial}`);
+        }
+        if (flavor) {
+          tags.push(`${imageLc}:${partial}-${flavor}`);
+        }
       }
       if (this.version.latest) {
-        tags.push(`${imageLc}:latest`);
+        if (main) {
+          tags.push(`${imageLc}:latest`);
+        }
+        if (flavor) {
+          tags.push(`${imageLc}:${flavor}`);
+        }
       }
       if (this.context.sha && this.inputs.tagSha) {
-        tags.push(`${imageLc}:sha-${this.context.sha.substr(0, 7)}`);
+        if (main) {
+          tags.push(`${imageLc}:sha-${this.context.sha.substr(0, 7)}`);
+        }
+        if (flavor) {
+          tags.push(`${imageLc}:sha-${this.context.sha.substr(0, 7)}-${flavor}`);
+        }
       }
     }
     return tags;

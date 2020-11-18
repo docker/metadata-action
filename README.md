@@ -248,6 +248,8 @@ Following inputs can be used as `step.with` keys
 | `tag-schedule`      | String   | [Template](#schedule-tag) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
+| `flavor`            | String   | Tag suffix to be appended, specifying the image flavor (default ``) |
+| `main-flavor`       | String   | Enable tags without flavor suffix (default `true`) |
 
 > List/CSV type can be a newline or comma delimited string
 
@@ -305,6 +307,18 @@ If Git tag is a valid [semver](https://semver.org/) you can handle it to output 
 | `v2.0.8-beta.67`        | `v(\d.\d)`                         | `1`               | :white_check_mark:   | `2.0`, `latest`           | `2.0`                        |
 | `release1`              | `\d{1,3}.\d{1,3}`                  | `0`               | :x:                  | `release1`                | `release1`                   |
 | `20200110-RC2`          | `\d+`                              | `0`               | :white_check_mark:   | `20200110`, `latest`      | `20200110`                   |
+
+### `flavor` examples
+
+| Git tag                 | `flavor` | `main-flavor` | `tag-latest` | Output tags                                 |
+|-------------------------|----------|---------------|--------------|---------------------------------------------|
+| `v1.2.3`                | `debian` | `true`        | `true`       | `1.2.3-debian`, `1.2.3`, `debian`, `latest` |
+| `v1.2.3`                | `debian` | `true`        | `false`      | `1.2.3-debian`, `1.2.3`                     |
+| `v1.2.3`                | `alpine` | `false`       | `true`       | `1.2.3-alpine`, `alpine`                    |
+| `v1.2.3`                | `alpine` | `false`       | `false`      | `1.2.3-alpine`                              |
+| `v1.2.3`                | ``       | ``            | `true`       | `1.2.3`, `latest`                           |
+| `v1.2.3`                | ``       | ``            | `false`      | `1.2.3`                                     |
+
 
 ### Schedule tag
 

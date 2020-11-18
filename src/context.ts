@@ -13,6 +13,8 @@ export interface Inputs {
   sepTags: string;
   sepLabels: string;
   githubToken: string;
+  flavor: string;
+  mainFlavor: boolean;
 }
 
 export function getInputs(): Inputs {
@@ -28,7 +30,9 @@ export function getInputs(): Inputs {
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
-    githubToken: core.getInput('github-token')
+    githubToken: core.getInput('github-token'),
+    flavor: core.getInput('flavor'),
+    mainFlavor: /true/i.test(core.getInput('main-flavor') || 'true')
   };
 }
 
