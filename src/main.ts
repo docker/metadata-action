@@ -39,7 +39,7 @@ async function run() {
       core.info(tag);
     }
     core.endGroup();
-    core.setOutput('tags', tags.join(inputs.sepTags).toLowerCase());
+    core.setOutput('tags', tags.join(inputs.sepTags));
 
     const labels: Array<string> = meta.labels();
     core.startGroup(`Docker labels`);

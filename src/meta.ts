@@ -94,15 +94,16 @@ export class Meta {
 
     let tags: Array<string> = [];
     for (const image of this.inputs.images) {
-      tags.push(`${image}:${version.main}`);
+      const imageLc = image.toLowerCase();
+      tags.push(`${imageLc}:${version.main}`);
       for (const partial of version.partial) {
-        tags.push(`${image}:${partial}`);
+        tags.push(`${imageLc}:${partial}`);
       }
       if (version.latest) {
-        tags.push(`${image}:latest`);
+        tags.push(`${imageLc}:latest`);
       }
       if (this.context.sha && this.inputs.tagSha) {
-        tags.push(`${image}:sha-${this.context.sha.substr(0, 7)}`);
+        tags.push(`${imageLc}:sha-${this.context.sha.substr(0, 7)}`);
       }
     }
     return tags;

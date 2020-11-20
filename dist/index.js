@@ -142,7 +142,7 @@ function run() {
                 core.info(tag);
             }
             core.endGroup();
-            core.setOutput('tags', tags.join(inputs.sepTags).toLowerCase());
+            core.setOutput('tags', tags.join(inputs.sepTags));
             const labels = meta.labels();
             core.startGroup(`Docker labels`);
             for (let label of labels) {
@@ -250,15 +250,16 @@ class Meta {
         }
         let tags = [];
         for (const image of this.inputs.images) {
-            tags.push(`${image}:${version.main}`);
+            const imageLc = image.toLowerCase();
+            tags.push(`${imageLc}:${version.main}`);
             for (const partial of version.partial) {
-                tags.push(`${image}:${partial}`);
+                tags.push(`${imageLc}:${partial}`);
             }
             if (version.latest) {
-                tags.push(`${image}:latest`);
+                tags.push(`${imageLc}:latest`);
             }
             if (this.context.sha && this.inputs.tagSha) {
-                tags.push(`${image}:sha-${this.context.sha.substr(0, 7)}`);
+                tags.push(`${imageLc}:sha-${this.context.sha.substr(0, 7)}`);
             }
         }
         return tags;
