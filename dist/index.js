@@ -142,7 +142,7 @@ function run() {
                 core.info(tag);
             }
             core.endGroup();
-            core.setOutput('tags', tags.join(inputs.sepTags));
+            core.setOutput('tags', tags.join(inputs.sepTags).toLowerCase());
             const labels = meta.labels();
             core.startGroup(`Docker labels`);
             for (let label of labels) {
