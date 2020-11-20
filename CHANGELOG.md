@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.3 (2020/11/20)
+
+* Lowercase image name (#16)
+
 ## 1.8.2 (2020/11/18)
 
 * Remove duplicated tags
