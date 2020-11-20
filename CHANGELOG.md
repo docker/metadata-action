@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.4 (2020/11/20)
+
+* Pre-release (rc, beta, alpha) will only extend `{{version}}` as tag for `tag-semver`
+
 ## 1.8.3 (2020/11/20)
 
 * Lowercase image name (#16)

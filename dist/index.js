@@ -201,9 +201,12 @@ class Meta {
                 const sver = semver.parse(version.main, {
                     includePrerelease: true
                 });
-                version.latest = !semver.prerelease(version.main);
-                version.main = handlebars.compile(this.inputs.tagSemver[0])(sver);
-                if (version.latest) {
+                if (semver.prerelease(version.main)) {
+                    version.main = handlebars.compile('{{version}}')(sver);
+                }
+                else {
+                    version.latest = true;
+                    version.main = handlebars.compile(this.inputs.tagSemver[0])(sver);
                     for (const semverTpl of this.inputs.tagSemver) {
                         const partial = handlebars.compile(semverTpl)(sver);
                         if (partial == version.main) {

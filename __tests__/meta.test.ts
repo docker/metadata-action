@@ -715,7 +715,7 @@ describe('push tag', () => {
       'event_tag_v2.0.8-beta.67.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
-        tagSemver: ['{{version}}', '{{major}}.{{minor}}', '{{major}}'],
+        tagSemver: ['{{major}}.{{minor}}', '{{major}}'],
       } as Inputs,
       {
         main: '2.0.8-beta.67',
