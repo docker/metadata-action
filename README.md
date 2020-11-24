@@ -168,11 +168,11 @@ jobs:
 | Event           | Ref                           | Commit SHA | Docker Tags                             |
 |-----------------|-------------------------------|------------|-----------------------------------------|
 | `schedule`      | `refs/heads/master`           | `45f132a`  | `sha-45f132a`, `nightly`                |
-| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-45f132a`, `pr-2`                   |
-| `push`          | `refs/heads/master`           | `cf20257`  | `sha-45f132a`, `master`                 |
-| `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-45f132a`, `my-branch`              |
-| `push tag`      | `refs/tags/v1.2.3`            | `ad132f5`  | `sha-45f132a`, `1.2.3`, `1.2`, `latest` |
-| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `fc89efd`  | `sha-45f132a`, `2.0.8-beta.67`          |
+| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-a123b57`, `pr-2`                   |
+| `push`          | `refs/heads/master`           | `cf20257`  | `sha-cf20257`, `master`                 |
+| `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-a5df687`, `my-branch`              |
+| `push tag`      | `refs/tags/v1.2.3`            | `ad132f5`  | `sha-ad132f5`, `1.2.3`, `1.2`, `latest` |
+| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `fc89efd`  | `sha-fc89efd`, `2.0.8-beta.67`          |
 
 ```yaml
 name: ci
@@ -200,6 +200,7 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: name/app
+          tag-sha: true
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
