@@ -47,7 +47,7 @@ async function run() {
       core.info(label);
     }
     core.endGroup();
-    core.setOutput('labels', labels.join(inputs.sepTags));
+    core.setOutput('labels', labels.join(inputs.sepLabels));
   } catch (error) {
     core.setFailed(error.message);
   }
