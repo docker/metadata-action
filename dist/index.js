@@ -171,6 +171,7 @@ exports.Meta = void 0;
 const handlebars = __webpack_require__(7492);
 const moment = __webpack_require__(9623);
 const semver = __webpack_require__(1383);
+const core = __webpack_require__(2186);
 class Meta {
     constructor(inputs, context, repo) {
         this.inputs = inputs;
@@ -198,6 +199,9 @@ class Meta {
         }
         else if (/^refs\/tags\//.test(this.context.ref)) {
             version.main = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+            if (this.inputs.tagSemver.length > 0 && !semver.valid(version.main)) {
+                core.warning(`${version.main} is not a valid semver. More info: https://semver.org/`);
+            }
             if (this.inputs.tagSemver.length > 0 && semver.valid(version.main)) {
                 const sver = semver.parse(version.main, {
                     includePrerelease: true
