@@ -2,6 +2,7 @@ import * as handlebars from 'handlebars';
 import * as moment from 'moment';
 import * as semver from 'semver';
 import {Inputs} from './context';
+import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
 
@@ -46,6 +47,9 @@ export class Meta {
       });
     } else if (/^refs\/tags\//.test(this.context.ref)) {
       version.main = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+      if (this.inputs.tagSemver.length > 0 && !semver.valid(version.main)) {
+        core.warning(`${version.main} is not a valid semver. More info: https://semver.org/`);
+      }
       if (this.inputs.tagSemver.length > 0 && semver.valid(version.main)) {
         const sver = semver.parse(version.main, {
           includePrerelease: true
