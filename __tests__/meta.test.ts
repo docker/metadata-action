@@ -44,7 +44,7 @@ const tagsLabelsTest = async (envFile: string, inputs: Inputs, exVersion: Versio
   const repo = await github.repo(process.env.GITHUB_TOKEN || '');
   const meta = new Meta({...getInputs(), ...inputs}, context, repo);
 
-  const version = meta.version();
+  const version = meta.version;
   console.log('version', version);
   expect(version).toEqual(exVersion);
 
