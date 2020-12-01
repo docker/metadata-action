@@ -10,6 +10,8 @@ export interface Inputs {
   tagMatchGroup: number;
   tagLatest: boolean;
   tagSchedule: string;
+  tagCustom: string[];
+  tagCustomOnly: boolean;
   sepTags: string;
   sepLabels: string;
   githubToken: string;
@@ -26,6 +28,8 @@ export function getInputs(): Inputs {
     tagMatchGroup: Number(core.getInput('tag-match-group')) || 0,
     tagLatest: /true/i.test(core.getInput('tag-latest') || core.getInput('tag-match-latest') || 'true'),
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
+    tagCustom: getInputList('tag-custom'),
+    tagCustomOnly: /true/i.test(core.getInput('tag-custom-only') || 'false'),
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
     githubToken: core.getInput('github-token')

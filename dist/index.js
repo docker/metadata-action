@@ -30,6 +30,8 @@ function getInputs() {
         tagMatchGroup: Number(core.getInput('tag-match-group')) || 0,
         tagLatest: /true/i.test(core.getInput('tag-latest') || core.getInput('tag-match-latest') || 'true'),
         tagSchedule: core.getInput('tag-schedule') || 'nightly',
+        tagCustom: getInputList('tag-custom'),
+        tagCustomOnly: /true/i.test(core.getInput('tag-custom-only') || 'false'),
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
         githubToken: core.getInput('github-token')
@@ -185,7 +187,7 @@ class Meta {
     }
     getVersion() {
         const currentDate = this.date;
-        const version = {
+        let version = {
             main: undefined,
             partial: [],
             latest: false
@@ -247,6 +249,18 @@ class Meta {
         }
         else if (/^refs\/pull\//.test(this.context.ref)) {
             version.main = `pr-${this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '')}`;
+        }
+        if (this.inputs.tagCustom.length > 0) {
+            if (this.inputs.tagCustomOnly) {
+                version = {
+                    main: this.inputs.tagCustom.shift(),
+                    partial: this.inputs.tagCustom,
+                    latest: false
+                };
+            }
+            else {
+                version.partial.push(...this.inputs.tagCustom);
+            }
         }
         version.partial = version.partial.filter((item, index) => version.partial.indexOf(item) === index);
         return version;
