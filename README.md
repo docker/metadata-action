@@ -241,7 +241,7 @@ Following inputs can be used as `step.with` keys
 | `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
 | `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
 | `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
-| `tag-semver`        | List     | Handle Git tag as semver [template](#handle-semver-tag) if possible |
+| `tag-semver`        | List/CSV | Handle Git tag as semver [template](#handle-semver-tag) if possible |
 | `tag-match`         | String   | RegExp to match against a Git tag and use first match as Docker tag |
 | `tag-match-group`   | Number   | Group to get if `tag-match` matches (default `0`) |
 | `tag-latest`        | Bool     | Set `latest` Docker tag if `tag-semver`, `tag-match` or Git tag event occurs (default `true`) |
