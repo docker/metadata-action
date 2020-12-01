@@ -131,7 +131,7 @@ function run() {
             core.info(`runId: ${context.runId}`);
             core.endGroup();
             const meta = new meta_1.Meta(inputs, context, repo);
-            const version = meta.version();
+            const version = meta.version;
             core.startGroup(`Docker image version`);
             core.info(version.main || '');
             core.endGroup();
@@ -180,8 +180,9 @@ class Meta {
         this.context = context;
         this.repo = repo;
         this.date = new Date();
+        this.version = this.getVersion();
     }
-    version() {
+    getVersion() {
         const currentDate = this.date;
         const version = {
             main: undefined,
@@ -247,18 +248,17 @@ class Meta {
         return version;
     }
     tags() {
-        const version = this.version();
-        if (!version.main) {
+        if (!this.version.main) {
             return [];
         }
         let tags = [];
         for (const image of this.inputs.images) {
             const imageLc = image.toLowerCase();
-            tags.push(`${imageLc}:${version.main}`);
-            for (const partial of version.partial) {
+            tags.push(`${imageLc}:${this.version.main}`);
+            for (const partial of this.version.partial) {
                 tags.push(`${imageLc}:${partial}`);
             }
-            if (version.latest) {
+            if (this.version.latest) {
                 tags.push(`${imageLc}:latest`);
             }
             if (this.context.sha && this.inputs.tagSha) {
@@ -274,7 +274,7 @@ class Meta {
             `org.opencontainers.image.description=${this.repo.description || ''}`,
             `org.opencontainers.image.url=${this.repo.html_url || ''}`,
             `org.opencontainers.image.source=${this.repo.html_url || ''}`,
-            `org.opencontainers.image.version=${this.version().main || ''}`,
+            `org.opencontainers.image.version=${this.version.main || ''}`,
             `org.opencontainers.image.created=${this.date.toISOString()}`,
             `org.opencontainers.image.revision=${this.context.sha || ''}`,
             `org.opencontainers.image.licenses=${((_a = this.repo.license) === null || _a === void 0 ? void 0 : _a.spdx_id) || ''}`

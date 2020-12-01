@@ -27,7 +27,7 @@ async function run() {
 
     const meta: Meta = new Meta(inputs, context, repo);
 
-    const version: Version = meta.version();
+    const version: Version = meta.version;
     core.startGroup(`Docker image version`);
     core.info(version.main || '');
     core.endGroup();

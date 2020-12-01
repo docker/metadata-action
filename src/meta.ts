@@ -12,6 +12,8 @@ export interface Version {
 }
 
 export class Meta {
+  public readonly version: Version;
+
   private readonly inputs: Inputs;
   private readonly context: Context;
   private readonly repo: ReposGetResponseData;
@@ -25,9 +27,10 @@ export class Meta {
     this.context = context;
     this.repo = repo;
     this.date = new Date();
+    this.version = this.getVersion();
   }
 
-  public version(): Version {
+  private getVersion(): Version {
     const currentDate = this.date;
     const version: Version = {
       main: undefined,
@@ -89,19 +92,18 @@ export class Meta {
   }
 
   public tags(): Array<string> {
-    const version: Version = this.version();
-    if (!version.main) {
+    if (!this.version.main) {
       return [];
     }
 
     let tags: Array<string> = [];
     for (const image of this.inputs.images) {
       const imageLc = image.toLowerCase();
-      tags.push(`${imageLc}:${version.main}`);
-      for (const partial of version.partial) {
+      tags.push(`${imageLc}:${this.version.main}`);
+      for (const partial of this.version.partial) {
         tags.push(`${imageLc}:${partial}`);
       }
-      if (version.latest) {
+      if (this.version.latest) {
         tags.push(`${imageLc}:latest`);
       }
       if (this.context.sha && this.inputs.tagSha) {
@@ -117,7 +119,7 @@ export class Meta {
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
       `org.opencontainers.image.source=${this.repo.html_url || ''}`,
-      `org.opencontainers.image.version=${this.version().main || ''}`,
+      `org.opencontainers.image.version=${this.version.main || ''}`,
       `org.opencontainers.image.created=${this.date.toISOString()}`,
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
