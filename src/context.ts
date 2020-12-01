@@ -8,7 +8,7 @@ export interface Inputs {
   tagSemver: string[];
   tagMatch: string;
   tagMatchGroup: number;
-  tagMatchLatest: boolean;
+  tagLatest: boolean;
   tagSchedule: string;
   sepTags: string;
   sepLabels: string;
@@ -24,7 +24,7 @@ export function getInputs(): Inputs {
     tagSemver: getInputList('tag-semver'),
     tagMatch: core.getInput('tag-match'),
     tagMatchGroup: Number(core.getInput('tag-match-group')) || 0,
-    tagMatchLatest: /true/i.test(core.getInput('tag-match-latest') || 'true'),
+    tagLatest: /true/i.test(core.getInput('tag-latest') || core.getInput('tag-match-latest') || 'true'),
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,

@@ -31,8 +31,13 @@ inputs:
     description: 'Group to get if tag-match matches (default 0)'
     default: '0'
     required: false
+  tag-latest:
+    description: 'Set latest Docker tag if tag-semver, tag-match or Git tag event occurs'
+    default: 'true'
+    required: false
   tag-match-latest:
-    description: 'Set latest Docker tag if tag-match matches or on Git tag event'
+    deprecationMessage: 'tag-match-latest is deprecated. Use tag-latest instead'
+    description: '(DEPRECATED) Set latest Docker tag if tag-match matches or on Git tag event'
     default: 'true'
     required: false
   tag-schedule:

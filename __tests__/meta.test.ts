@@ -437,7 +437,7 @@ describe('push tag', () => {
       {
         images: ['user/app'],
         tagMatch: `\\d{8}`,
-        tagMatchLatest: false,
+        tagLatest: false,
       } as Inputs,
       {
         main: '20200110',
@@ -464,7 +464,7 @@ describe('push tag', () => {
         images: ['user/app'],
         tagMatch: `(.*)-RC`,
         tagMatchGroup: 1,
-        tagMatchLatest: false,
+        tagLatest: false,
       } as Inputs,
       {
         main: '20200110',
@@ -742,15 +742,15 @@ describe('push tag', () => {
       {
         images: ['ghcr.io/user/app'],
         tagSemver: ['{{version}}', '{{major}}.{{minor}}', '{{major}}'],
+        tagLatest: false,
       } as Inputs,
       {
         main: 'sometag',
         partial: [],
-        latest: true
+        latest: false
       } as Version,
       [
-        'ghcr.io/user/app:sometag',
-        'ghcr.io/user/app:latest',
+        'ghcr.io/user/app:sometag'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -932,7 +932,7 @@ describe('latest', () => {
       'event_tag_v1.1.1.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
-        tagMatchLatest: false,
+        tagLatest: false,
       } as Inputs,
       {
         main: 'v1.1.1',
@@ -958,7 +958,7 @@ describe('latest', () => {
       'event_tag_v1.1.1.env',
       {
         images: ['org/app', 'ghcr.io/MyUSER/MyApp'],
-        tagMatchLatest: false,
+        tagLatest: false,
       } as Inputs,
       {
         main: 'v1.1.1',
