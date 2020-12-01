@@ -57,7 +57,7 @@ export class Meta {
         if (semver.prerelease(version.main)) {
           version.main = handlebars.compile('{{version}}')(sver);
         } else {
-          version.latest = true;
+          version.latest = this.inputs.tagLatest;
           version.main = handlebars.compile(this.inputs.tagSemver[0])(sver);
           for (const semverTpl of this.inputs.tagSemver) {
             const partial = handlebars.compile(semverTpl)(sver);
@@ -77,10 +77,10 @@ export class Meta {
         }
         if (tagMatch) {
           version.main = tagMatch[this.inputs.tagMatchGroup];
-          version.latest = this.inputs.tagMatchLatest;
+          version.latest = this.inputs.tagLatest;
         }
       } else {
-        version.latest = this.inputs.tagMatchLatest;
+        version.latest = this.inputs.tagLatest;
       }
     } else if (/^refs\/heads\//.test(this.context.ref)) {
       version.main = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');

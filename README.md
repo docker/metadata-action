@@ -244,7 +244,7 @@ Following inputs can be used as `step.with` keys
 | `tag-semver`        | List     | Handle Git tag as semver [template](#handle-semver-tag) if possible |
 | `tag-match`         | String   | RegExp to match against a Git tag and use first match as Docker tag |
 | `tag-match-group`   | Number   | Group to get if `tag-match` matches (default `0`) |
-| `tag-match-latest`  | Bool     | Set `latest` Docker tag if `tag-match` matches or on Git tag event (default `true`) |
+| `tag-latest`        | Bool     | Set `latest` Docker tag if `tag-semver`, `tag-match` or Git tag event occurs (default `true`) |
 | `tag-schedule`      | String   | [Template](#schedule-tag) to apply to schedule tag (default `nightly`) |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |

@@ -28,7 +28,7 @@ function getInputs() {
         tagSemver: getInputList('tag-semver'),
         tagMatch: core.getInput('tag-match'),
         tagMatchGroup: Number(core.getInput('tag-match-group')) || 0,
-        tagMatchLatest: /true/i.test(core.getInput('tag-match-latest') || 'true'),
+        tagLatest: /true/i.test(core.getInput('tag-latest') || core.getInput('tag-match-latest') || 'true'),
         tagSchedule: core.getInput('tag-schedule') || 'nightly',
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
@@ -210,7 +210,7 @@ class Meta {
                     version.main = handlebars.compile('{{version}}')(sver);
                 }
                 else {
-                    version.latest = true;
+                    version.latest = this.inputs.tagLatest;
                     version.main = handlebars.compile(this.inputs.tagSemver[0])(sver);
                     for (const semverTpl of this.inputs.tagSemver) {
                         const partial = handlebars.compile(semverTpl)(sver);
@@ -232,11 +232,11 @@ class Meta {
                 }
                 if (tagMatch) {
                     version.main = tagMatch[this.inputs.tagMatchGroup];
-                    version.latest = this.inputs.tagMatchLatest;
+                    version.latest = this.inputs.tagLatest;
                 }
             }
             else {
-                version.latest = this.inputs.tagMatchLatest;
+                version.latest = this.inputs.tagLatest;
             }
         }
         else if (/^refs\/heads\//.test(this.context.ref)) {
