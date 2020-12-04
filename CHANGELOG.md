@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0 (2020/12/04)
+
+* Allow to add custom tags (#24)
+* Allow to disable latest tag (#23)
+* Warn on invalid semver (#22)
+* Avoid unnecessary calls to version (#21)
+
 ## 1.8.5 (2020/11/24)
 
 * Use sepLabels when joining labels for output (#17)
