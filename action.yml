@@ -44,6 +44,12 @@ inputs:
     description: 'Template to apply to schedule tag'
     default: 'nightly'
     required: false
+  tag-custom:
+    description: 'List of custom tags'
+    required: false
+  tag-custom-only:
+    description: 'Only use tag-custom as Docker tags'
+    required: false
   sep-tags:
     description: 'Separator to use for tags output (default \n)'
     required: false

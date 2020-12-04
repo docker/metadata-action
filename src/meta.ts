@@ -33,7 +33,7 @@ export class Meta {
 
   private getVersion(): Version {
     const currentDate = this.date;
-    const version: Version = {
+    let version: Version = {
       main: undefined,
       partial: [],
       latest: false
@@ -89,6 +89,18 @@ export class Meta {
       }
     } else if (/^refs\/pull\//.test(this.context.ref)) {
       version.main = `pr-${this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, '')}`;
+    }
+
+    if (this.inputs.tagCustom.length > 0) {
+      if (this.inputs.tagCustomOnly) {
+        version = {
+          main: this.inputs.tagCustom.shift(),
+          partial: this.inputs.tagCustom,
+          latest: false
+        };
+      } else {
+        version.partial.push(...this.inputs.tagCustom);
+      }
     }
 
     version.partial = version.partial.filter((item, index) => version.partial.indexOf(item) === index);
