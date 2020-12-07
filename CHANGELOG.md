@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.1 (2020/12/07)
+
+* Replace forbidden chars derived from branch name (#30)
+* Bump semver from 7.3.2 to 7.3.4 (#26)
+
 ## 1.9.0 (2020/12/04)
 
 * Allow to add custom tags (#24)

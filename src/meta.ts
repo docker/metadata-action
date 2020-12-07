@@ -83,7 +83,7 @@ export class Meta {
         version.latest = this.inputs.tagLatest;
       }
     } else if (/^refs\/heads\//.test(this.context.ref)) {
-      version.main = this.context.ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
+      version.main = this.context.ref.replace(/^refs\/heads\//g, '').replace(/[^a-zA-Z0-9._-]+/g, '-');
       if (this.inputs.tagEdge && this.inputs.tagEdgeBranch === version.main) {
         version.main = 'edge';
       }
