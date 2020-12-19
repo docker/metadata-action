@@ -1,4 +1,4 @@
-name: test
+name: validate
 
 on:
   push:
@@ -14,18 +14,12 @@ on:
       - '**.md'
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
       -
-        name: Test
-        run: docker buildx bake test
-      -
-        name: Upload coverage
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/clover.xml
+        name: Validate
+        run: docker buildx bake validate
