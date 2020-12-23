@@ -68,11 +68,11 @@ function getInputList(name, ignoreComma) {
     if (items == '') {
         return res;
     }
-    for (let output of (sync_1.default(items, {
+    for (let output of sync_1.default(items, {
         columns: false,
         relaxColumnCount: true,
         skipLinesWithEmptyValues: true
-    }))) {
+    })) {
         if (output.length == 1) {
             res.push(output[0]);
             continue;
