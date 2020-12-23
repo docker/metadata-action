@@ -16,21 +16,6 @@ Contributions to this project are [released](https://help.github.com/articles/gi
 8. Push to your fork and [submit a pull request](https://github.com/crazy-max/ghaction-docker-meta/compare)
 9. Pat your self on the back and wait for your pull request to be reviewed and merged.
 
-## Container based developer flow
-
-If you don't want to maintain a Node developer environment that fits this project you can use containerized commands instead of invoking yarn directly.
-
-```
-# format code and build javascript artifacts
-docker buildx bake pre-checkin
-
-# validate all code has correctly formatted and built
-docker buildx bake validate
-
-# run tests
-docker buildx bake test
-```
-
 Here are a few things you can do that will increase the likelihood of your pull request being accepted:
 
 - Write tests.
