@@ -1,3 +1,4 @@
+import csvparse from 'csv-parse/lib/sync';
 import * as core from '@actions/core';
 
 export interface Inputs {
@@ -12,6 +13,7 @@ export interface Inputs {
   tagSchedule: string;
   tagCustom: string[];
   tagCustomOnly: boolean;
+  labelCustom: string[];
   sepTags: string;
   sepLabels: string;
   githubToken: string;
@@ -30,21 +32,37 @@ export function getInputs(): Inputs {
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
     tagCustom: getInputList('tag-custom'),
     tagCustomOnly: /true/i.test(core.getInput('tag-custom-only') || 'false'),
+    labelCustom: getInputList('label-custom'),
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
     githubToken: core.getInput('github-token')
   };
 }
 
-export function getInputList(name: string): string[] {
+export function getInputList(name: string, ignoreComma?: boolean): string[] {
+  let res: Array<string> = [];
+
   const items = core.getInput(name);
   if (items == '') {
-    return [];
+    return res;
   }
-  return items
-    .split(/\r?\n/)
-    .filter(x => x)
-    .reduce<string[]>((acc, line) => acc.concat(line.split(',').filter(x => x)).map(pat => pat.trim()), []);
+
+  for (let output of csvparse(items, {
+    columns: false,
+    relaxColumnCount: true,
+    skipLinesWithEmptyValues: true
+  }) as Array<string[]>) {
+    if (output.length == 1) {
+      res.push(output[0]);
+      continue;
+    } else if (!ignoreComma) {
+      res.push(...output);
+      continue;
+    }
+    res.push(output.join(','));
+  }
+
+  return res.filter(item => item).map(pat => pat.trim());
 }
 
 export const asyncForEach = async (array, callback) => {

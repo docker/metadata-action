@@ -31,7 +31,7 @@ ___
   * [Schedule tag](#schedule-tag)
   * [Overwrite labels](#overwrite-labels)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
-* [How can I help?](#how-can-i-help)
+* [Contributing](#contributing)
 * [License](#license)
 
 ## Features
@@ -235,6 +235,19 @@ jobs:
 
 Following inputs can be used as `step.with` keys
 
+> `List` type is a newline-delimited string
+> ```yaml
+> label-custom: |
+>   org.opencontainers.image.title=MyCustomTitle
+>   org.opencontainers.image.description=Another description
+>   org.opencontainers.image.vendor=MyCompany
+> ```
+
+> `CSV` type is a comma-delimited string
+> ```yaml
+> images: name/app,ghcr.io/name/app
+> ```
+
 | Name                | Type     | Description                        |
 |---------------------|----------|------------------------------------|
 | `images`            | List/CSV | List of Docker images to use as base name for tags |
@@ -248,10 +261,9 @@ Following inputs can be used as `step.with` keys
 | `tag-schedule`      | String   | [Template](#schedule-tag) to apply to schedule tag (default `nightly`) |
 | `tag-custom`        | List/CSV | List of custom tags |
 | `tag-custom-only`   | Bool     | Only use `tag-custom` as Docker tags |
+| `label-custom`      | List     | List of custom labels |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
-
-> List/CSV type can be a newline or comma delimited string
 
 > `tag-semver` and `tag-match` are mutually exclusive
 
@@ -326,16 +338,13 @@ labels generated are not suitable, you can overwrite them like this:
 
 ```yaml
       -
-        name: Build and push
-        uses: docker/build-push-action@v2
+        name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
         with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/386
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: |
-            ${{ steps.docker_meta.outputs.labels }}
+          images: name/app
+          label-custom: |
+            maintainer=CrazyMax
             org.opencontainers.image.title=MyCustomTitle
             org.opencontainers.image.description=Another description
             org.opencontainers.image.vendor=MyCompany
@@ -357,12 +366,14 @@ updates:
       interval: "daily"
 ```
 
-## How can I help?
+# Contributing
 
-All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2:
-the project, or to raise issues :speech_balloon: You can also support this project by
-[**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a
-[Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
+Want to contribute? Awesome! The most basic way to show your support is to star :star2: the project,
+or to raise issues :speech_balloon:. If you want to open a pull request, please read the
+[contributing guidelines](.github/CONTRIBUTING.md).
+
+You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) or by
+making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely!
 
 Thanks again for your support, it is much appreciated! :pray:
 

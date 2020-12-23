@@ -105,6 +105,25 @@ jobs:
             {{major}}.{{minor}}.{{patch}}
           tag-latest: ${{ matrix.tag-latest }}
 
+  label-custom:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          label-custom: |
+            maintainer=CrazyMax
+            org.opencontainers.image.title=MyCustomTitle
+            org.opencontainers.image.description=Another description
+            org.opencontainers.image.vendor=MyCompany
+
   docker-push:
     runs-on: ubuntu-latest
     services:

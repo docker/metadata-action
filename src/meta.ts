@@ -1,5 +1,5 @@
 import * as handlebars from 'handlebars';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as semver from 'semver';
 import {Inputs} from './context';
 import * as core from '@actions/core';
@@ -130,7 +130,7 @@ export class Meta {
   }
 
   public labels(): Array<string> {
-    return [
+    let labels: Array<string> = [
       `org.opencontainers.image.title=${this.repo.name || ''}`,
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
@@ -140,5 +140,7 @@ export class Meta {
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
+    labels.push(...this.inputs.labelCustom);
+    return labels;
   }
 }
