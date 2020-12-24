@@ -159,8 +159,8 @@ jobs:
 ### Bake definition
 
 This action also handles a bake definition file that can be used with the
-[Docker Buildx Bake action](https://github.com/crazy-max/ghaction-docker-buildx-bake). You just have to declare a
-target named `ghaction-docker-meta`.
+[Docker Buildx Bake action](https://github.com/crazy-max/ghaction-docker-buildx-bake). You just have to declare an empty
+target named `ghaction-docker-meta` and inherit from it.
 
 ```hcl
 // docker-bake.hcl
