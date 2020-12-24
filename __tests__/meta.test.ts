@@ -1512,6 +1512,10 @@ describe('bake-file', () => {
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
               "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
               "org.opencontainers.image.licenses": "MIT"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "dev",
             }
           }
         }
@@ -1539,6 +1543,10 @@ describe('bake-file', () => {
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
               "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
               "org.opencontainers.image.licenses": "MIT"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "dev",
             }
           }
         }
@@ -1569,6 +1577,10 @@ describe('bake-file', () => {
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
               "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
               "org.opencontainers.image.licenses": "MIT"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "release1",
             }
           }
         }
@@ -1600,6 +1612,10 @@ describe('bake-file', () => {
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
               "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
               "org.opencontainers.image.licenses": "MIT"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "20200110",
             }
           }
         }
@@ -1640,6 +1656,10 @@ describe('bake-file', () => {
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
               "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
               "org.opencontainers.image.licenses": "MIT"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "org/app,ghcr.io/user/app",
+              "DOCKER_META_VERSION": "1.1.1",
             }
           }
         }
@@ -1673,6 +1693,10 @@ describe('bake-file', () => {
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
               "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
               "org.opencontainers.image.licenses": "MIT"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "org/app,ghcr.io/user/app",
+              "DOCKER_META_VERSION": "my",
             }
           }
         }
@@ -1707,6 +1731,10 @@ describe('bake-file', () => {
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
               "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
               "org.opencontainers.image.licenses": "MIT"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "org/app",
+              "DOCKER_META_VERSION": "v1.1.1",
             }
           }
         }
