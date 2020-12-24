@@ -163,6 +163,8 @@ export class Meta {
         {
           target: {
             'ghaction-docker-meta': {
+              context: '',
+              dockerfile: '',
               tags: this.tags(),
               labels: jsonLabels
             }

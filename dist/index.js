@@ -433,6 +433,8 @@ class Meta {
         fs.writeFileSync(bakeFile, JSON.stringify({
             target: {
                 'ghaction-docker-meta': {
+                    context: '',
+                    dockerfile: '',
                     tags: this.tags(),
                     labels: jsonLabels
                 }
