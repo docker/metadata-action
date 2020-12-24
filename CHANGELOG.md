@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.0 (2020/12/24)
+
+* Add `bake-file` output (#36)
+* Add `label-custom` input (#35)
+* Bump node-notifier from 8.0.0 to 8.0.1 (#33)
+* Update dev workflow (#32)
+
 ## 1.9.1 (2020/12/07)
 
 * Replace forbidden chars derived from branch name (#31)
