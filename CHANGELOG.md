@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.1 (2020/12/24)
+
+* Missing entry in `action.yml`
+
 ## 1.10.0 (2020/12/24)
 
 * Add `bake-file` output (#36)

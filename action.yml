@@ -50,6 +50,9 @@ inputs:
   tag-custom-only:
     description: 'Only use tag-custom as Docker tags'
     required: false
+  label-custom:
+    description: 'List of custom labels'
+    required: false
   sep-tags:
     description: 'Separator to use for tags output (default \n)'
     required: false

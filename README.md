@@ -220,6 +220,32 @@ jobs:
             build
 ```
 
+Content of `${{ steps.docker_meta.outputs.bake-file }}` file will look like this:
+
+```json
+{
+  "target": {
+    "ghaction-docker-meta": {
+      "tags": [
+        "name/app:1.1.1",
+        "name/app:1.1",
+        "name/app:latest"
+      ],
+      "labels": {
+        "org.opencontainers.image.title": "Hello-World",
+        "org.opencontainers.image.description": "This your first repo!",
+        "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version": "1.1.1",
+        "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses": "MIT"
+      }
+    }
+  }
+}
+```
+
 ## Customizing
 
 ### inputs
