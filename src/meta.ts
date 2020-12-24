@@ -164,7 +164,11 @@ export class Meta {
           target: {
             'ghaction-docker-meta': {
               tags: this.tags(),
-              labels: jsonLabels
+              labels: jsonLabels,
+              args: {
+                DOCKER_META_IMAGES: this.inputs.images.join(','),
+                DOCKER_META_VERSION: this.version.main
+              }
             }
           }
         },
