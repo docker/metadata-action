@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import {getInputs, Inputs} from './context';
 import * as github from './github';
 import {Meta, Version} from './meta';
@@ -33,6 +34,7 @@ async function run() {
     core.endGroup();
     core.setOutput('version', version.main || '');
 
+    // Docker tags
     const tags: Array<string> = meta.tags();
     core.startGroup(`Docker tags`);
     for (let tag of tags) {
@@ -41,6 +43,7 @@ async function run() {
     core.endGroup();
     core.setOutput('tags', tags.join(inputs.sepTags));
 
+    // Docker labels
     const labels: Array<string> = meta.labels();
     core.startGroup(`Docker labels`);
     for (let label of labels) {
@@ -48,6 +51,13 @@ async function run() {
     }
     core.endGroup();
     core.setOutput('labels', labels.join(inputs.sepLabels));
+
+    // Bake definition file
+    const bakeFile: string = meta.bakeFile();
+    core.startGroup(`Bake definition file`);
+    core.info(fs.readFileSync(bakeFile, 'utf8'));
+    core.endGroup();
+    core.setOutput('bake-file', bakeFile);
   } catch (error) {
     core.setFailed(error.message);
   }

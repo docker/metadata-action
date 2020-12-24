@@ -39,9 +39,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.asyncForEach = exports.getInputList = exports.getInputs = void 0;
+exports.asyncForEach = exports.getInputList = exports.getInputs = exports.tmpDir = void 0;
 const sync_1 = __importDefault(__webpack_require__(8750));
 const core = __importStar(__webpack_require__(2186));
+const fs = __importStar(__webpack_require__(5747));
+const os = __importStar(__webpack_require__(2087));
+const path = __importStar(__webpack_require__(5622));
+let _tmpDir;
+function tmpDir() {
+    if (!_tmpDir) {
+        _tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ghaction-docker-meta-')).split(path.sep).join(path.posix.sep);
+    }
+    return _tmpDir;
+}
+exports.tmpDir = tmpDir;
 function getInputs() {
     return {
         images: getInputList('images'),
@@ -184,6 +195,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+const fs = __importStar(__webpack_require__(5747));
 const context_1 = __webpack_require__(3842);
 const github = __importStar(__webpack_require__(5928));
 const meta_1 = __webpack_require__(3714);
@@ -213,6 +225,7 @@ function run() {
             core.info(version.main || '');
             core.endGroup();
             core.setOutput('version', version.main || '');
+            // Docker tags
             const tags = meta.tags();
             core.startGroup(`Docker tags`);
             for (let tag of tags) {
@@ -220,6 +233,7 @@ function run() {
             }
             core.endGroup();
             core.setOutput('tags', tags.join(inputs.sepTags));
+            // Docker labels
             const labels = meta.labels();
             core.startGroup(`Docker labels`);
             for (let label of labels) {
@@ -227,6 +241,12 @@ function run() {
             }
             core.endGroup();
             core.setOutput('labels', labels.join(inputs.sepLabels));
+            // Bake definition file
+            const bakeFile = meta.bakeFile();
+            core.startGroup(`Bake definition file`);
+            core.info(fs.readFileSync(bakeFile, 'utf8'));
+            core.endGroup();
+            core.setOutput('bake-file', bakeFile);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -268,8 +288,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Meta = void 0;
 const handlebars = __importStar(__webpack_require__(7492));
+const fs = __importStar(__webpack_require__(5747));
+const path = __importStar(__webpack_require__(5622));
 const moment_1 = __importDefault(__webpack_require__(9623));
 const semver = __importStar(__webpack_require__(1383));
+const context_1 = __webpack_require__(3842);
 const core = __importStar(__webpack_require__(2186));
 class Meta {
     constructor(inputs, context, repo) {
@@ -396,6 +419,26 @@ class Meta {
         ];
         labels.push(...this.inputs.labelCustom);
         return labels;
+    }
+    bakeFile() {
+        let jsonLabels = {};
+        for (let label of this.labels()) {
+            const matches = label.match(/([^=]*)=(.*)/);
+            if (!matches) {
+                continue;
+            }
+            jsonLabels[matches[1]] = matches[2];
+        }
+        const bakeFile = path.join(context_1.tmpDir(), 'ghaction-docker-meta-bake.json').split(path.sep).join(path.posix.sep);
+        fs.writeFileSync(bakeFile, JSON.stringify({
+            target: {
+                'ghaction-docker-meta': {
+                    tags: this.tags(),
+                    labels: jsonLabels
+                }
+            }
+        }, null, 2));
+        return bakeFile;
     }
 }
 exports.Meta = Meta;

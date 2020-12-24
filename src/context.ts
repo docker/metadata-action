@@ -1,5 +1,10 @@
 import csvparse from 'csv-parse/lib/sync';
 import * as core from '@actions/core';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+
+let _tmpDir: string;
 
 export interface Inputs {
   images: string[];
@@ -17,6 +22,13 @@ export interface Inputs {
   sepTags: string;
   sepLabels: string;
   githubToken: string;
+}
+
+export function tmpDir(): string {
+  if (!_tmpDir) {
+    _tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ghaction-docker-meta-')).split(path.sep).join(path.posix.sep);
+  }
+  return _tmpDir;
 }
 
 export function getInputs(): Inputs {

@@ -68,6 +68,8 @@ outputs:
     description: 'Generated Docker tags'
   labels:
     description: 'Generated Docker labels'
+  bake-file:
+    description: 'Bake definiton file'
 
 runs:
   using: 'node12'
