@@ -1,9 +1,11 @@
+target "ghaction-docker-meta" {}
+
 group "default" {
   targets = ["db", "app"]
 }
 
 group "release" {
-  targets = ["db", "app-plus"]
+  targets = ["ghaction-docker-meta", "db", "app-plus"]
 }
 
 target "db" {
