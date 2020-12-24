@@ -1,7 +1,9 @@
 import * as handlebars from 'handlebars';
+import * as fs from 'fs';
+import * as path from 'path';
 import moment from 'moment';
 import * as semver from 'semver';
-import {Inputs} from './context';
+import {Inputs, tmpDir} from './context';
 import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
@@ -142,5 +144,35 @@ export class Meta {
     ];
     labels.push(...this.inputs.labelCustom);
     return labels;
+  }
+
+  public bakeFile(): string {
+    let jsonLabels = {};
+    for (let label of this.labels()) {
+      const matches = label.match(/([^=]*)=(.*)/);
+      if (!matches) {
+        continue;
+      }
+      jsonLabels[matches[1]] = matches[2];
+    }
+
+    const bakeFile = path.join(tmpDir(), 'ghaction-docker-meta-bake.json').split(path.sep).join(path.posix.sep);
+    fs.writeFileSync(
+      bakeFile,
+      JSON.stringify(
+        {
+          target: {
+            'ghaction-docker-meta': {
+              tags: this.tags(),
+              labels: jsonLabels
+            }
+          }
+        },
+        null,
+        2
+      )
+    );
+
+    return bakeFile;
   }
 }

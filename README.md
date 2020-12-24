@@ -20,7 +20,7 @@ ___
 * [Usage](#usage)
   * [Basic](#basic)
   * [Semver](#semver)
-  * [Complete](#complete)
+  * [Bake definition](#bake-definition)
 * [Customizing](#customizing)
   * [inputs](#inputs)
   * [outputs](#outputs)
@@ -85,7 +85,7 @@ jobs:
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -147,7 +147,7 @@ jobs:
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -163,23 +163,33 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
 ```
 
-### Complete
+### Bake definition
 
-| Event           | Ref                           | Commit SHA | Docker Tags                             |
-|-----------------|-------------------------------|------------|-----------------------------------------|
-| `schedule`      | `refs/heads/master`           | `45f132a`  | `sha-45f132a`, `nightly`                |
-| `pull_request`  | `refs/pull/2/merge`           | `a123b57`  | `sha-a123b57`, `pr-2`                   |
-| `push`          | `refs/heads/master`           | `cf20257`  | `sha-cf20257`, `master`                 |
-| `push`          | `refs/heads/my/branch`        | `a5df687`  | `sha-a5df687`, `my-branch`              |
-| `push tag`      | `refs/tags/v1.2.3`            | `ad132f5`  | `sha-ad132f5`, `1.2.3`, `1.2`, `latest` |
-| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `fc89efd`  | `sha-fc89efd`, `2.0.8-beta.67`          |
+This action also handles a bake definition file that can be used with the
+[Docker Buildx Bake action](https://github.com/crazy-max/ghaction-docker-buildx-bake). You just have to declare a
+target named `ghaction-docker-meta`.
+
+```hcl
+// docker-bake.hcl
+target "ghaction-docker-meta" {
+  tags = ["crazymax/diun:local"]
+  labels = {
+    "maintainer" = "CrazyMax"
+  }
+}
+
+target "build" {
+  inherits = ["docker-meta"]
+  context = "./"
+  dockerfile = "Dockerfile"
+  platforms = ["linux/amd64", "linux/arm/v6", "linux/arm/v7", "linux/arm64", "linux/386", "linux/ppc64le"]
+}
+```
 
 ```yaml
 name: ci
 
 on:
-  schedule:
-    - cron: '0 10 * * *' # everyday at 10am
   push:
     branches:
       - '**'
@@ -211,22 +221,14 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
-        name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1 
+        name: Build
+        uses: crazy-max/ghaction-docker-buildx-bake@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/386
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.docker_meta.outputs.bake-file }}
+          targets: |
+            build
 ```
 
 ## Customizing
@@ -251,7 +253,7 @@ Following inputs can be used as `step.with` keys
 | Name                | Type     | Description                        |
 |---------------------|----------|------------------------------------|
 | `images`            | List/CSV | List of Docker images to use as base name for tags |
-| `tag-sha`           | Bool     | Add git short SHA as Docker tag (default `false`) |
+| `tag-sha`           | Bool     | Add git short commit as Docker tag (default `false`) |
 | `tag-edge`          | Bool     | Enable edge branch tagging (default `false`) |
 | `tag-edge-branch`   | String   | Branch that will be tagged as edge (default `repo.default_branch`) |
 | `tag-semver`        | List/CSV | Handle Git tag as semver [template](#handle-semver-tag) if possible |
@@ -273,9 +275,10 @@ Following outputs are available
 
 | Name          | Type    | Description                           |
 |---------------|---------|---------------------------------------|
-| `version`     | String  | Generated Docker image version |
-| `tags`        | String  | Generated Docker tags |
-| `labels`      | String  | Generated Docker labels |
+| `version`     | String  | Docker image version |
+| `tags`        | String  | Docker tags |
+| `labels`      | String  | Docker labels |
+| `bake-file`   | File    | [Bake definition file](https://github.com/docker/buildx#file-definition) path |
 
 ## Notes
 
@@ -327,7 +330,7 @@ the following expressions:
 
 | Expression              | Example                                   | Description                              |
 |-------------------------|-------------------------------------------|------------------------------------------|
-| `{{date 'format'}}`     | `{{date 'YYYYMMDD'}}` > `20200110`        | Render date by its [moment format](https://momentjs.com/docs/#/displaying/format/) 
+| `{{date 'format'}}`     | `{{date 'YYYYMMDD'}}` > `20200110`        | Render date by its [moment format](https://momentjs.com/docs/#/displaying/format/)
 
 You can find more examples in the [CI workflow](.github/workflows/ci.yml).
 
@@ -366,7 +369,7 @@ updates:
       interval: "daily"
 ```
 
-# Contributing
+## Contributing
 
 Want to contribute? Awesome! The most basic way to show your support is to star :star2: the project,
 or to raise issues :speech_balloon:. If you want to open a pull request, please read the
