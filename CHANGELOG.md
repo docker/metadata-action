@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.0 (2020/12/24)
+
+* Inject `DOCKER_META_IMAGES` and `DOCKER_META_VERSION` args in bake definition (#37)
+
 ## 1.10.1 (2020/12/24)
 
 * Missing entry in `action.yml`
