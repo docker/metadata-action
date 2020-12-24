@@ -159,8 +159,8 @@ jobs:
 ### Bake definition
 
 This action also handles a bake definition file that can be used with the
-[Docker Buildx Bake action](https://github.com/crazy-max/ghaction-docker-buildx-bake). You just have to declare a
-target named `ghaction-docker-meta`.
+[Docker Buildx Bake action](https://github.com/crazy-max/ghaction-docker-buildx-bake). You just have to declare an empty
+target named `ghaction-docker-meta` and inherit from it.
 
 ```hcl
 // docker-bake.hcl
@@ -240,6 +240,10 @@ Content of `${{ steps.docker_meta.outputs.bake-file }}` file will look like this
         "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses": "MIT"
+      },
+      "args": {
+        "DOCKER_META_IMAGES": "name/app",
+        "DOCKER_META_VERSION": "1.1.1"
       }
     }
   }
