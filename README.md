@@ -16,7 +16,6 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 
 ___
 
-* [Features](#features)
 * [Usage](#usage)
   * [Basic](#basic)
   * [Semver](#semver)
@@ -33,12 +32,6 @@ ___
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 * [Contributing](#contributing)
 * [License](#license)
-
-## Features
-
-* Docker tags generated from GitHub action event and Git metadata
-* [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md) used to generate Docker labels
-* [Handlebars template](https://handlebarsjs.com/guide/) to apply to schedule tag
 
 ## Usage
 
