@@ -5,7 +5,7 @@ group "default" {
 }
 
 group "release" {
-  targets = ["ghaction-docker-meta", "db", "app-plus"]
+  targets = ["db", "app-plus"]
 }
 
 target "db" {
@@ -14,6 +14,7 @@ target "db" {
 }
 
 target "app" {
+  inherits = ["ghaction-docker-meta"]
   context = "./test"
   dockerfile = "Dockerfile"
   args = {
