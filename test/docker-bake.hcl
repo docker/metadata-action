@@ -20,10 +20,6 @@ target "app" {
   args = {
     name = "foo"
   }
-  tags = [
-    "localhost:5000/name/app:latest",
-    "localhost:5000/name/app:1.0.0"
-  ]
 }
 
 target "cross" {
