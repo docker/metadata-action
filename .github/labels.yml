@@ -47,10 +47,6 @@
   name: ":pray: help wanted"
   color: "4caf50"
   description: ""
-- # hold
-  name: ":hand: hold"
-  color: "24292f"
-  description: ""
 - # invalid
   name: ":no_entry_sign: invalid"
   color: "e6e6e6"
@@ -62,6 +58,10 @@
 - # needs more info
   name: ":thinking: needs more info"
   color: "795548"
+  description: ""
+- # pinned
+  name: ":pushpin: pinned"
+  color: "28008e"
   description: ""
 - # question
   name: ":question: question"
