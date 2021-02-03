@@ -25,7 +25,7 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
-    "csv-parse": "^4.14.2",
+    "csv-parse": "^4.15.1",
     "handlebars": "^4.7.6",
     "moment": "^2.29.1",
     "semver": "^7.3.4"
