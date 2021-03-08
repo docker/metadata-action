@@ -50,6 +50,12 @@ inputs:
   tag-custom-only:
     description: 'Only use tag-custom as Docker tags'
     required: false
+  tag-suffix:
+    description: 'Appends a string to the end of all Docker tags'
+    required: false
+  tag-prefix:
+    description: 'Prepends a string to the beginning of all Docker tags'
+    required: false
   label-custom:
     description: 'List of custom labels'
     required: false

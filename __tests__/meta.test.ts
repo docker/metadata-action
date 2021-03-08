@@ -135,6 +135,32 @@ describe('push', () => {
       ]
     ],
     [
+      'event_push.env',
+      {
+        images: ['user/app'],
+        tagPrefix: 'prepend-',
+        tagSuffix: '-append'
+      } as Inputs,
+      {
+        main: 'dev',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'user/app:prepend-dev-append'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=dev",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
       'event_push_defbranch.env',
       {
         images: ['user/app'],
@@ -234,6 +260,33 @@ describe('push', () => {
       ]
     ],
     [
+      'event_push.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tagPrefix: 'prepend-',
+        tagSuffix: '-append'
+      } as Inputs,
+      {
+        main: 'dev',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:prepend-dev-append',
+        'ghcr.io/user/app:prepend-dev-append'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=dev",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
       'event_push_defbranch.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
@@ -275,6 +328,36 @@ describe('push', () => {
         'org/app:sha-90dd603',
         'ghcr.io/user/app:dev',
         'ghcr.io/user/app:sha-90dd603'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=dev",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_push.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tagSha: true,
+        tagPrefix: 'prepend-',
+        tagSuffix: '-append'
+      } as Inputs,
+      {
+        main: 'dev',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:prepend-dev-append',
+        'org/app:prepend-sha-90dd603-append',
+        'ghcr.io/user/app:prepend-dev-append',
+        'ghcr.io/user/app:prepend-sha-90dd603-append'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -334,6 +417,38 @@ describe('push', () => {
         'org/app:sha-90dd603',
         'ghcr.io/user/app:edge',
         'ghcr.io/user/app:sha-90dd603'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=edge",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_push.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tagSha: true,
+        tagEdge: true,
+        tagEdgeBranch: 'dev',
+        tagPrefix: 'prepend-',
+        tagSuffix: '-append'
+      } as Inputs,
+      {
+        main: 'edge',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:prepend-edge-append',
+        'org/app:prepend-sha-90dd603-append',
+        'ghcr.io/user/app:prepend-edge-append',
+        'ghcr.io/user/app:prepend-sha-90dd603-append'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -1314,6 +1429,36 @@ describe('custom', () => {
         'user/app:my',
         'user/app:custom',
         'user/app:tags'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=dev",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'event_push.env',
+      {
+        images: ['user/app'],
+        tagCustom: ['my', 'custom', 'tags'],
+        tagPrefix: 'prepend-',
+        tagSuffix: '-append'
+      } as Inputs,
+      {
+        main: 'dev',
+        partial: ['my', 'custom', 'tags'],
+        latest: false
+      } as Version,
+      [
+        'user/app:prepend-dev-append',
+        'user/app:prepend-my-append',
+        'user/app:prepend-custom-append',
+        'user/app:prepend-tags-append'
       ],
       [
         "org.opencontainers.image.title=Hello-World",

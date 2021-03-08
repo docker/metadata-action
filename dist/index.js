@@ -66,6 +66,8 @@ function getInputs() {
         tagSchedule: core.getInput('tag-schedule') || 'nightly',
         tagCustom: getInputList('tag-custom'),
         tagCustomOnly: /true/i.test(core.getInput('tag-custom-only') || 'false'),
+        tagSuffix: core.getInput('tag-suffix'),
+        tagPrefix: core.getInput('tag-prefix'),
         labelCustom: getInputList('label-custom'),
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
@@ -392,15 +394,15 @@ class Meta {
         let tags = [];
         for (const image of this.inputs.images) {
             const imageLc = image.toLowerCase();
-            tags.push(`${imageLc}:${this.version.main}`);
+            tags.push(`${imageLc}:${this.inputs.tagPrefix}${this.version.main}${this.inputs.tagSuffix}`);
             for (const partial of this.version.partial) {
-                tags.push(`${imageLc}:${partial}`);
+                tags.push(`${imageLc}:${this.inputs.tagPrefix}${partial}${this.inputs.tagSuffix}`);
             }
             if (this.version.latest) {
-                tags.push(`${imageLc}:latest`);
+                tags.push(`${imageLc}:${this.inputs.tagPrefix}latest${this.inputs.tagSuffix}`);
             }
             if (this.context.sha && this.inputs.tagSha) {
-                tags.push(`${imageLc}:sha-${this.context.sha.substr(0, 7)}`);
+                tags.push(`${imageLc}:${this.inputs.tagPrefix}sha-${this.context.sha.substr(0, 7)}${this.inputs.tagSuffix}`);
             }
         }
         return tags;

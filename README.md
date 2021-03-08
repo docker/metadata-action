@@ -282,6 +282,8 @@ Following inputs can be used as `step.with` keys
 | `tag-schedule`      | String   | [Template](#schedule-tag) to apply to schedule tag (default `nightly`) |
 | `tag-custom`        | List/CSV | List of custom tags |
 | `tag-custom-only`   | Bool     | Only use `tag-custom` as Docker tags |
+| `tag-suffix`        | String   | Appends a string to the end of all Docker tags |
+| `tag-prefix`        | String   | Prepends a string to the beginning of all Docker tags |
 | `label-custom`      | List     | List of custom labels |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |

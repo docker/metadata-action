@@ -18,6 +18,8 @@ export interface Inputs {
   tagSchedule: string;
   tagCustom: string[];
   tagCustomOnly: boolean;
+  tagSuffix: string;
+  tagPrefix: string;
   labelCustom: string[];
   sepTags: string;
   sepLabels: string;
@@ -44,6 +46,8 @@ export function getInputs(): Inputs {
     tagSchedule: core.getInput('tag-schedule') || 'nightly',
     tagCustom: getInputList('tag-custom'),
     tagCustomOnly: /true/i.test(core.getInput('tag-custom-only') || 'false'),
+    tagSuffix: core.getInput('tag-suffix'),
+    tagPrefix: core.getInput('tag-prefix'),
     labelCustom: getInputList('label-custom'),
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
