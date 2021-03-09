@@ -29,6 +29,23 @@ jobs:
             ghcr.io/name/app
           tag-sha: true
 
+  tag-prefix-suffix:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          tag-sha: true
+          tag-prefix: prefix-
+          tag-suffix: -suffix
+
   tag-schedule:
     runs-on: ubuntu-latest
     strategy:
