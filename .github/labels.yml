@@ -51,9 +51,9 @@
   name: ":no_entry_sign: invalid"
   color: "e6e6e6"
   description: ""
-- # maybe bug
-  name: ":interrobang: maybe bug"
-  color: "ff5722"
+- # investigate
+  name: ":mag: investigate"
+  color: "e6625b"
   description: ""
 - # needs more info
   name: ":thinking: needs more info"
@@ -66,6 +66,14 @@
 - # question
   name: ":question: question"
   color: "3f51b5"
+  description: ""
+- # sponsor
+  name: ":sparkling_heart: sponsor"
+  color: "fedbf0"
+  description: ""
+- # stale
+  name: ":skull: stale"
+  color: "237da0"
   description: ""
 - # upstream
   name: ":eyes: upstream"
