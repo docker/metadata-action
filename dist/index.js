@@ -66,7 +66,7 @@ function getInputs() {
         tagSchedule: core.getInput('tag-schedule') || 'nightly',
         tagCustom: getInputList('tag-custom'),
         tagCustomOnly: /true/i.test(core.getInput('tag-custom-only') || 'false'),
-        labelCustom: getInputList('label-custom'),
+        labelCustom: getInputList('label-custom', true),
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
         githubToken: core.getInput('github-token')
