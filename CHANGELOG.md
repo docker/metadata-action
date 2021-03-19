@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.0 (2021/03/19)
+
+* Ignore commas for `label-custom` input (#48)
+* Bump handlebars from 4.7.6 to 4.7.7 (#44)
+* Bump csv-parse from 4.14.2 to 4.15.3 (#42 #45)
+
 ## 1.11.0 (2020/12/24)
 
 * Inject `DOCKER_META_IMAGES` and `DOCKER_META_VERSION` args in bake definition (#37)
