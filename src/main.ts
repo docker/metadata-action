@@ -35,7 +35,7 @@ async function run() {
     core.setOutput('version', version.main || '');
 
     // Docker tags
-    const tags: Array<string> = meta.tags();
+    const tags: Array<string> = meta.getTags();
     core.startGroup(`Docker tags`);
     for (let tag of tags) {
       core.info(tag);
@@ -44,7 +44,7 @@ async function run() {
     core.setOutput('tags', tags.join(inputs.sepTags));
 
     // Docker labels
-    const labels: Array<string> = meta.labels();
+    const labels: Array<string> = meta.getLabels();
     core.startGroup(`Docker labels`);
     for (let label of labels) {
       core.info(label);
@@ -53,7 +53,7 @@ async function run() {
     core.setOutput('labels', labels.join(inputs.sepLabels));
 
     // Bake definition file
-    const bakeFile: string = meta.bakeFile();
+    const bakeFile: string = meta.getBakeFile();
     core.startGroup(`Bake definition file`);
     core.info(fs.readFileSync(bakeFile, 'utf8'));
     core.endGroup();

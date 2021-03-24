@@ -5,10 +5,14 @@ on:
     - cron: '0 */4 * * *' # every 4 hours
   push:
     branches:
-      - '**'
+      - 'master'
+      - 'releases/v*'
     tags:
       - 'v*.*.*'
   pull_request:
+    branches:
+      - 'master'
+      - 'releases/v*'
 
 env:
   DOCKER_IMAGE: localhost:5000/name/app
@@ -27,7 +31,12 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
-          tag-sha: true
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha
 
   tag-schedule:
     runs-on: ubuntu-latest
@@ -50,8 +59,12 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
-          tag-sha: true
-          tag-schedule: ${{ matrix.tag-schedule }}
+          tags: |
+            type=schedule,pattern=${{ matrix.tag-schedule }}
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha
 
   tag-match:
     runs-on: ubuntu-latest
@@ -76,9 +89,13 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
-          tag-sha: true
-          tag-match: ${{ matrix.tag-match }}
-          tag-match-group: ${{ matrix.tag-match-group }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=match,"pattern=${{ matrix.tag-match }}",group=${{ matrix.tag-match-group }}
+            type=sha
 
   tag-semver:
     runs-on: ubuntu-latest
@@ -86,8 +103,9 @@ jobs:
       fail-fast: false
       matrix:
         tag-latest:
-          - 'true'
-          - 'false'
+          - "auto"
+          - "true"
+          - "false"
     steps:
       -
         name: Checkout
@@ -99,11 +117,15 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
-          tag-semver: |
-            {{raw}}
-            {{version}}
-            {{major}}.{{minor}}.{{patch}}
-          tag-latest: ${{ matrix.tag-latest }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,latest=${{ matrix.tag-latest }},pattern={{raw}}
+            type=semver,latest=${{ matrix.tag-latest }},pattern={{version}}
+            type=semver,latest=${{ matrix.tag-latest }},pattern={{major}}.{{minor}}.{{patch}}
+            type=sha
 
   label-custom:
     runs-on: ubuntu-latest
@@ -118,7 +140,7 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
-          label-custom: |
+          labels: |
             maintainer=CrazyMax
             org.opencontainers.image.title=MyCustomTitle
             org.opencontainers.image.description=Another description
@@ -141,11 +163,15 @@ jobs:
         uses: ./
         with:
           images: ${{ env.DOCKER_IMAGE }}
-          tag-sha: true
-          tag-semver: |
-            v{{version}}
-            v{{major}}.{{minor}}
-            v{{major}}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}
+            type=sha
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -192,11 +218,15 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
-          tag-sha: true
-          tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
-            {{major}}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
