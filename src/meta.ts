@@ -5,6 +5,7 @@ import moment from 'moment';
 import * as semver from 'semver';
 import {Inputs, tmpDir} from './context';
 import * as tcl from './tag';
+import * as fcl from './flavor';
 import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
 import {ReposGetResponseData} from '@octokit/types';
@@ -22,6 +23,7 @@ export class Meta {
   private readonly context: Context;
   private readonly repo: ReposGetResponseData;
   private readonly tags: tcl.Tag[];
+  private readonly flavor: fcl.Flavor;
   private readonly date: Date;
 
   constructor(inputs: Inputs, context: Context, repo: ReposGetResponseData) {
@@ -29,6 +31,7 @@ export class Meta {
     this.context = context;
     this.repo = repo;
     this.tags = tcl.Transform(inputs.tags);
+    this.flavor = fcl.Transform(inputs.flavor);
     this.date = new Date();
     this.version = this.getVersion();
   }
@@ -99,7 +102,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
     }
 
     return version;
@@ -136,7 +139,7 @@ export class Meta {
       latest = true;
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? latest : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true';
     }
 
     return version;
@@ -167,7 +170,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? latest : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true';
     }
 
     return version;
@@ -196,7 +199,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
     }
 
     return version;
@@ -214,7 +217,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? true : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? true : this.flavor.latest == 'true';
     }
 
     return version;
@@ -232,7 +235,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
     }
 
     return version;
@@ -258,7 +261,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
     }
 
     return version;
@@ -272,7 +275,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
     }
 
     return version;
@@ -290,7 +293,7 @@ export class Meta {
       version.partial.push(vraw);
     }
     if (version.latest == undefined) {
-      version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+      version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
     }
 
     return version;
@@ -299,9 +302,13 @@ export class Meta {
   private setFlavor(val: string, tag: tcl.Tag): string {
     if (tag.attrs['prefix'].length > 0) {
       val = `${tag.attrs['prefix']}${val}`;
+    } else if (this.flavor.prefix.length > 0) {
+      val = `${this.flavor.prefix}${val}`;
     }
     if (tag.attrs['suffix'].length > 0) {
       val = `${val}${tag.attrs['suffix']}`;
+    } else if (this.flavor.suffix.length > 0) {
+      val = `${this.flavor.suffix}${val}`;
     }
     return val;
   }

@@ -21,7 +21,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Schedule],
             "enable": "true",
-            "latest": "auto",
             "prefix": "",
             "suffix": "",
             "pattern": "nightly"
@@ -32,7 +31,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Semver],
             "enable": "true",
-            "latest": "auto",
             "prefix": "",
             "suffix": "",
             "pattern": "{{version}}"
@@ -43,7 +41,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Match],
             "enable": "true",
-            "latest": "auto",
             "prefix": "",
             "suffix": "",
             "pattern": "\\d{1,3}.\\d{1,3}.\\d{1,3}",
@@ -55,7 +52,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Edge],
             "enable": "true",
-            "latest": "auto",
             "prefix": "",
             "suffix": "",
             "branch": ""
@@ -66,7 +62,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Ref],
             "enable": "true",
-            "latest": "auto",
             "prefix": "",
             "suffix": "",
             "event": RefEvent.Branch
@@ -77,7 +72,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Ref],
             "enable": "true",
-            "latest": "auto",
             "prefix": "",
             "suffix": "",
             "event": RefEvent.Tag
@@ -88,7 +82,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Ref],
             "enable": "true",
-            "latest": "auto",
             "prefix": "pr-",
             "suffix": "",
             "event": RefEvent.PR
@@ -99,7 +92,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Raw],
             "enable": "true",
-            "latest": "auto",
             "prefix": "",
             "suffix": "",
             "value": "foo"
@@ -110,7 +102,6 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Sha],
             "enable": "true",
-            "latest": "auto",
             "prefix": "sha-",
             "suffix": ""
           }
@@ -142,7 +133,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Schedule],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "pattern": "{{date 'YYYYMMDD'}}"
@@ -162,7 +152,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Semver],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "pattern": "{{version}}"
@@ -177,7 +166,6 @@ describe('parse', () => {
         attrs: {
           "priority": "1",
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "pattern": "{{version}}"
@@ -197,7 +185,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Match],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "pattern": "v(.*)",
@@ -213,7 +200,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Match],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "pattern": "^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$",
@@ -229,7 +215,6 @@ describe('parse', () => {
         attrs: {
           "priority": "700",
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "pattern": "v(.*)",
@@ -250,7 +235,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Edge],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "branch": ""
@@ -265,7 +249,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Edge],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "branch": "master"
@@ -280,7 +263,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Ref],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "event": RefEvent.Tag
@@ -295,7 +277,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Ref],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "event": RefEvent.Branch
@@ -310,7 +291,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Ref],
           "enable": "true",
-          "latest": "auto",
           "prefix": "pr-",
           "suffix": "",
           "event": RefEvent.PR
@@ -335,7 +315,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Raw],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "value": "acustomtag"
@@ -355,7 +334,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Raw],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "value": "acustomtag2"
@@ -370,7 +348,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Raw],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "value": "acustomtag4"
@@ -385,7 +362,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Raw],
           "enable": "false",
-          "latest": "auto",
           "prefix": "",
           "suffix": "",
           "value": "acustomtag5"
@@ -400,7 +376,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Sha],
           "enable": "true",
-          "latest": "auto",
           "prefix": "sha-",
           "suffix": ""
         }
@@ -414,7 +389,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Sha],
           "enable": "true",
-          "latest": "auto",
           "prefix": "",
           "suffix": ""
         }
@@ -428,7 +402,6 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Sha],
           "enable": "false",
-          "latest": "auto",
           "prefix": "sha-",
           "suffix": ""
         }

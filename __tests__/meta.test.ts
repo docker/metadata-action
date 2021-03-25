@@ -433,6 +433,36 @@ describe('push', () => {
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
+    [
+      'push12',
+      'event_push_invalidchars.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=semver,pattern={{version}}`,
+          `type=edge`
+        ],
+      } as Inputs,
+      {
+        main: 'my-feature-1245',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:my-feature-1245',
+        'ghcr.io/user/app:my-feature-1245'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=my-feature-1245",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ]
   ])('given %p with %p event', tagsLabelsTest);
 });
 
@@ -497,7 +527,10 @@ describe('tag', () => {
       {
         images: ['user/app'],
         tags: [
-          `type=match,latest=false,pattern=\\d{8}`
+          `type=match,pattern=\\d{8}`
+        ],
+        flavor: [
+          `latest=false`
         ]
       } as Inputs,
       {
@@ -525,7 +558,10 @@ describe('tag', () => {
       {
         images: ['user/app'],
         tags: [
-          `type=match,latest=false,pattern=(.*)-RC,group=1`
+          `type=match,pattern=(.*)-RC,group=1`
+        ],
+        flavor: [
+          `latest=false`
         ]
       } as Inputs,
       {
@@ -834,10 +870,13 @@ describe('tag', () => {
       {
         images: ['ghcr.io/user/app'],
         tags: [
-          `type=ref,latest=false,event=tag`,
-          `type=semver,latest=false,pattern={{version}}`,
-          `type=semver,latest=false,pattern={{major}}.{{minor}}`,
-          `type=semver,latest=false,pattern={{major}}`
+          `type=ref,event=tag`,
+          `type=semver,pattern={{version}}`,
+          `type=semver,pattern={{major}}.{{minor}}`,
+          `type=semver,pattern={{major}}`
+        ],
+        flavor: [
+          `latest=false`
         ]
       } as Inputs,
       {
@@ -858,7 +897,7 @@ describe('tag', () => {
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
       ]
-    ],
+    ]
   ])('given %p with %p event', tagsLabelsTest);
 });
 
@@ -1046,7 +1085,10 @@ describe('latest', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=ref,latest=false,event=tag`
+          `type=ref,event=tag`
+        ],
+        flavor: [
+          `latest=false`
         ]
       } as Inputs,
       {
@@ -1075,7 +1117,10 @@ describe('latest', () => {
       {
         images: ['org/app', 'ghcr.io/MyUSER/MyApp'],
         tags: [
-          `type=ref,latest=false,event=tag`
+          `type=ref,event=tag`
+        ],
+        flavor: [
+          `latest=false`
         ]
       } as Inputs,
       {
@@ -1104,7 +1149,10 @@ describe('latest', () => {
       {
         images: ['org/app', 'ghcr.io/MyUSER/MyApp'],
         tags: [
-          `type=ref,latest=false,event=tag`
+          `type=ref,event=tag`
+        ],
+        flavor: [
+          `latest=false`
         ],
         labels: [
           "maintainer=CrazyMax",
@@ -1374,6 +1422,38 @@ describe('schedule', () => {
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
+    [
+      'schedule06',
+      'event_schedule.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=schedule`,
+          `type=sha,priority=2000`
+        ]
+      } as Inputs,
+      {
+        main: 'sha-90dd603',
+        partial: ['nightly'],
+        latest: false
+      } as Version,
+      [
+        'org/app:sha-90dd603',
+        'org/app:nightly',
+        'ghcr.io/user/app:sha-90dd603',
+        'ghcr.io/user/app:nightly'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=sha-90dd603",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
   ])('given %p with %p event', tagsLabelsTest);
 });
 
@@ -1517,10 +1597,13 @@ describe('raw', () => {
       {
         images: ['user/app'],
         tags: [
-          `type=match,latest=false,pattern=\\d{8}`,
+          `type=match,pattern=\\d{8}`,
           `type=raw,my`,
           `type=raw,custom`,
           `type=raw,tags`
+        ],
+        flavor: [
+          `latest=false`
         ]
       } as Inputs,
       {
@@ -1633,9 +1716,12 @@ describe('raw', () => {
         images: ['user/app'],
         tags: [
           `type=ref,priority=90,event=branch`,
-          `type=raw,latest=true,my`,
+          `type=raw,my`,
           `type=raw,custom`,
           `type=raw,tags`
+        ],
+        flavor: [
+          `latest=true`
         ]
       } as Inputs,
       {
@@ -1787,10 +1873,13 @@ describe('bake', () => {
       {
         images: ['user/app'],
         tags: [
-          `type=match,latest=false,pattern=\\d{8}`,
+          `type=match,pattern=\\d{8}`,
           `type=raw,my`,
           `type=raw,custom`,
           `type=raw,tags`
+        ],
+        flavor: [
+          `latest=false`
         ]
       } as Inputs,
       {

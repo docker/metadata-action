@@ -1,18 +1,13 @@
 import csvparse from 'csv-parse/lib/sync';
 
 export enum Type {
-  Raw = 'raw',
   Schedule = 'schedule',
   Semver = 'semver',
   Match = 'match',
   Edge = 'edge',
   Ref = 'ref',
+  Raw = 'raw',
   Sha = 'sha'
-}
-
-export interface Tag {
-  type: Type;
-  attrs: Record<string, string>;
 }
 
 export enum RefEvent {
@@ -21,7 +16,10 @@ export enum RefEvent {
   PR = 'pr'
 }
 
-export const RefEvents = Object.keys(RefEvent).map(key => RefEvent[key]);
+export interface Tag {
+  type: Type;
+  attrs: Record<string, string>;
+}
 
 export const DefaultPriorities: Record<Type, string> = {
   [Type.Schedule]: '1000',
@@ -132,7 +130,11 @@ export function Parse(s: string): Tag {
       if (!tag.attrs.hasOwnProperty('event')) {
         throw new Error(`Missing event attribute for ${s}`);
       }
-      if (!RefEvents.includes(tag.attrs['event'])) {
+      if (
+        !Object.keys(RefEvent)
+          .map(k => RefEvent[k])
+          .includes(tag.attrs['event'])
+      ) {
         throw new Error(`Invalid event for ${s}`);
       }
       if (tag.attrs['event'] == RefEvent.PR && !tag.attrs.hasOwnProperty('prefix')) {
@@ -160,9 +162,6 @@ export function Parse(s: string): Tag {
   if (!tag.attrs.hasOwnProperty('priority')) {
     tag.attrs['priority'] = DefaultPriorities[tag.type];
   }
-  if (!tag.attrs.hasOwnProperty('latest')) {
-    tag.attrs['latest'] = 'auto';
-  }
   if (!tag.attrs.hasOwnProperty('prefix')) {
     tag.attrs['prefix'] = '';
   }
@@ -171,9 +170,6 @@ export function Parse(s: string): Tag {
   }
   if (!['true', 'false'].includes(tag.attrs['enable'])) {
     throw new Error(`Invalid value for enable attribute: ${tag.attrs['enable']}`);
-  }
-  if (!['auto', 'true', 'false'].includes(tag.attrs['latest'])) {
-    throw new Error(`Invalid value for latest attribute: ${tag.attrs['latest']}`);
   }
 
   return tag;

@@ -57,6 +57,7 @@ function getInputs() {
     return {
         images: getInputList('images'),
         tags: getInputList('tags', true),
+        flavor: getInputList('flavor', true),
         labels: getInputList('labels', true),
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
@@ -94,6 +95,52 @@ exports.asyncForEach = (array, callback) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 //# sourceMappingURL=context.js.map
+
+/***/ }),
+
+/***/ 3716:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Transform = void 0;
+function Transform(inputs) {
+    const flavor = {
+        latest: 'auto',
+        prefix: '',
+        suffix: ''
+    };
+    for (const input of inputs) {
+        const parts = input.split('=', 2);
+        if (parts.length == 1) {
+            throw new Error(`Invalid entry: ${input}`);
+        }
+        switch (parts[0]) {
+            case 'latest': {
+                flavor.latest = parts[1];
+                if (!['auto', 'true', 'false'].includes(flavor.latest)) {
+                    throw new Error(`Invalid latest flavor entry: ${input}`);
+                }
+                break;
+            }
+            case 'prefix': {
+                flavor.prefix = parts[1];
+                break;
+            }
+            case 'suffix': {
+                flavor.suffix = parts[1];
+                break;
+            }
+            default: {
+                throw new Error(`Unknown entry: ${input}`);
+            }
+        }
+    }
+    return flavor;
+}
+exports.Transform = Transform;
+//# sourceMappingURL=flavor.js.map
 
 /***/ }),
 
@@ -285,6 +332,7 @@ const moment_1 = __importDefault(__webpack_require__(9623));
 const semver = __importStar(__webpack_require__(1383));
 const context_1 = __webpack_require__(3842);
 const tcl = __importStar(__webpack_require__(2829));
+const fcl = __importStar(__webpack_require__(3716));
 const core = __importStar(__webpack_require__(2186));
 class Meta {
     constructor(inputs, context, repo) {
@@ -292,6 +340,7 @@ class Meta {
         this.context = context;
         this.repo = repo;
         this.tags = tcl.Transform(inputs.tags);
+        this.flavor = fcl.Transform(inputs.flavor);
         this.date = new Date();
         this.version = this.getVersion();
     }
@@ -356,7 +405,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -393,7 +442,7 @@ class Meta {
             latest = true;
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? latest : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -422,7 +471,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? latest : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -450,7 +499,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -466,7 +515,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? true : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? true : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -482,7 +531,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -505,7 +554,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -518,7 +567,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -534,7 +583,7 @@ class Meta {
             version.partial.push(vraw);
         }
         if (version.latest == undefined) {
-            version.latest = tag.attrs['latest'] == 'auto' ? false : tag.attrs['latest'] == 'true';
+            version.latest = this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true';
         }
         return version;
     }
@@ -542,8 +591,14 @@ class Meta {
         if (tag.attrs['prefix'].length > 0) {
             val = `${tag.attrs['prefix']}${val}`;
         }
+        else if (this.flavor.prefix.length > 0) {
+            val = `${this.flavor.prefix}${val}`;
+        }
         if (tag.attrs['suffix'].length > 0) {
             val = `${val}${tag.attrs['suffix']}`;
+        }
+        else if (this.flavor.suffix.length > 0) {
+            val = `${this.flavor.suffix}${val}`;
         }
         return val;
     }
@@ -618,16 +673,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Parse = exports.Transform = exports.DefaultPriorities = exports.RefEvents = exports.RefEvent = exports.Type = void 0;
+exports.Parse = exports.Transform = exports.DefaultPriorities = exports.RefEvent = exports.Type = void 0;
 const sync_1 = __importDefault(__webpack_require__(8750));
 var Type;
 (function (Type) {
-    Type["Raw"] = "raw";
     Type["Schedule"] = "schedule";
     Type["Semver"] = "semver";
     Type["Match"] = "match";
     Type["Edge"] = "edge";
     Type["Ref"] = "ref";
+    Type["Raw"] = "raw";
     Type["Sha"] = "sha";
 })(Type = exports.Type || (exports.Type = {}));
 var RefEvent;
@@ -636,7 +691,6 @@ var RefEvent;
     RefEvent["Tag"] = "tag";
     RefEvent["PR"] = "pr";
 })(RefEvent = exports.RefEvent || (exports.RefEvent = {}));
-exports.RefEvents = Object.keys(RefEvent).map(key => RefEvent[key]);
 exports.DefaultPriorities = {
     [Type.Schedule]: '1000',
     [Type.Semver]: '900',
@@ -743,7 +797,9 @@ function Parse(s) {
             if (!tag.attrs.hasOwnProperty('event')) {
                 throw new Error(`Missing event attribute for ${s}`);
             }
-            if (!exports.RefEvents.includes(tag.attrs['event'])) {
+            if (!Object.keys(RefEvent)
+                .map(k => RefEvent[k])
+                .includes(tag.attrs['event'])) {
                 throw new Error(`Invalid event for ${s}`);
             }
             if (tag.attrs['event'] == RefEvent.PR && !tag.attrs.hasOwnProperty('prefix')) {
@@ -770,9 +826,6 @@ function Parse(s) {
     if (!tag.attrs.hasOwnProperty('priority')) {
         tag.attrs['priority'] = exports.DefaultPriorities[tag.type];
     }
-    if (!tag.attrs.hasOwnProperty('latest')) {
-        tag.attrs['latest'] = 'auto';
-    }
     if (!tag.attrs.hasOwnProperty('prefix')) {
         tag.attrs['prefix'] = '';
     }
@@ -781,9 +834,6 @@ function Parse(s) {
     }
     if (!['true', 'false'].includes(tag.attrs['enable'])) {
         throw new Error(`Invalid value for enable attribute: ${tag.attrs['enable']}`);
-    }
-    if (!['auto', 'true', 'false'].includes(tag.attrs['latest'])) {
-        throw new Error(`Invalid value for latest attribute: ${tag.attrs['latest']}`);
     }
     return tag;
 }

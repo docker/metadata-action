@@ -102,7 +102,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag-latest:
+        flavor-latest:
           - "auto"
           - "true"
           - "false"
@@ -122,10 +122,12 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=ref,event=pr
-            type=semver,latest=${{ matrix.tag-latest }},pattern={{raw}}
-            type=semver,latest=${{ matrix.tag-latest }},pattern={{version}}
-            type=semver,latest=${{ matrix.tag-latest }},pattern={{major}}.{{minor}}.{{patch}}
+            type=semver,pattern={{raw}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
             type=sha
+          flavor: |
+            latest=${{ matrix.flavor-latest }}
 
   label-custom:
     runs-on: ubuntu-latest

@@ -9,6 +9,7 @@ let _tmpDir: string;
 export interface Inputs {
   images: string[];
   tags: string[];
+  flavor: string[];
   labels: string[];
   sepTags: string;
   sepLabels: string;
@@ -26,6 +27,7 @@ export function getInputs(): Inputs {
   return {
     images: getInputList('images'),
     tags: getInputList('tags', true),
+    flavor: getInputList('flavor', true),
     labels: getInputList('labels', true),
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
