@@ -104,6 +104,9 @@ export function Parse(s: string): Tag {
       if (!tag.attrs.hasOwnProperty('pattern')) {
         throw new Error(`Missing pattern attribute for ${s}`);
       }
+      if (!tag.attrs.hasOwnProperty('value')) {
+        tag.attrs['value'] = '';
+      }
       break;
     }
     case Type.Match: {
@@ -115,6 +118,9 @@ export function Parse(s: string): Tag {
       }
       if (isNaN(+tag.attrs['group'])) {
         throw new Error(`Invalid match group for ${s}`);
+      }
+      if (!tag.attrs.hasOwnProperty('value')) {
+        tag.attrs['value'] = '';
       }
       break;
     }

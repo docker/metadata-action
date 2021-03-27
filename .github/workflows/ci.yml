@@ -129,7 +129,24 @@ jobs:
           flavor: |
             latest=${{ matrix.flavor-latest }}
 
-  label-custom:
+  flavor:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          flavor: |
+            prefix=foo-
+            suffix=-bar
+
+  labels:
     runs-on: ubuntu-latest
     steps:
       -

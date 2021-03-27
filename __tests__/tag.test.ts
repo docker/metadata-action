@@ -33,7 +33,8 @@ describe('transform', () => {
             "enable": "true",
             "prefix": "",
             "suffix": "",
-            "pattern": "{{version}}"
+            "pattern": "{{version}}",
+            "value": ""
           }
         },
         {
@@ -44,7 +45,8 @@ describe('transform', () => {
             "prefix": "",
             "suffix": "",
             "pattern": "\\d{1,3}.\\d{1,3}.\\d{1,3}",
-            "group": "0"
+            "group": "0",
+            "value": ""
           }
         },
         {
@@ -149,7 +151,8 @@ describe('parse', () => {
           "enable": "true",
           "prefix": "",
           "suffix": "",
-          "pattern": "{{version}}"
+          "pattern": "{{version}}",
+          "value": ""
         }
       } as Tag,
       false
@@ -163,7 +166,23 @@ describe('parse', () => {
           "enable": "true",
           "prefix": "",
           "suffix": "",
-          "pattern": "{{version}}"
+          "pattern": "{{version}}",
+          "value": ""
+        }
+      } as Tag,
+      false
+    ],
+    [
+      `type=semver,priority=1,enable=true,pattern={{version}},value=v1.0.0`,
+      {
+        type: Type.Semver,
+        attrs: {
+          "priority": "1",
+          "enable": "true",
+          "prefix": "",
+          "suffix": "",
+          "pattern": "{{version}}",
+          "value": "v1.0.0"
         }
       } as Tag,
       false
@@ -178,7 +197,8 @@ describe('parse', () => {
           "prefix": "",
           "suffix": "",
           "pattern": "v(.*)",
-          "group": "1"
+          "group": "1",
+          "value": ""
         }
       } as Tag,
       false
@@ -193,7 +213,8 @@ describe('parse', () => {
           "prefix": "",
           "suffix": "",
           "pattern": "^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$",
-          "group": "1"
+          "group": "1",
+          "value": ""
         }
       } as Tag,
       false
@@ -208,7 +229,24 @@ describe('parse', () => {
           "prefix": "",
           "suffix": "",
           "pattern": "v(.*)",
-          "group": "1"
+          "group": "1",
+          "value": ""
+        }
+      } as Tag,
+      false
+    ],
+    [
+      `type=match,enable=true,pattern=v(.*),group=1,value=v1.2.3`,
+      {
+        type: Type.Match,
+        attrs: {
+          "priority": DefaultPriorities[Type.Match],
+          "enable": "true",
+          "prefix": "",
+          "suffix": "",
+          "pattern": "v(.*)",
+          "group": "1",
+          "value": "v1.2.3"
         }
       } as Tag,
       false

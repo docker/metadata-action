@@ -115,10 +115,16 @@ export class Meta {
   }
 
   private procSemver(version: Version, tag: tcl.Tag): Version {
-    if (!/^refs\/tags\//.test(this.context.ref)) {
+    if (!/^refs\/tags\//.test(this.context.ref) && tag.attrs['value'].length == 0) {
       return version;
     }
-    let vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+
+    let vraw: string;
+    if (tag.attrs['value'].length > 0) {
+      vraw = tag.attrs['value'];
+    } else {
+      vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+    }
     if (!semver.valid(vraw)) {
       core.warning(`${vraw} is not a valid semver. More info: https://semver.org/`);
       return version;
@@ -152,10 +158,16 @@ export class Meta {
   }
 
   private procMatch(version: Version, tag: tcl.Tag): Version {
-    if (!/^refs\/tags\//.test(this.context.ref)) {
+    if (!/^refs\/tags\//.test(this.context.ref) && tag.attrs['value'].length == 0) {
       return version;
     }
-    let vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+
+    let vraw: string;
+    if (tag.attrs['value'].length > 0) {
+      vraw = tag.attrs['value'];
+    } else {
+      vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+    }
 
     let latest: boolean = false;
     let tmatch;

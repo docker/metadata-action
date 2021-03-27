@@ -418,10 +418,16 @@ class Meta {
         return version;
     }
     procSemver(version, tag) {
-        if (!/^refs\/tags\//.test(this.context.ref)) {
+        if (!/^refs\/tags\//.test(this.context.ref) && tag.attrs['value'].length == 0) {
             return version;
         }
-        let vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+        let vraw;
+        if (tag.attrs['value'].length > 0) {
+            vraw = tag.attrs['value'];
+        }
+        else {
+            vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+        }
         if (!semver.valid(vraw)) {
             core.warning(`${vraw} is not a valid semver. More info: https://semver.org/`);
             return version;
@@ -455,10 +461,16 @@ class Meta {
         return version;
     }
     procMatch(version, tag) {
-        if (!/^refs\/tags\//.test(this.context.ref)) {
+        if (!/^refs\/tags\//.test(this.context.ref) && tag.attrs['value'].length == 0) {
             return version;
         }
-        let vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+        let vraw;
+        if (tag.attrs['value'].length > 0) {
+            vraw = tag.attrs['value'];
+        }
+        else {
+            vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+        }
         let latest = false;
         let tmatch;
         const isRegEx = tag.attrs['pattern'].match(/^\/(.+)\/(.*)$/);
@@ -766,6 +778,9 @@ function Parse(s) {
             if (!tag.attrs.hasOwnProperty('pattern')) {
                 throw new Error(`Missing pattern attribute for ${s}`);
             }
+            if (!tag.attrs.hasOwnProperty('value')) {
+                tag.attrs['value'] = '';
+            }
             break;
         }
         case Type.Match: {
@@ -777,6 +792,9 @@ function Parse(s) {
             }
             if (isNaN(+tag.attrs['group'])) {
                 throw new Error(`Invalid match group for ${s}`);
+            }
+            if (!tag.attrs.hasOwnProperty('value')) {
+                tag.attrs['value'] = '';
             }
             break;
         }

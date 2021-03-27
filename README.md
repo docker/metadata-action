@@ -381,10 +381,13 @@ tags: |
 tags: |
   # minimal
   type=semver,pattern={{version}}
+  # use custom value instead of git tag
+  type=semver,pattern={{version}},value=v1.0.0
 ```
 
 Will be used on a [push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push)
-and requires a valid Git tag [semver](https://semver.org/).
+and requires a valid Git tag [semver](https://semver.org/) but you can also use a custom value through `value`
+attribute.
 
 `pattern` attribute supports [Handlebars template](https://handlebarsjs.com/guide/) with the following expressions:
 * `raw` ; the actual semver
@@ -412,7 +415,7 @@ Extended attributes and default values:
 
 ```yaml
 tags: |
-  type=semver,enable=true,priority=900,prefix=,suffix=,pattern=
+  type=semver,enable=true,priority=900,prefix=,suffix=,pattern=,value=
 ```
 
 ### `type=match`
@@ -425,10 +428,13 @@ tags: |
   type=match,"pattern=\d{1,3}.\d{1,3}.\d{1,3}"
   # define match group
   type=match,pattern=v(.*),group=1
+  # use custom value instead of git tag
+  type=match,pattern=v(.*),group=1,value=v1.0.0
 ```
 
 Can create a regular expression for matching Git tag with a pattern and capturing group. Will be used on a
-[push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push).
+[push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push) but you can also use
+a custom value through `value` attribute.
 
 | Git tag                 | Pattern                       | Group   | Output                 |
 |-------------------------|-------------------------------|---------|------------------------|
@@ -441,7 +447,7 @@ Extended attributes and default values:
 
 ```yaml
 tags: |
-  type=group,enable=true,priority=800,prefix=,suffix=,pattern=,group=0
+  type=group,enable=true,priority=800,prefix=,suffix=,pattern=,group=0,value=
 ```
 
 ### `type=edge`
