@@ -50,13 +50,13 @@ on:
   push:
     branches:
       - 'master'
-      - 'release/v*'
+      - 'releases/v*'
     tags:
       - 'v*'
   pull_request:
     branches:
       - 'master'
-      - 'release/v*'
+      - 'releases/v*'
 
 jobs:
   docker:
@@ -92,7 +92,7 @@ jobs:
 |-----------------|-------------------------------|-------------------------------------|
 | `pull_request`  | `refs/pull/2/merge`           | `pr-2`                              |
 | `push`          | `refs/heads/master`           | `master`                            |
-| `push`          | `refs/heads/release/v1`       | `release-v1`                        |
+| `push`          | `refs/heads/releases/v1`      | `releases-v1`                       |
 | `push tag`      | `refs/tags/v1.2.3`            | `v1.2.3`, `latest`                  |
 | `push tag`      | `refs/tags/v2.0.8-beta.67`    | `v2.0.8-beta.67`, `latest`          |
 
@@ -105,13 +105,13 @@ on:
   push:
     branches:
       - 'master'
-      - 'release/v*'
+      - 'releases/v*'
     tags:
       - 'v*'
   pull_request:
     branches:
       - 'master'
-      - 'release/v*'
+      - 'releases/v*'
 
 jobs:
   docker:
@@ -153,7 +153,7 @@ jobs:
 |-----------------|-------------------------------|-------------------------------------|
 | `pull_request`  | `refs/pull/2/merge`           | `pr-2`                              |
 | `push`          | `refs/heads/master`           | `master`                            |
-| `push`          | `refs/heads/release/v1`       | `release-v1`                        |
+| `push`          | `refs/heads/releases/v1`      | `releases-v1`                       |
 | `push tag`      | `refs/tags/v1.2.3`            | `1.2.3`, `1.2`, `latest`            |
 | `push tag`      | `refs/tags/v2.0.8-beta.67`    | `2.0.8-beta.67`                     |
 
