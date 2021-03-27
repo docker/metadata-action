@@ -58,7 +58,13 @@ export class Meta {
           break;
         }
         case tcl.Type.Ref: {
-          version = this.procRef(version, tag);
+          if (tag.attrs['event'] == tcl.RefEvent.Branch) {
+            version = this.procRefBranch(version, tag);
+          } else if (tag.attrs['event'] == tcl.RefEvent.Tag) {
+            version = this.procRefTag(version, tag);
+          } else if (tag.attrs['event'] == tcl.RefEvent.PR) {
+            version = this.procRefPr(version, tag);
+          }
           break;
         }
         case tcl.Type.Edge: {
@@ -173,17 +179,6 @@ export class Meta {
       version.latest = this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true';
     }
 
-    return version;
-  }
-
-  private procRef(version: Version, tag: tcl.Tag): Version {
-    if (tag.attrs['event'] == tcl.RefEvent.Branch) {
-      return this.procRefBranch(version, tag);
-    } else if (tag.attrs['event'] == tcl.RefEvent.Tag) {
-      return this.procRefTag(version, tag);
-    } else if (tag.attrs['event'] == tcl.RefEvent.PR) {
-      return this.procRefPr(version, tag);
-    }
     return version;
   }
 
@@ -308,7 +303,7 @@ export class Meta {
     if (tag.attrs['suffix'].length > 0) {
       val = `${val}${tag.attrs['suffix']}`;
     } else if (this.flavor.suffix.length > 0) {
-      val = `${this.flavor.suffix}${val}`;
+      val = `${val}${this.flavor.suffix}`;
     }
     return val;
   }

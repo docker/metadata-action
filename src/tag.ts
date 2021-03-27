@@ -70,7 +70,7 @@ export function Parse(s: string): Tag {
     const parts = field.toString().split('=', 2);
     if (parts.length == 1) {
       tag.attrs['value'] = parts[0].trim();
-    } else if (parts.length == 2) {
+    } else {
       const key = parts[0].trim().toLowerCase();
       const value = parts[1].trim();
       switch (key) {
@@ -86,8 +86,6 @@ export function Parse(s: string): Tag {
           break;
         }
       }
-    } else {
-      throw new Error(`Invalid entry: ${field}`);
     }
   }
 

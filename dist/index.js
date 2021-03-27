@@ -365,7 +365,15 @@ class Meta {
                     break;
                 }
                 case tcl.Type.Ref: {
-                    version = this.procRef(version, tag);
+                    if (tag.attrs['event'] == tcl.RefEvent.Branch) {
+                        version = this.procRefBranch(version, tag);
+                    }
+                    else if (tag.attrs['event'] == tcl.RefEvent.Tag) {
+                        version = this.procRefTag(version, tag);
+                    }
+                    else if (tag.attrs['event'] == tcl.RefEvent.PR) {
+                        version = this.procRefPr(version, tag);
+                    }
                     break;
                 }
                 case tcl.Type.Edge: {
@@ -472,18 +480,6 @@ class Meta {
         }
         if (version.latest == undefined) {
             version.latest = this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true';
-        }
-        return version;
-    }
-    procRef(version, tag) {
-        if (tag.attrs['event'] == tcl.RefEvent.Branch) {
-            return this.procRefBranch(version, tag);
-        }
-        else if (tag.attrs['event'] == tcl.RefEvent.Tag) {
-            return this.procRefTag(version, tag);
-        }
-        else if (tag.attrs['event'] == tcl.RefEvent.PR) {
-            return this.procRefPr(version, tag);
         }
         return version;
     }
@@ -598,7 +594,7 @@ class Meta {
             val = `${val}${tag.attrs['suffix']}`;
         }
         else if (this.flavor.suffix.length > 0) {
-            val = `${this.flavor.suffix}${val}`;
+            val = `${val}${this.flavor.suffix}`;
         }
         return val;
     }
@@ -738,7 +734,7 @@ function Parse(s) {
         if (parts.length == 1) {
             tag.attrs['value'] = parts[0].trim();
         }
-        else if (parts.length == 2) {
+        else {
             const key = parts[0].trim().toLowerCase();
             const value = parts[1].trim();
             switch (key) {
@@ -754,9 +750,6 @@ function Parse(s) {
                     break;
                 }
             }
-        }
-        else {
-            throw new Error(`Invalid entry: ${field}`);
         }
     }
     if (tag.type == undefined) {

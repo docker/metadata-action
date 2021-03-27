@@ -141,11 +141,6 @@ describe('parse', () => {
       false
     ],
     [
-      `type=semver`,
-      {} as Tag,
-      true
-    ],
-    [
       `type=semver,enable=true,pattern={{version}}`,
       {
         type: Type.Semver,
@@ -172,11 +167,6 @@ describe('parse', () => {
         }
       } as Tag,
       false
-    ],
-    [
-      `type=match`,
-      {} as Tag,
-      true
     ],
     [
       `type=match,enable=true,pattern=v(.*),group=1`,
@@ -407,6 +397,26 @@ describe('parse', () => {
         }
       } as Tag,
       false
+    ],
+    [
+      `type=semver`,
+      {} as Tag,
+      true
+    ],
+    [
+      `type=match`,
+      {} as Tag,
+      true
+    ],
+    [
+      `type=foo`,
+      {} as Tag,
+      true
+    ],
+    [
+      `type=sha,enable=foo`,
+      {} as Tag,
+      true
     ]
   ])('given %p event ', async (s: string, expected: Tag, invalid: boolean) => {
     try {
