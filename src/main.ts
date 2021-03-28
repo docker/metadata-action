@@ -29,18 +29,26 @@ async function run() {
     const meta: Meta = new Meta(inputs, context, repo);
 
     const version: Version = meta.version;
-    core.startGroup(`Docker image version`);
-    core.info(version.main || '');
-    core.endGroup();
+    if (meta.version.main == undefined || meta.version.main.length == 0) {
+      core.warning(`No Docker image version has been generated. Check tags input.`);
+    } else {
+      core.startGroup(`Docker image version`);
+      core.info(version.main || '');
+      core.endGroup();
+    }
     core.setOutput('version', version.main || '');
 
     // Docker tags
     const tags: Array<string> = meta.getTags();
-    core.startGroup(`Docker tags`);
-    for (let tag of tags) {
-      core.info(tag);
+    if (tags.length == 0) {
+      core.warning('No Docker tag has been generated. Check tags input.');
+    } else {
+      core.startGroup(`Docker tags`);
+      for (let tag of tags) {
+        core.info(tag);
+      }
+      core.endGroup();
     }
-    core.endGroup();
     core.setOutput('tags', tags.join(inputs.sepTags));
 
     // Docker labels
