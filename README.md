@@ -5,6 +5,10 @@
 [![Become a sponsor](https://img.shields.io/badge/sponsor-crazy--max-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/crazy-max)
 [![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.me/crazyws)
 
+## Upgrade from v1
+
+`v2` of this action includes significant changes. Please read the [upgrade notes](UPGRADE.md) for a smooth migration.
+
 ## About
 
 GitHub Action to extract metadata (tags, labels) for Docker. This action is particularly useful if used with
@@ -50,13 +54,11 @@ on:
   push:
     branches:
       - 'master'
-      - 'releases/v*'
     tags:
       - 'v*'
   pull_request:
     branches:
       - 'master'
-      - 'releases/v*'
 
 jobs:
   docker:
@@ -105,13 +107,11 @@ on:
   push:
     branches:
       - 'master'
-      - 'releases/v*'
     tags:
       - 'v*'
   pull_request:
     branches:
       - 'master'
-      - 'releases/v*'
 
 jobs:
   docker:
@@ -512,14 +512,14 @@ tags: |
 
 ```yaml
 tags: |
-  type=raw,value=mytag1
-  type=raw,value=mytag2
+  type=raw,value=foo
+  type=raw,value=bar
   # or
-  type=raw,mytag1
-  type=raw,mytag2
+  type=raw,foo
+  type=raw,bar
   # or
-  mytag1
-  mytag2
+  foo
+  bar
 ```
 
 Output custom tags according to your needs.
@@ -528,7 +528,7 @@ Extended attributes and default values:
 
 ```yaml
 tags: |
-  type=raw,enable=true,priority=200,prefix=,suffix=,value=mytag1
+  type=raw,enable=true,priority=200,prefix=,suffix=,value=
 ```
 
 ### `type=sha`
