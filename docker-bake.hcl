@@ -1,54 +1,67 @@
+variable "NODE_VERSION" {
+  default = "12"
+}
+
+target "node-version" {
+  args = {
+    NODE_VERSION = NODE_VERSION
+  }
+}
+
 group "default" {
   targets = ["build"]
 }
 
 group "pre-checkin" {
-  targets = ["update-yarn", "format", "build"]
+  targets = ["vendor-update", "format", "build"]
 }
 
 group "validate" {
-  targets = ["validate-format", "validate-build", "validate-yarn"]
-}
-
-target "dockerfile" {
-  dockerfile = "dev.Dockerfile"
-}
-
-target "update-yarn" {
-  inherits = ["dockerfile"]
-  target = "update-yarn"
-  output = ["."]
+  targets = ["format-validate", "build-validate", "vendor-validate"]
 }
 
 target "build" {
-  inherits = ["dockerfile"]
-  target = "dist"
+  inherits = ["node-version"]
+  dockerfile = "./hack/build.Dockerfile"
+  target = "build-update"
   output = ["."]
 }
 
-target "test" {
-  inherits = ["dockerfile"]
-  target = "test-coverage"
-  output = ["."]
+target "build-validate" {
+  inherits = ["node-version"]
+  dockerfile = "./hack/build.Dockerfile"
+  target = "build-validate"
 }
 
 target "format" {
-  inherits = ["dockerfile"]
-  target = "format"
+  inherits = ["node-version"]
+  dockerfile = "./hack/build.Dockerfile"
+  target = "format-update"
   output = ["."]
 }
 
-target "validate-format" {
-  inherits = ["dockerfile"]
-  target = "validate-format"
+target "format-validate" {
+  inherits = ["node-version"]
+  dockerfile = "./hack/build.Dockerfile"
+  target = "format-validate"
 }
 
-target "validate-build" {
-  inherits = ["dockerfile"]
-  target = "validate-build"
+target "vendor-update" {
+  inherits = ["node-version"]
+  dockerfile = "./hack/vendor.Dockerfile"
+  target = "update"
+  output = ["."]
 }
 
-target "validate-yarn" {
-  inherits = ["dockerfile"]
-  target = "validate-yarn"
+target "vendor-validate" {
+  inherits = ["node-version"]
+  dockerfile = "./hack/vendor.Dockerfile"
+  target = "validate"
+}
+
+target "test" {
+  inherits = ["node-version"]
+  dockerfile = "./hack/test.Dockerfile"
+  target = "test-coverage"
+  output = ["./coverage"]
 }
