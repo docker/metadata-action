@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0 (2021/03/29)
+
+* Bump semver from 7.3.4 to 7.3.5 (#49)
+* Enhance workflow (#51)
+
 ## 2.0.0 (2021/03/29)
 
 This release includes significant changes (#50). Please read the [upgrade notes](UPGRADE.md) for a smooth migration.
