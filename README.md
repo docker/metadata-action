@@ -128,7 +128,6 @@ jobs:
           images: name/app
           tags: |
             type=ref,event=branch
-            type=ref,event=tag
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -200,7 +199,6 @@ jobs:
           images: name/app
           tags: |
             type=ref,event=branch
-            type=ref,event=tag
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -310,7 +308,6 @@ the form of a key-value pair list in CSV format to remove limitations intrinsica
 tags: |
   type=schedule
   type=ref,event=branch
-  type=ref,event=tag
   type=ref,event=pr
   type=semver,pattern={{version}}
   type=semver,pattern={{major}}.{{minor}}
