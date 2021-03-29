@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.0 (2021/03/29)
+
+This release includes significant changes (#50). Please read the [upgrade notes](UPGRADE.md) for a smooth migration.
+`v1` is still available through [`releases/v1` branch](https://github.com/crazy-max/ghaction-docker-meta/tree/releases/v1).
+
+* Add `tags` input
+* Inputs `tag-sha`, `tag-edge`, `tag-edge-branch`, `tag-semver`, `tag-match`, `tag-match-group`, `tag-schedule`, `tag-custom`, `tag-custom-only` have been removed and are now handled through the new `tags` input
+* Input `label-custom` renamed `labels`
+* Add `flavor` input to handle a global prefix, suffix and latest tag behavior (#13 #15 #41)
+* Input `tag-latest` removed (use `flavor` input instead)
+* Manage tag sorting through `priority` attribute in `tags` input (#27)
+* Explicit control over the conditions of each tag through `enable` attribute in `tags` input (#30)
+* Allow `semver` and `match` parsing for custom values (#25 #30)
+* Display warning message if not tag generated
+
 ## 1.12.0 (2021/03/19)
 
 * Ignore commas for `label-custom` input (#48)
