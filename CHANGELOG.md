@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.1 (2021/03/30)
+
+* Fix `enable` tag attribute (#53)
+* Bump y18n from 4.0.0 to 4.0.1 (#54)
+
 ## 2.1.0 (2021/03/29)
 
 * Bump semver from 7.3.4 to 7.3.5 (#49)
