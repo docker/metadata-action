@@ -47,7 +47,6 @@ export class Meta {
       if (tag.attrs['enable'] == 'false') {
         continue;
       }
-
       switch (tag.type) {
         case tcl.Type.Schedule: {
           version = this.procSchedule(version, tag);

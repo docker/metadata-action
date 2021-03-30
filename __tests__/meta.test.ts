@@ -557,6 +557,35 @@ describe('push', () => {
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
       ]
+    ],
+    [
+      'push16',
+      'event_push_defbranch.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=match,enable=false,pattern=v(.*),group=1,value=v1.2.3`,
+          `type=edge`
+        ],
+      } as Inputs,
+      {
+        main: 'edge',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'user/app:edge'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=edge",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -2357,41 +2386,4 @@ describe('bake', () => {
     console.log('bakeFile', bakeFile, fs.readFileSync(bakeFile, 'utf8'));
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
   });
-});
-
-describe('push', () => {
-  // prettier-ignore
-  test.each([
-    [
-      'push15',
-      'event_push_defbranch.env',
-      {
-        images: ['user/app'],
-        tags: [
-          `type=match,pattern=v(.*),group=1,value=v1.2.3`,
-          `type=edge`
-        ],
-      } as Inputs,
-      {
-        main: '1.2.3',
-        partial: ['edge'],
-        latest: true
-      } as Version,
-      [
-        'user/app:1.2.3',
-        'user/app:edge',
-        'user/app:latest'
-      ],
-      [
-        "org.opencontainers.image.title=Hello-World",
-        "org.opencontainers.image.description=This your first repo!",
-        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.2.3",
-        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
-        "org.opencontainers.image.licenses=MIT"
-      ]
-    ]
-  ])('given %p with %p event', tagsLabelsTest);
 });
