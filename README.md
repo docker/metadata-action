@@ -252,7 +252,7 @@ Following inputs can be used as `step.with` keys
 
 > `List` type is a newline-delimited string
 > ```yaml
-> label-custom: |
+> labels: |
 >   org.opencontainers.image.title=MyCustomTitle
 >   org.opencontainers.image.description=Another description
 >   org.opencontainers.image.vendor=MyCompany
