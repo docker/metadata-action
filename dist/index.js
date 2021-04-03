@@ -99,12 +99,32 @@ exports.asyncForEach = (array, callback) => __awaiter(void 0, void 0, void 0, fu
 /***/ }),
 
 /***/ 3716:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Transform = void 0;
+const core = __importStar(__webpack_require__(2186));
 function Transform(inputs) {
     const flavor = {
         latest: 'auto',
@@ -137,6 +157,11 @@ function Transform(inputs) {
             }
         }
     }
+    core.startGroup(`Processing flavor input`);
+    core.info(`latest=${flavor.latest}`);
+    core.info(`prefix=${flavor.prefix}`);
+    core.info(`suffix=${flavor.suffix}`);
+    core.endGroup();
     return flavor;
 }
 exports.Transform = Transform;
@@ -690,12 +715,32 @@ exports.Meta = Meta;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Parse = exports.Transform = exports.DefaultPriorities = exports.RefEvent = exports.Type = void 0;
+exports.Parse = exports.Transform = exports.DefaultPriorities = exports.Tag = exports.RefEvent = exports.Type = void 0;
 const sync_1 = __importDefault(__webpack_require__(8750));
+const core = __importStar(__webpack_require__(2186));
 var Type;
 (function (Type) {
     Type["Schedule"] = "schedule";
@@ -712,6 +757,19 @@ var RefEvent;
     RefEvent["Tag"] = "tag";
     RefEvent["PR"] = "pr";
 })(RefEvent = exports.RefEvent || (exports.RefEvent = {}));
+class Tag {
+    constructor() {
+        this.attrs = {};
+    }
+    toString() {
+        const out = [`type=${this.type}`];
+        for (let attr in this.attrs) {
+            out.push(`${attr}=${this.attrs[attr]}`);
+        }
+        return out.join(',');
+    }
+}
+exports.Tag = Tag;
 exports.DefaultPriorities = {
     [Type.Schedule]: '1000',
     [Type.Semver]: '900',
@@ -735,7 +793,7 @@ function Transform(inputs) {
     for (const input of inputs) {
         tags.push(Parse(input));
     }
-    return tags.sort((tag1, tag2) => {
+    const sorted = tags.sort((tag1, tag2) => {
         if (Number(tag1.attrs['priority']) < Number(tag2.attrs['priority'])) {
             return 1;
         }
@@ -744,6 +802,12 @@ function Transform(inputs) {
         }
         return 0;
     });
+    core.startGroup(`Processing tags input`);
+    for (const tag of sorted) {
+        core.info(tag.toString());
+    }
+    core.endGroup();
+    return sorted;
 }
 exports.Transform = Transform;
 function Parse(s) {
@@ -751,9 +815,7 @@ function Parse(s) {
         relaxColumnCount: true,
         skipLinesWithEmptyValues: true
     })[0];
-    const tag = {
-        attrs: {}
-    };
+    const tag = new Tag();
     for (const field of fields) {
         const parts = field.toString().split('=', 2);
         if (parts.length == 1) {

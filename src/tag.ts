@@ -1,4 +1,5 @@
 import csvparse from 'csv-parse/lib/sync';
+import * as core from '@actions/core';
 
 export enum Type {
   Schedule = 'schedule',
@@ -16,9 +17,21 @@ export enum RefEvent {
   PR = 'pr'
 }
 
-export interface Tag {
-  type: Type;
-  attrs: Record<string, string>;
+export class Tag {
+  public type?: Type;
+  public attrs: Record<string, string>;
+
+  constructor() {
+    this.attrs = {};
+  }
+
+  public toString(): string {
+    const out: string[] = [`type=${this.type}`];
+    for (let attr in this.attrs) {
+      out.push(`${attr}=${this.attrs[attr]}`);
+    }
+    return out.join(',');
+  }
 }
 
 export const DefaultPriorities: Record<Type, string> = {
@@ -42,10 +55,11 @@ export function Transform(inputs: string[]): Tag[] {
       `type=ref,event=${RefEvent.PR}`
     ];
   }
+
   for (const input of inputs) {
     tags.push(Parse(input));
   }
-  return tags.sort((tag1, tag2) => {
+  const sorted = tags.sort((tag1, tag2) => {
     if (Number(tag1.attrs['priority']) < Number(tag2.attrs['priority'])) {
       return 1;
     }
@@ -54,6 +68,14 @@ export function Transform(inputs: string[]): Tag[] {
     }
     return 0;
   });
+
+  core.startGroup(`Processing tags input`);
+  for (const tag of sorted) {
+    core.info(tag.toString());
+  }
+  core.endGroup();
+
+  return sorted;
 }
 
 export function Parse(s: string): Tag {
@@ -62,10 +84,7 @@ export function Parse(s: string): Tag {
     skipLinesWithEmptyValues: true
   })[0];
 
-  const tag = {
-    attrs: {}
-  } as Tag;
-
+  const tag = new Tag();
   for (const field of fields) {
     const parts = field.toString().split('=', 2);
     if (parts.length == 1) {
