@@ -1,3 +1,5 @@
+import * as core from '@actions/core';
+
 export interface Flavor {
   latest: string;
   prefix: string;
@@ -37,6 +39,12 @@ export function Transform(inputs: string[]): Flavor {
       }
     }
   }
+
+  core.startGroup(`Processing flavor input`);
+  core.info(`latest=${flavor.latest}`);
+  core.info(`prefix=${flavor.prefix}`);
+  core.info(`suffix=${flavor.suffix}`);
+  core.endGroup();
 
   return flavor;
 }

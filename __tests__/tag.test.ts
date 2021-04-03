@@ -13,7 +13,7 @@ describe('transform', () => {
         `type=raw,foo`,
         `type=edge`,
         `type=semver,pattern={{version}}`,
-        `type=match,"pattern=\\d{1,3}.\\d{1,3}.\\d{1,3}"`
+        `type=match,"pattern=\\d.\\d.\\d",group=0`
       ],
       [
         {
@@ -44,7 +44,7 @@ describe('transform', () => {
             "enable": "true",
             "prefix": "",
             "suffix": "",
-            "pattern": "\\d{1,3}.\\d{1,3}.\\d{1,3}",
+            "pattern": "\\d.\\d.\\d",
             "group": "0",
             "value": ""
           }
@@ -204,7 +204,7 @@ describe('parse', () => {
       false
     ],
     [
-      `type=match,enable=true,"pattern=^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$",group=1`,
+      `type=match,enable=true,"pattern=^v(\\d.\\d.\\d)$",group=1`,
       {
         type: Type.Match,
         attrs: {
@@ -212,7 +212,7 @@ describe('parse', () => {
           "enable": "true",
           "prefix": "",
           "suffix": "",
-          "pattern": "^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$",
+          "pattern": "^v(\\d.\\d.\\d)$",
           "group": "1",
           "value": ""
         }

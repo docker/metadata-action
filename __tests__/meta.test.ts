@@ -713,7 +713,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d{1,3}.\\d{1,3}.\\d{1,3}"`
+          `type=match,"pattern=\\d.\\d.\\d"`
         ]
       } as Inputs,
       {
@@ -744,7 +744,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$",group=1`
+          `type=match,"pattern=^v(\\d.\\d.\\d)$",group=1`
         ]
       } as Inputs,
       {
@@ -775,7 +775,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d{1,3}.\\d{1,3}.\\d{1,3}-(alpha|beta).\\d{1,3}"`
+          `type=match,"pattern=\\d.\\d.\\d-(alpha|beta).\\d+"`
         ]
       } as Inputs,
       {
@@ -806,7 +806,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d{1,3}.\\d{1,3}"`
+          `type=match,"pattern=\\d.\\d"`
         ]
       } as Inputs,
       {
@@ -837,7 +837,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=/^v(\\d{1,3}.\\d{1,3}.\\d{1,3})$/ig",group=1`,
+          `type=match,"pattern=/^v(\\d.\\d.\\d)$/ig",group=1`,
         ]
       } as Inputs,
       {
@@ -866,7 +866,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d{1,3}.\\d{1,3}"`
+          `type=match,"pattern=\\d.\\d"`
         ]
       } as Inputs,
       {
@@ -1030,7 +1030,7 @@ describe('tag', () => {
         tags: [
           `type=raw,priority=2000,foo`,
           `type=semver,pattern={{version}}`,
-          `type=match,"pattern=\\d{1,3}.\\d{1,3}"`
+          `type=match,"pattern=\\d.\\d"`
         ]
       } as Inputs,
       {
@@ -1189,7 +1189,7 @@ describe('latest', () => {
       {
         images: ['user/app'],
         tags: [
-          `type=match,"pattern=\\d{1,3}.\\d{1,3}.\\d{1,3}"`
+          `type=match,"pattern=\\d.\\d.\\d"`
         ]
       } as Inputs,
       {
@@ -1246,7 +1246,7 @@ describe('latest', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d{1,3}.\\d{1,3}.\\d{1,3}"`
+          `type=match,"pattern=\\d.\\d.\\d"`
         ]
       } as Inputs,
       {
