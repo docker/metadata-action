@@ -442,7 +442,7 @@ Extended attributes and default values:
 
 ```yaml
 tags: |
-  type=group,enable=true,priority=800,prefix=,suffix=,pattern=,group=0,value=
+  type=match,enable=true,priority=800,prefix=,suffix=,pattern=,group=0,value=
 ```
 
 ### `type=edge`
