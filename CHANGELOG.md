@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0 (2021/04/03)
+
+* Improve logging (#58)
+* Fix README (#56)
+
 ## 2.1.1 (2021/03/30)
 
 * Fix `enable` tag attribute (#53)
