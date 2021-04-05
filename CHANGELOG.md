@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1 (2021/04/05)
+
+* Skip and display warning if tag does not match (#59)
+
 ## 2.2.0 (2021/04/03)
 
 * Improve logging (#58)
