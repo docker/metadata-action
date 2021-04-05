@@ -437,6 +437,7 @@ a custom value through `value` attribute.
 | `v2.0.8-beta.67`        | `v(.*)`                       | `1`     | `2.0.8-beta.67`        |
 | `v2.0.8-beta.67`        | `v(\d.\d)`                    | `1`     | `2.0`                  |
 | `20200110-RC2`          | `\d+`                         | `0`     | `20200110`             |
+| `p1/v1.2.3`             | `p1-v(\d.\d.\d)`              | `1`     | `1.2.3`                |
 
 Extended attributes and default values:
 
@@ -470,11 +471,11 @@ tags: |
 
 ```yaml
 tags: |
-  # minimal branch event
+  # branch event
   type=ref,event=branch
-  # minimal tag event
+  # tag event
   type=ref,event=tag
-  # minimal pull request event
+  # pull request event
   type=ref,event=pr
 ```
 
@@ -495,11 +496,11 @@ Extended attributes and default values:
 
 ```yaml
 tags: |
-  # event branch
+  # branch event
   type=ref,enable=true,priority=600,prefix=,suffix=,event=
-  # event tag
+  # tag event
   type=ref,enable=true,priority=600,prefix=,suffix=,event=
-  # event pr
+  # pull request event
   type=ref,enable=true,priority=600,prefix=pr-,suffix=,event=
 ```
 
