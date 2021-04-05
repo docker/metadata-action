@@ -180,10 +180,17 @@ export class Meta {
     } else {
       tmatch = vraw.match(tag.attrs['pattern']);
     }
-    if (tmatch) {
-      vraw = tmatch[tag.attrs['group']];
-      latest = true;
+    if (!tmatch) {
+      core.warning(`${tag.attrs['pattern']} does not match ${vraw}.`);
+      return version;
     }
+    if (typeof tmatch[tag.attrs['group']] === 'undefined') {
+      core.warning(`Group ${tag.attrs['group']} does not exist for ${tag.attrs['pattern']} pattern.`);
+      return version;
+    }
+
+    vraw = tmatch[tag.attrs['group']];
+    latest = true;
 
     if (version.main == undefined) {
       version.main = vraw;
