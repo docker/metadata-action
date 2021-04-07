@@ -185,12 +185,6 @@ export function Parse(s: string): Tag {
   if (!tag.attrs.hasOwnProperty('priority')) {
     tag.attrs['priority'] = DefaultPriorities[tag.type];
   }
-  if (!tag.attrs.hasOwnProperty('prefix')) {
-    tag.attrs['prefix'] = '';
-  }
-  if (!tag.attrs.hasOwnProperty('suffix')) {
-    tag.attrs['suffix'] = '';
-  }
   if (!['true', 'false'].includes(tag.attrs['enable'])) {
     throw new Error(`Invalid value for enable attribute: ${tag.attrs['enable']}`);
   }
