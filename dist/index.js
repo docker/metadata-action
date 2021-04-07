@@ -439,11 +439,11 @@ class Meta {
             return version;
         }
         const currentDate = this.date;
-        const vraw = handlebars.compile(tag.attrs['pattern'])({
+        const vraw = this.setFlavor(handlebars.compile(tag.attrs['pattern'])({
             date: function (format) {
                 return moment_1.default(currentDate).utc().format(format);
             }
-        });
+        }), tag);
         if (version.main == undefined) {
             version.main = vraw;
         }
@@ -475,23 +475,17 @@ class Meta {
             includePrerelease: true
         });
         if (semver.prerelease(vraw)) {
-            vraw = handlebars.compile('{{version}}')(sver);
-            if (version.main == undefined) {
-                version.main = vraw;
-            }
-            else if (vraw !== version.main) {
-                version.partial.push(vraw);
-            }
+            vraw = this.setFlavor(handlebars.compile('{{version}}')(sver), tag);
         }
         else {
-            vraw = handlebars.compile(tag.attrs['pattern'])(sver);
-            if (version.main == undefined) {
-                version.main = vraw;
-            }
-            else if (vraw !== version.main) {
-                version.partial.push(vraw);
-            }
+            vraw = this.setFlavor(handlebars.compile(tag.attrs['pattern'])(sver), tag);
             latest = true;
+        }
+        if (version.main == undefined) {
+            version.main = vraw;
+        }
+        else if (vraw !== version.main) {
+            version.partial.push(vraw);
         }
         if (version.latest == undefined) {
             version.latest = this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true';
@@ -526,7 +520,7 @@ class Meta {
             core.warning(`Group ${tag.attrs['group']} does not exist for ${tag.attrs['pattern']} pattern.`);
             return version;
         }
-        vraw = tmatch[tag.attrs['group']];
+        vraw = this.setFlavor(tmatch[tag.attrs['group']], tag);
         latest = true;
         if (version.main == undefined) {
             version.main = vraw;
