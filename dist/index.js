@@ -634,13 +634,13 @@ class Meta {
         return version;
     }
     setFlavor(val, tag) {
-        if (tag.attrs['prefix'].length > 0) {
+        if (tag.attrs.hasOwnProperty('prefix')) {
             val = `${tag.attrs['prefix']}${val}`;
         }
         else if (this.flavor.prefix.length > 0) {
             val = `${this.flavor.prefix}${val}`;
         }
-        if (tag.attrs['suffix'].length > 0) {
+        if (tag.attrs.hasOwnProperty('suffix')) {
             val = `${val}${tag.attrs['suffix']}`;
         }
         else if (this.flavor.suffix.length > 0) {
@@ -911,12 +911,6 @@ function Parse(s) {
     }
     if (!tag.attrs.hasOwnProperty('priority')) {
         tag.attrs['priority'] = exports.DefaultPriorities[tag.type];
-    }
-    if (!tag.attrs.hasOwnProperty('prefix')) {
-        tag.attrs['prefix'] = '';
-    }
-    if (!tag.attrs.hasOwnProperty('suffix')) {
-        tag.attrs['suffix'] = '';
     }
     if (!['true', 'false'].includes(tag.attrs['enable'])) {
         throw new Error(`Invalid value for enable attribute: ${tag.attrs['enable']}`);

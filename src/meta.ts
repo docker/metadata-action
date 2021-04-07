@@ -315,12 +315,12 @@ export class Meta {
   }
 
   private setFlavor(val: string, tag: tcl.Tag): string {
-    if (tag.attrs['prefix'].length > 0) {
+    if (tag.attrs.hasOwnProperty('prefix')) {
       val = `${tag.attrs['prefix']}${val}`;
     } else if (this.flavor.prefix.length > 0) {
       val = `${this.flavor.prefix}${val}`;
     }
-    if (tag.attrs['suffix'].length > 0) {
+    if (tag.attrs.hasOwnProperty('suffix')) {
       val = `${val}${tag.attrs['suffix']}`;
     } else if (this.flavor.suffix.length > 0) {
       val = `${val}${this.flavor.suffix}`;
