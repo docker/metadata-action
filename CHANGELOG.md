@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.0 (2021/04/07)
+
+* Allow overriding flavor (#63)
+* Prefix/suffix not taken into account for `match`, `semver` and `schedule` types (#62)
+
 ## 2.2.1 (2021/04/05)
 
 * Skip and display warning if tag does not match (#59)
