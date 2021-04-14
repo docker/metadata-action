@@ -23,7 +23,7 @@
   "author": "CrazyMax",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.2.7",
     "@actions/github": "^4.0.0",
     "csv-parse": "^4.15.3",
     "handlebars": "^4.7.7",
