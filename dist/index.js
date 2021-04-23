@@ -39,9 +39,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.asyncForEach = exports.getInputList = exports.getInputs = exports.tmpDir = void 0;
+exports.setOutput = exports.asyncForEach = exports.getInputList = exports.getInputs = exports.tmpDir = void 0;
 const sync_1 = __importDefault(__webpack_require__(8750));
 const core = __importStar(__webpack_require__(2186));
+const command_1 = __webpack_require__(7351);
 const fs = __importStar(__webpack_require__(5747));
 const os = __importStar(__webpack_require__(2087));
 const path = __importStar(__webpack_require__(5622));
@@ -94,6 +95,11 @@ exports.asyncForEach = (array, callback) => __awaiter(void 0, void 0, void 0, fu
         yield callback(array[index], index, array);
     }
 });
+// FIXME: Temp fix https://github.com/actions/toolkit/issues/777
+function setOutput(name, value) {
+    command_1.issueCommand('set-output', { name }, value);
+}
+exports.setOutput = setOutput;
 //# sourceMappingURL=context.js.map
 
 /***/ }),
@@ -292,7 +298,7 @@ function run() {
                 core.info(version.main || '');
                 core.endGroup();
             }
-            core.setOutput('version', version.main || '');
+            context_1.setOutput('version', version.main || '');
             // Docker tags
             const tags = meta.getTags();
             if (tags.length == 0) {
@@ -305,7 +311,7 @@ function run() {
                 }
                 core.endGroup();
             }
-            core.setOutput('tags', tags.join(inputs.sepTags));
+            context_1.setOutput('tags', tags.join(inputs.sepTags));
             // Docker labels
             const labels = meta.getLabels();
             core.startGroup(`Docker labels`);
@@ -313,13 +319,13 @@ function run() {
                 core.info(label);
             }
             core.endGroup();
-            core.setOutput('labels', labels.join(inputs.sepLabels));
+            context_1.setOutput('labels', labels.join(inputs.sepLabels));
             // Bake definition file
             const bakeFile = meta.getBakeFile();
             core.startGroup(`Bake definition file`);
             core.info(fs.readFileSync(bakeFile, 'utf8'));
             core.endGroup();
-            core.setOutput('bake-file', bakeFile);
+            context_1.setOutput('bake-file', bakeFile);
         }
         catch (error) {
             core.setFailed(error.message);
