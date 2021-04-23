@@ -1,5 +1,6 @@
 import csvparse from 'csv-parse/lib/sync';
 import * as core from '@actions/core';
+import {issueCommand} from '@actions/core/lib/command';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -66,3 +67,8 @@ export const asyncForEach = async (array, callback) => {
     await callback(array[index], index, array);
   }
 };
+
+// FIXME: Temp fix https://github.com/actions/toolkit/issues/777
+export function setOutput(name: string, value: any): void {
+  issueCommand('set-output', {name}, value);
+}

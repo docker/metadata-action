@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import {getInputs, Inputs} from './context';
+import {getInputs, Inputs, setOutput} from './context';
 import * as github from './github';
 import {Meta, Version} from './meta';
 import * as core from '@actions/core';
@@ -36,7 +36,7 @@ async function run() {
       core.info(version.main || '');
       core.endGroup();
     }
-    core.setOutput('version', version.main || '');
+    setOutput('version', version.main || '');
 
     // Docker tags
     const tags: Array<string> = meta.getTags();
@@ -49,7 +49,7 @@ async function run() {
       }
       core.endGroup();
     }
-    core.setOutput('tags', tags.join(inputs.sepTags));
+    setOutput('tags', tags.join(inputs.sepTags));
 
     // Docker labels
     const labels: Array<string> = meta.getLabels();
@@ -58,14 +58,14 @@ async function run() {
       core.info(label);
     }
     core.endGroup();
-    core.setOutput('labels', labels.join(inputs.sepLabels));
+    setOutput('labels', labels.join(inputs.sepLabels));
 
     // Bake definition file
     const bakeFile: string = meta.getBakeFile();
     core.startGroup(`Bake definition file`);
     core.info(fs.readFileSync(bakeFile, 'utf8'));
     core.endGroup();
-    core.setOutput('bake-file', bakeFile);
+    setOutput('bake-file', bakeFile);
   } catch (error) {
     core.setFailed(error.message);
   }
