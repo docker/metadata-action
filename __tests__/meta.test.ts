@@ -2392,11 +2392,12 @@ describe('bake', () => {
           `type=raw,my`,
           `type=raw,custom`,
           `type=raw,tags`
-        ]
+        ],
+        bakeTarget: "meta"
       } as Inputs,
       {
         "target": {
-          "ghaction-docker-meta": {
+          "meta": {
             "tags": [
               "user/app:release1",
               "user/app:my",

@@ -25,6 +25,9 @@ inputs:
   sep-labels:
     description: 'Separator to use for labels output (default \n)'
     required: false
+  bake-target:
+    description: 'Bake target name (default ghaction-docker-meta)'
+    required: false
   github-token:
     description: 'GitHub Token as provided by secrets'
     default: ${{ github.token }}

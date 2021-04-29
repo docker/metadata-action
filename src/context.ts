@@ -14,6 +14,7 @@ export interface Inputs {
   labels: string[];
   sepTags: string;
   sepLabels: string;
+  bakeTarget: string;
   githubToken: string;
 }
 
@@ -32,6 +33,7 @@ export function getInputs(): Inputs {
     labels: getInputList('labels', true),
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
+    bakeTarget: core.getInput('bake-target') || `ghaction-docker-meta`,
     githubToken: core.getInput('github-token')
   };
 }

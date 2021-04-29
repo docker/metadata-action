@@ -378,7 +378,7 @@ export class Meta {
       JSON.stringify(
         {
           target: {
-            'ghaction-docker-meta': {
+            [this.inputs.bakeTarget]: {
               tags: this.getTags(),
               labels: jsonLabels,
               args: {

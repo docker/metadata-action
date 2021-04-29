@@ -62,6 +62,7 @@ function getInputs() {
         labels: getInputList('labels', true),
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
+        bakeTarget: core.getInput('bake-target') || `ghaction-docker-meta`,
         githubToken: core.getInput('github-token')
     };
 }
@@ -698,7 +699,7 @@ class Meta {
         const bakeFile = path.join(context_1.tmpDir(), 'ghaction-docker-meta-bake.json').split(path.sep).join(path.posix.sep);
         fs.writeFileSync(bakeFile, JSON.stringify({
             target: {
-                'ghaction-docker-meta': {
+                [this.inputs.bakeTarget]: {
                     tags: this.getTags(),
                     labels: jsonLabels,
                     args: {
