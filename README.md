@@ -271,6 +271,7 @@ Following inputs can be used as `step.with` keys
 | `labels`            | List     | List of custom labels |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
+| `bake-target`       | String   | Bake target name (default `ghaction-docker-meta`) |
 
 ### outputs
 
