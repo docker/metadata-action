@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.4.0 (2021/04/30)
+
+* Add `bake-target` input (#69)
+* Fix setOutput (#67)
+* Bump csv-parse from 4.15.3 to 4.15.4 (#65)
+* Bump @actions/core from 1.2.6 to 1.2.7 (#64)
+
 ## 2.3.0 (2021/04/07)
 
 * Allow overriding flavor (#63)
