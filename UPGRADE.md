@@ -131,7 +131,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: docker/metadata-action@v1
         with:
           images: name/app
       -
@@ -175,7 +175,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v2
+        uses: docker/metadata-action@v2
         with:
           images: name/app
       -
@@ -221,7 +221,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: docker/metadata-action@v1
         with:
           images: name/app
           tag-semver: |
@@ -268,7 +268,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v2
+        uses: docker/metadata-action@v2
         with:
           images: name/app
           tags: |
