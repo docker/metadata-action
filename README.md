@@ -38,6 +38,7 @@ ___
   * [`type=sha`](#typesha)
 * [Notes](#notes)
   * [Latest tag](#latest-tag)
+  * [Global expressions](#global-expressions)
   * [Overwrite labels](#overwrite-labels)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 * [Contributing](#contributing)
@@ -553,6 +554,25 @@ tags: |
 * [`type=ref,event=tag`](#typeref)
 * [`type=semver,pattern=...`](#typesemver)
 * [`type=match,pattern=...`](#typematch)
+
+### Global expressions
+
+The following [Handlebars template](https://handlebarsjs.com/guide/) expressions for `prefix`, `suffix` and `value`
+attributes are available:
+
+| Expression               | Output               |
+|--------------------------|----------------------|
+| `{{branch}}`             | `master`             |
+| `{{tag}}`                | `v1.2.3`             |
+| `{{sha}}`                | `90dd603`            |
+
+```yaml
+tags: |
+  # dynamically set the branch name as a prefix
+  type=sha,prefix={{branch}}-
+  # dynamically set the branch name and sha as a custom tag
+  type=raw,value=mytag-{{branch}}-{{sha}}
+```
 
 ### Overwrite labels
 
