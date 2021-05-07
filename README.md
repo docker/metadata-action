@@ -39,6 +39,7 @@ ___
 * [Notes](#notes)
   * [Latest tag](#latest-tag)
   * [Global expressions](#global-expressions)
+  * [Major version zero](#major-version-zero)
   * [Overwrite labels](#overwrite-labels)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 * [Contributing](#contributing)
@@ -572,6 +573,25 @@ tags: |
   type=sha,prefix={{branch}}-
   # dynamically set the branch name and sha as a custom tag
   type=raw,value=mytag-{{branch}}-{{sha}}
+```
+
+### Major version zero
+
+Major version zero (`0.y.z`) is for initial development and **may** change at any time. This means the public API
+[**should not** be considered stable](https://semver.org/#spec-item-4).
+
+In this case, Docker tag `0` **should not** be generated if you're using [`type=semver`](#typesemver) with `{{major}}`
+pattern. You can manage this behavior like this:
+
+```yaml
+# refs/tags/v0.1.2
+tags: |
+  # output 0.1.2
+  type=semver,pattern={{version}}
+  # output 0.1
+  type=semver,pattern={{major}}.{{minor}}
+  # disabled if major zero
+  type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
 ```
 
 ### Overwrite labels
