@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.5.0 (2021/05/08)
+
+* Major version zero doc (#74)
+* Bump hosted-git-info from 2.8.8 to 2.8.9 (#73)
+* Bump lodash from 4.17.20 to 4.17.21 (#72)
+* Handle global expressions (#71)
+
 ## 2.4.0 (2021/04/30)
 
 * Add `bake-target` input (#69)
