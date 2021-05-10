@@ -322,7 +322,7 @@ export class Meta {
       jsonLabels[matches[1]] = matches[2];
     }
 
-    const bakeFile = path.join(tmpDir(), 'ghaction-docker-meta-bake.json').split(path.sep).join(path.posix.sep);
+    const bakeFile = path.join(tmpDir(), 'docker-metadata-action-bake.json').split(path.sep).join(path.posix.sep);
     fs.writeFileSync(
       bakeFile,
       JSON.stringify(

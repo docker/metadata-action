@@ -49,7 +49,7 @@ const path = __importStar(__webpack_require__(5622));
 let _tmpDir;
 function tmpDir() {
     if (!_tmpDir) {
-        _tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ghaction-docker-meta-')).split(path.sep).join(path.posix.sep);
+        _tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'docker-metadata-action-')).split(path.sep).join(path.posix.sep);
     }
     return _tmpDir;
 }
@@ -62,7 +62,7 @@ function getInputs() {
         labels: getInputList('labels', true),
         sepTags: core.getInput('sep-tags') || `\n`,
         sepLabels: core.getInput('sep-labels') || `\n`,
-        bakeTarget: core.getInput('bake-target') || `ghaction-docker-meta`,
+        bakeTarget: core.getInput('bake-target') || `docker-metadata-action`,
         githubToken: core.getInput('github-token')
     };
 }
@@ -649,7 +649,7 @@ class Meta {
             }
             jsonLabels[matches[1]] = matches[2];
         }
-        const bakeFile = path.join(context_1.tmpDir(), 'ghaction-docker-meta-bake.json').split(path.sep).join(path.posix.sep);
+        const bakeFile = path.join(context_1.tmpDir(), 'docker-metadata-action-bake.json').split(path.sep).join(path.posix.sep);
         fs.writeFileSync(bakeFile, JSON.stringify({
             target: {
                 [this.inputs.bakeTarget]: {
