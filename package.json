@@ -1,5 +1,5 @@
 {
-  "name": "docker-metadata",
+  "name": "docker-metadata-action",
   "description": "GitHub Action to extract metadata (tags, labels) for Docker",
   "main": "lib/main.js",
   "scripts": {
