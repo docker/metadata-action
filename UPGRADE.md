@@ -1,5 +1,10 @@
 # Upgrade notes
 
+## v2 to v3
+
+* Repository has been moved to docker org. Replace `crazy-max/ghaction-docker-meta@v2` with `docker/metadata-action@v3`
+* The default bake target has been changed: `ghaction-docker-meta` > `docker-metadata-action`
+
 ## v1 to v2
 
 * [inputs](#inputs)
@@ -175,7 +180,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v2
+        uses: docker/metadata-action@v3
         with:
           images: name/app
       -
@@ -268,7 +273,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v2
+        uses: docker/metadata-action@v3
         with:
           images: name/app
           tags: |

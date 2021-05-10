@@ -62,7 +62,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v2
+        uses: docker/metadata-action@v3
         with:
           images: name/app
       -
@@ -115,7 +115,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v2
+        uses: docker/metadata-action@v3
         with:
           images: name/app
           tags: |
@@ -186,7 +186,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v2
+        uses: docker/metadata-action@v3
         with:
           images: name/app
           tags: |
@@ -593,7 +593,7 @@ labels generated are not suitable, you can overwrite them like this:
       -
         name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v2
+        uses: docker/metadata-action@v3
         with:
           images: name/app
           labels: |
