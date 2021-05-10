@@ -1,5 +1,5 @@
 {
-  "name": "docker-meta",
+  "name": "docker-metadata",
   "description": "GitHub Action to extract metadata (tags, labels) for Docker",
   "main": "lib/main.js",
   "scripts": {
@@ -11,17 +11,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/crazy-max/ghaction-docker-meta.git"
+    "url": "git+https://github.com/docker/metadata-action.git"
   },
   "keywords": [
     "actions",
     "docker",
-    "meta",
+    "metadata",
     "tag",
     "label"
   ],
-  "author": "CrazyMax",
-  "license": "MIT",
+  "author": "Docker",
+  "contributors": [
+    {
+      "name": "CrazyMax",
+      "url": "https://crazymax.dev"
+    }
+  ],
+  "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.2.7",
     "@actions/github": "^4.0.0",
