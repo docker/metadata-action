@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as context from '../src/context';
 
 jest.spyOn(context, 'tmpDir').mockImplementation((): string => {
-  const tmpDir = path.join('/tmp/.ghaction-docker-meta-jest').split(path.sep).join(path.posix.sep);
+  const tmpDir = path.join('/tmp/.docker-metadata-action-jest').split(path.sep).join(path.posix.sep);
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir, {recursive: true});
   }

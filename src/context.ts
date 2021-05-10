@@ -20,7 +20,7 @@ export interface Inputs {
 
 export function tmpDir(): string {
   if (!_tmpDir) {
-    _tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ghaction-docker-meta-')).split(path.sep).join(path.posix.sep);
+    _tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'docker-metadata-action-')).split(path.sep).join(path.posix.sep);
   }
   return _tmpDir;
 }
@@ -33,7 +33,7 @@ export function getInputs(): Inputs {
     labels: getInputList('labels', true),
     sepTags: core.getInput('sep-tags') || `\n`,
     sepLabels: core.getInput('sep-labels') || `\n`,
-    bakeTarget: core.getInput('bake-target') || `ghaction-docker-meta`,
+    bakeTarget: core.getInput('bake-target') || `docker-metadata-action`,
     githubToken: core.getInput('github-token')
   };
 }

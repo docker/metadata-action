@@ -2382,7 +2382,7 @@ describe('bake', () => {
       } as Inputs,
       {
         "target": {
-          "ghaction-docker-meta": {
+          "docker-metadata-action": {
             "tags": [
               "user/app:dev",
               "user/app:my",
@@ -2419,7 +2419,7 @@ describe('bake', () => {
       } as Inputs,
       {
         "target": {
-          "ghaction-docker-meta": {
+          "docker-metadata-action": {
             "tags": [
               "user/app:dev",
               "user/app:my",
@@ -2500,7 +2500,7 @@ describe('bake', () => {
       } as Inputs,
       {
         "target": {
-          "ghaction-docker-meta": {
+          "docker-metadata-action": {
             "tags": [
               "user/app:20200110",
               "user/app:my",
@@ -2541,7 +2541,7 @@ describe('bake', () => {
       } as Inputs,
       {
         "target": {
-          "ghaction-docker-meta": {
+          "docker-metadata-action": {
             "tags": [
               "org/app:1.1.1",
               "org/app:1.1",
@@ -2589,7 +2589,7 @@ describe('bake', () => {
       } as Inputs,
       {
         "target": {
-          "ghaction-docker-meta": {
+          "docker-metadata-action": {
             "tags": [
               "org/app:my",
               "org/app:custom",
@@ -2630,7 +2630,7 @@ describe('bake', () => {
       } as Inputs,
       {
         "target": {
-          "ghaction-docker-meta": {
+          "docker-metadata-action": {
             "tags": [
               "org/app:v1.1.1",
               "org/app:latest"

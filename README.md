@@ -152,14 +152,14 @@ jobs:
 
 This action also handles a bake definition file that can be used with the
 [Docker Bake action](https://github.com/docker/bake-action). You just have to declare an empty target named
-`ghaction-docker-meta` and inherit from it.
+`docker-metadata-action` and inherit from it.
 
 ```hcl
 // docker-bake.hcl
-target "ghaction-docker-meta" {}
+target "docker-metadata-action" {}
 
 target "build" {
-  inherits = ["ghaction-docker-meta"]
+  inherits = ["docker-metadata-action"]
   context = "./"
   dockerfile = "Dockerfile"
   platforms = ["linux/amd64", "linux/arm/v6", "linux/arm/v7", "linux/arm64", "linux/386", "linux/ppc64le"]
@@ -210,7 +210,7 @@ Content of `${{ steps.meta.outputs.bake-file }}` file will look like this with `
 ```json
 {
   "target": {
-    "ghaction-docker-meta": {
+    "docker-metadata-action": {
       "tags": [
         "name/app:1.2.3",
         "name/app:1.2",
@@ -263,7 +263,7 @@ Following inputs can be used as `step.with` keys
 | `labels`            | List     | List of custom labels |
 | `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
 | `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
-| `bake-target`       | String   | Bake target name (default `ghaction-docker-meta`) |
+| `bake-target`       | String   | Bake target name (default `docker-metadata-action`) |
 
 ### outputs
 
