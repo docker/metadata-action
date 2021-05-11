@@ -1,4 +1,4 @@
-import {Transform, Parse, Tag, Type, RefEvent, DefaultPriorities} from '../src/tag';
+import {Transform, Parse, Tag, Type, RefEvent, ShaFormat, DefaultPriorities} from '../src/tag';
 
 describe('transform', () => {
   // prettier-ignore
@@ -89,7 +89,8 @@ describe('transform', () => {
           attrs: {
             "priority": DefaultPriorities[Type.Sha],
             "enable": "true",
-            "prefix": "sha-"
+            "prefix": "sha-",
+            "format": ShaFormat.Short
           }
         }
       ] as Tag[],
@@ -355,7 +356,21 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Sha],
           "enable": "true",
-          "prefix": "sha-"
+          "prefix": "sha-",
+          "format": ShaFormat.Short
+        }
+      } as Tag,
+      false
+    ],
+    [
+      `type=sha,format=long`,
+      {
+        type: Type.Sha,
+        attrs: {
+          "priority": DefaultPriorities[Type.Sha],
+          "enable": "true",
+          "prefix": "sha-",
+          "format": ShaFormat.Long
         }
       } as Tag,
       false
@@ -367,7 +382,8 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Sha],
           "enable": "true",
-          "prefix": ""
+          "prefix": "",
+          "format": ShaFormat.Short
         }
       } as Tag,
       false
@@ -379,7 +395,8 @@ describe('parse', () => {
         attrs: {
           "priority": DefaultPriorities[Type.Sha],
           "enable": "false",
-          "prefix": "sha-"
+          "prefix": "sha-",
+          "format": ShaFormat.Short
         }
       } as Tag,
       false
@@ -401,6 +418,11 @@ describe('parse', () => {
     ],
     [
       `type=sha,enable=foo`,
+      {} as Tag,
+      true
+    ],
+    [
+      `type=sha,format=foo`,
       {} as Tag,
       true
     ]

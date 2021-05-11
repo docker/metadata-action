@@ -528,13 +528,21 @@ tags: |
   type=sha
 ```
 
-Output Git short commit as Docker tag like `sha-ad132f5`.
+```yaml
+tags: |
+  # minimal using short sha
+  type=sha
+  # full length sha
+  type=sha,format=long
+```
+
+Output Git short commit (or long if specified) as Docker tag like `sha-ad132f5`.
 
 Extended attributes and default values:
 
 ```yaml
 tags: |
-  type=sha,enable=true,priority=100,prefix=sha-,suffix=
+  type=sha,enable=true,priority=100,prefix=sha-,suffix=,format=short
 ```
 
 ## Notes
