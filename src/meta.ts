@@ -224,7 +224,13 @@ export class Meta {
     if (!this.context.sha) {
       return version;
     }
-    const vraw = this.setValue(this.context.sha.substr(0, 7), tag);
+
+    let val = this.context.sha;
+    if (tag.attrs['format'] === tcl.ShaFormat.Short) {
+      val = this.context.sha.substr(0, 7);
+    }
+
+    const vraw = this.setValue(val, tag);
     return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true');
   }
 

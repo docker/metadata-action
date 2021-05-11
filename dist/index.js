@@ -555,7 +555,11 @@ class Meta {
         if (!this.context.sha) {
             return version;
         }
-        const vraw = this.setValue(this.context.sha.substr(0, 7), tag);
+        let val = this.context.sha;
+        if (tag.attrs['format'] === tcl.ShaFormat.Short) {
+            val = this.context.sha.substr(0, 7);
+        }
+        const vraw = this.setValue(val, tag);
         return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true');
     }
     static setVersion(version, val, latest) {
@@ -698,7 +702,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Parse = exports.Transform = exports.DefaultPriorities = exports.Tag = exports.RefEvent = exports.Type = void 0;
+exports.Parse = exports.Transform = exports.DefaultPriorities = exports.Tag = exports.ShaFormat = exports.RefEvent = exports.Type = void 0;
 const sync_1 = __importDefault(__webpack_require__(8750));
 const core = __importStar(__webpack_require__(2186));
 var Type;
@@ -717,6 +721,11 @@ var RefEvent;
     RefEvent["Tag"] = "tag";
     RefEvent["PR"] = "pr";
 })(RefEvent = exports.RefEvent || (exports.RefEvent = {}));
+var ShaFormat;
+(function (ShaFormat) {
+    ShaFormat["Short"] = "short";
+    ShaFormat["Long"] = "long";
+})(ShaFormat = exports.ShaFormat || (exports.ShaFormat = {}));
 class Tag {
     constructor() {
         this.attrs = {};
@@ -862,6 +871,14 @@ function Parse(s) {
         case Type.Sha: {
             if (!tag.attrs.hasOwnProperty('prefix')) {
                 tag.attrs['prefix'] = 'sha-';
+            }
+            if (!tag.attrs.hasOwnProperty('format')) {
+                tag.attrs['format'] = ShaFormat.Short;
+            }
+            if (!Object.keys(ShaFormat)
+                .map(k => ShaFormat[k])
+                .includes(tag.attrs['format'])) {
+                throw new Error(`Invalid format for ${s}`);
             }
             break;
         }

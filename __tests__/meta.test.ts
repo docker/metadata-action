@@ -617,7 +617,39 @@ describe('push', () => {
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
       ]
-    ]
+    ],
+    [
+      'push18',
+        'event_push.env',
+        {
+          images: ['org/app', 'ghcr.io/user/app'],
+          tags: [
+            `type=ref,event=branch`,
+            `type=sha,format=long`
+          ],
+        } as Inputs,
+        {
+          main: 'dev',
+          partial: ['sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'],
+          latest: false
+        } as Version,
+        [
+          'org/app:dev',
+          'org/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
+          'ghcr.io/user/app:dev',
+          'ghcr.io/user/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'
+        ],
+        [
+          "org.opencontainers.image.title=Hello-World",
+          "org.opencontainers.image.description=This your first repo!",
+          "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.version=dev",
+          "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses=MIT"
+        ]
+      ],
   ])('given %p with %p event', tagsLabelsTest);
 });
 

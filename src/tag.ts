@@ -17,6 +17,11 @@ export enum RefEvent {
   PR = 'pr'
 }
 
+export enum ShaFormat {
+  Short = 'short',
+  Long = 'long'
+}
+
 export class Tag {
   public type?: Type;
   public attrs: Record<string, string>;
@@ -174,6 +179,16 @@ export function Parse(s: string): Tag {
     case Type.Sha: {
       if (!tag.attrs.hasOwnProperty('prefix')) {
         tag.attrs['prefix'] = 'sha-';
+      }
+      if (!tag.attrs.hasOwnProperty('format')) {
+        tag.attrs['format'] = ShaFormat.Short;
+      }
+      if (
+        !Object.keys(ShaFormat)
+          .map(k => ShaFormat[k])
+          .includes(tag.attrs['format'])
+      ) {
+        throw new Error(`Invalid format for ${s}`);
       }
       break;
     }
