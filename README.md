@@ -524,13 +524,7 @@ tags: |
 
 ```yaml
 tags: |
-  # minimal
-  type=sha
-```
-
-```yaml
-tags: |
-  # minimal using short sha
+  # minimal (short sha)
   type=sha
   # full length sha
   type=sha,format=long
