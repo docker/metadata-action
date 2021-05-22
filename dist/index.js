@@ -321,6 +321,12 @@ function run() {
             }
             core.endGroup();
             context_1.setOutput('labels', labels.join(inputs.sepLabels));
+            // JSON
+            const jsonOutput = meta.getJSON();
+            core.startGroup(`JSON output`);
+            core.info(JSON.stringify(jsonOutput, null, 2));
+            core.endGroup();
+            context_1.setOutput('json', jsonOutput);
             // Bake definition file
             const bakeFile = meta.getBakeFile();
             core.startGroup(`Bake definition file`);
@@ -644,21 +650,33 @@ class Meta {
         labels.push(...this.inputs.labels);
         return labels;
     }
+    getJSON() {
+        return {
+            tags: this.getTags(),
+            labels: this.getLabels().reduce((res, label) => {
+                const matches = label.match(/([^=]*)=(.*)/);
+                if (!matches) {
+                    return res;
+                }
+                res[matches[1]] = matches[2];
+                return res;
+            }, {})
+        };
+    }
     getBakeFile() {
-        let jsonLabels = {};
-        for (let label of this.getLabels()) {
-            const matches = label.match(/([^=]*)=(.*)/);
-            if (!matches) {
-                continue;
-            }
-            jsonLabels[matches[1]] = matches[2];
-        }
         const bakeFile = path.join(context_1.tmpDir(), 'docker-metadata-action-bake.json').split(path.sep).join(path.posix.sep);
         fs.writeFileSync(bakeFile, JSON.stringify({
             target: {
                 [this.inputs.bakeTarget]: {
                     tags: this.getTags(),
-                    labels: jsonLabels,
+                    labels: this.getLabels().reduce((res, label) => {
+                        const matches = label.match(/([^=]*)=(.*)/);
+                        if (!matches) {
+                            return res;
+                        }
+                        res[matches[1]] = matches[2];
+                        return res;
+                    }, {}),
                     args: {
                         DOCKER_META_IMAGES: this.inputs.images.join(','),
                         DOCKER_META_VERSION: this.version.main

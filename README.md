@@ -32,6 +32,7 @@ ___
   * [Latest tag](#latest-tag)
   * [Global expressions](#global-expressions)
   * [Major version zero](#major-version-zero)
+  * [JSON output object](#json-output-object)
   * [Overwrite labels](#overwrite-labels)
 * [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 
@@ -274,6 +275,7 @@ Following outputs are available
 | `version`     | String  | Docker image version |
 | `tags`        | String  | Docker tags |
 | `labels`      | String  | Docker labels |
+| `json`        | String  | JSON output of tags and labels |
 | `bake-file`   | File    | [Bake definition file](https://github.com/docker/buildx#file-definition) path |
 
 ## `flavor` input
@@ -586,6 +588,30 @@ tags: |
   type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
 ```
 
+### JSON output object
+
+The `json` output is a JSON object composed of the generated tags and labels so that you can reuse them further in your
+workflow using the [`fromJSON` function](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#fromjson):
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v3
+        id: meta
+        with:
+          images: name/app
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+```
+
 ### Overwrite labels
 
 If some of the [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
@@ -594,7 +620,7 @@ labels generated are not suitable, you can overwrite them like this:
 ```yaml
       -
         name: Docker meta
-        id: docker_meta
+        id: meta
         uses: docker/metadata-action@v3
         with:
           images: name/app
