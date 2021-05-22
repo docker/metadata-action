@@ -2394,6 +2394,258 @@ describe('raw', () => {
   ])('given %p wth %p event', tagsLabelsTest);
 });
 
+describe('json', () => {
+  // prettier-ignore
+  test.each([
+    [
+      'json01',
+      'event_push.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=branch`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        labels: [
+          "invalid"
+        ]
+      } as Inputs,
+      {
+        "tags": [
+          "user/app:dev",
+          "user/app:my",
+          "user/app:custom",
+          "user/app:tags"
+        ],
+        "labels": {
+          "org.opencontainers.image.title": "Hello-World",
+          "org.opencontainers.image.description": "This your first repo!",
+          "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.version": "dev",
+          "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses": "MIT"
+        }
+      }
+    ],
+    [
+      'json02',
+      'event_push.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=branch`,
+          `type=raw,my`
+        ]
+      } as Inputs,
+      {
+        "tags": [
+          "user/app:dev",
+          "user/app:my",
+        ],
+        "labels": {
+          "org.opencontainers.image.title": "Hello-World",
+          "org.opencontainers.image.description": "This your first repo!",
+          "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.version": "dev",
+          "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses": "MIT"
+        }
+      }
+    ],
+    [
+      'json03',
+      'event_tag_release1.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=tag`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        bakeTarget: "meta"
+      } as Inputs,
+      {
+        "tags": [
+          "user/app:release1",
+          "user/app:my",
+          "user/app:custom",
+          "user/app:tags",
+          "user/app:latest"
+        ],
+        "labels": {
+          "org.opencontainers.image.title": "Hello-World",
+          "org.opencontainers.image.description": "This your first repo!",
+          "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.version": "release1",
+          "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses": "MIT"
+        }
+      }
+    ],
+    [
+      'json04',
+      'event_tag_20200110-RC2.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=match,pattern=\\d{8}`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        flavor: [
+          `latest=false`
+        ]
+      } as Inputs,
+      {
+        "tags": [
+          "user/app:20200110",
+          "user/app:my",
+          "user/app:custom",
+          "user/app:tags"
+        ],
+        "labels": {
+          "org.opencontainers.image.title": "Hello-World",
+          "org.opencontainers.image.description": "This your first repo!",
+          "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.version": "20200110",
+          "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses": "MIT"
+        }
+      }
+    ],
+    [
+      'json05',
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=semver,pattern={{version}}`,
+          `type=semver,pattern={{major}}.{{minor}}`,
+          `type=semver,pattern={{major}}`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ]
+      } as Inputs,
+      {
+        "tags": [
+          "org/app:1.1.1",
+          "org/app:1.1",
+          "org/app:1",
+          "org/app:my",
+          "org/app:custom",
+          "org/app:tags",
+          "org/app:latest",
+          "ghcr.io/user/app:1.1.1",
+          "ghcr.io/user/app:1.1",
+          "ghcr.io/user/app:1",
+          "ghcr.io/user/app:my",
+          "ghcr.io/user/app:custom",
+          "ghcr.io/user/app:tags",
+          "ghcr.io/user/app:latest"
+        ],
+        "labels": {
+          "org.opencontainers.image.title": "Hello-World",
+          "org.opencontainers.image.description": "This your first repo!",
+          "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.version": "1.1.1",
+          "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses": "MIT"
+        }
+      }
+    ],
+    [
+      'json06',
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ]
+      } as Inputs,
+      {
+        "tags": [
+          "org/app:my",
+          "org/app:custom",
+          "org/app:tags",
+          "ghcr.io/user/app:my",
+          "ghcr.io/user/app:custom",
+          "ghcr.io/user/app:tags"
+        ],
+        "labels": {
+          "org.opencontainers.image.title": "Hello-World",
+          "org.opencontainers.image.description": "This your first repo!",
+          "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.version": "my",
+          "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses": "MIT"
+        }
+      }
+    ],
+    [
+      'json07',
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app'],
+        labels: [
+          "foo",
+          "maintainer=CrazyMax",
+          "org.opencontainers.image.title=MyCustom=Title",
+          "org.opencontainers.image.description=Another description",
+          "org.opencontainers.image.vendor=MyCompany",
+        ],
+      } as Inputs,
+      {
+        "tags": [
+          "org/app:v1.1.1",
+          "org/app:latest"
+        ],
+        "labels": {
+          "maintainer": "CrazyMax",
+          "org.opencontainers.image.title": "MyCustom=Title",
+          "org.opencontainers.image.description": "Another description",
+          "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "org.opencontainers.image.vendor": "MyCompany",
+          "org.opencontainers.image.version": "v1.1.1",
+          "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.licenses": "MIT"
+        }
+      }
+    ]
+  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: {}) => {
+    process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
+    const context = github.context();
+    console.log(process.env, context);
+
+    const repo = await github.repo(process.env.GITHUB_TOKEN || '');
+    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+
+    const jsonOutput = meta.getJSON();
+    console.log('json', jsonOutput);
+    expect(jsonOutput).toEqual(exJSON);
+  });
+});
+
 describe('bake', () => {
   // prettier-ignore
   test.each([

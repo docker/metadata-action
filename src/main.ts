@@ -60,6 +60,13 @@ async function run() {
     core.endGroup();
     setOutput('labels', labels.join(inputs.sepLabels));
 
+    // JSON
+    const jsonOutput = meta.getJSON();
+    core.startGroup(`JSON output`);
+    core.info(JSON.stringify(jsonOutput, null, 2));
+    core.endGroup();
+    setOutput('json', jsonOutput);
+
     // Bake definition file
     const bakeFile: string = meta.getBakeFile();
     core.startGroup(`Bake definition file`);

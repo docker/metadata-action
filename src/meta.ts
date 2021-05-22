@@ -318,16 +318,21 @@ export class Meta {
     return labels;
   }
 
-  public getBakeFile(): string {
-    let jsonLabels = {};
-    for (let label of this.getLabels()) {
-      const matches = label.match(/([^=]*)=(.*)/);
-      if (!matches) {
-        continue;
-      }
-      jsonLabels[matches[1]] = matches[2];
-    }
+  public getJSON(): {} {
+    return {
+      tags: this.getTags(),
+      labels: this.getLabels().reduce((res, label) => {
+        const matches = label.match(/([^=]*)=(.*)/);
+        if (!matches) {
+          return res;
+        }
+        res[matches[1]] = matches[2];
+        return res;
+      }, {})
+    };
+  }
 
+  public getBakeFile(): string {
     const bakeFile = path.join(tmpDir(), 'docker-metadata-action-bake.json').split(path.sep).join(path.posix.sep);
     fs.writeFileSync(
       bakeFile,
@@ -336,7 +341,14 @@ export class Meta {
           target: {
             [this.inputs.bakeTarget]: {
               tags: this.getTags(),
-              labels: jsonLabels,
+              labels: this.getLabels().reduce((res, label) => {
+                const matches = label.match(/([^=]*)=(.*)/);
+                if (!matches) {
+                  return res;
+                }
+                res[matches[1]] = matches[2];
+                return res;
+              }, {}),
               args: {
                 DOCKER_META_IMAGES: this.inputs.images.join(','),
                 DOCKER_META_VERSION: this.version.main
