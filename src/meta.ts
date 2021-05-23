@@ -191,10 +191,15 @@ export class Meta {
   }
 
   private procRefPr(version: Version, tag: tcl.Tag): Version {
-    if (!/^refs\/pull\//.test(this.context.ref)) {
+    let ref = this.context.ref;
+    if (/pull_request_target/.test(this.context.eventName)) {
+      ref = `refs/pull/${this.context.payload.number}/merge`;
+    }
+    if (!/^refs\/pull\//.test(ref)) {
       return version;
     }
-    const vraw = this.setValue(this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, ''), tag);
+
+    const vraw = this.setValue(ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, ''), tag);
     return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true');
   }
 
