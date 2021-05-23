@@ -1776,6 +1776,71 @@ describe('pr', () => {
         "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
         "org.opencontainers.image.licenses=MIT"
       ]
+    ],
+    [
+      'pr07',
+      'event_pull_request_target.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=sha,priority=2000`,
+          `type=ref,event=pr`
+        ]
+      } as Inputs,
+      {
+        main: 'sha-f24900b',
+        partial: ['pr-8'],
+        latest: false
+      } as Version,
+      [
+        'org/app:sha-f24900b',
+        'org/app:pr-8',
+        'ghcr.io/user/app:sha-f24900b',
+        'ghcr.io/user/app:pr-8'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=sha-f24900b",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'pr08',
+      'event_pull_request_target.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=ref,event=pr,prefix=`
+        ],
+        flavor: [
+          `prefix=glo-`,
+          `suffix=-bal`
+        ]
+      } as Inputs,
+      {
+        main: '8-bal',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:8-bal',
+        'ghcr.io/user/app:8-bal'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=8-bal",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
+        "org.opencontainers.image.licenses=MIT"
+      ]
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });
