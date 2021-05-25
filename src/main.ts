@@ -4,7 +4,6 @@ import * as github from './github';
 import {Meta, Version} from './meta';
 import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
-import {ReposGetResponseData} from '@octokit/types';
 
 async function run() {
   try {
@@ -14,7 +13,7 @@ async function run() {
     }
 
     const context: Context = github.context();
-    const repo: ReposGetResponseData = await github.repo(inputs.githubToken);
+    const repo: github.ReposGetResponseData = await github.repo(inputs.githubToken);
     core.startGroup(`Context info`);
     core.info(`eventName: ${context.eventName}`);
     core.info(`sha: ${context.sha}`);

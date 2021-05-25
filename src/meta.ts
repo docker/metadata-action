@@ -4,11 +4,11 @@ import * as path from 'path';
 import moment from 'moment';
 import * as semver from 'semver';
 import {Inputs, tmpDir} from './context';
+import {ReposGetResponseData} from './github';
 import * as tcl from './tag';
 import * as fcl from './flavor';
 import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
-import {ReposGetResponseData} from '@octokit/types';
 
 export interface Version {
   main: string | undefined;
