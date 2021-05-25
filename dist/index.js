@@ -382,6 +382,11 @@ const fcl = __importStar(__webpack_require__(3716));
 const core = __importStar(__webpack_require__(2186));
 class Meta {
     constructor(inputs, context, repo) {
+        // Needs to override Git reference with pr ref instead of upstream branch ref
+        // for pull_request_target event
+        if (/pull_request_target/.test(context.eventName)) {
+            context.ref = `refs/pull/${context.payload.number}/merge`;
+        }
         this.inputs = inputs;
         this.context = context;
         this.repo = repo;
@@ -531,14 +536,10 @@ class Meta {
         return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? true : this.flavor.latest == 'true');
     }
     procRefPr(version, tag) {
-        let ref = this.context.ref;
-        if (/pull_request_target/.test(this.context.eventName)) {
-            ref = `refs/pull/${this.context.payload.number}/merge`;
-        }
-        if (!/^refs\/pull\//.test(ref)) {
+        if (!/^refs\/pull\//.test(this.context.ref)) {
             return version;
         }
-        const vraw = this.setValue(ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, ''), tag);
+        const vraw = this.setValue(this.context.ref.replace(/^refs\/pull\//g, '').replace(/\/merge$/g, ''), tag);
         return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true');
     }
     procEdge(version, tag) {

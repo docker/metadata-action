@@ -619,36 +619,36 @@ describe('push', () => {
     ],
     [
       'push18',
-        'event_push.env',
-        {
-          images: ['org/app', 'ghcr.io/user/app'],
-          tags: [
-            `type=ref,event=branch`,
-            `type=sha,format=long`
-          ],
-        } as Inputs,
-        {
-          main: 'dev',
-          partial: ['sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'],
-          latest: false
-        } as Version,
-        [
-          'org/app:dev',
-          'org/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
-          'ghcr.io/user/app:dev',
-          'ghcr.io/user/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'
+      'event_push.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=ref,event=branch`,
+          `type=sha,format=long`
         ],
-        [
-          "org.opencontainers.image.title=Hello-World",
-          "org.opencontainers.image.description=This your first repo!",
-          "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-          "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-          "org.opencontainers.image.version=dev",
-          "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
-          "org.opencontainers.image.licenses=MIT"
-        ]
+      } as Inputs,
+      {
+        main: 'dev',
+        partial: ['sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'],
+        latest: false
+      } as Version,
+      [
+        'org/app:dev',
+        'org/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
+        'ghcr.io/user/app:dev',
+        'ghcr.io/user/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'
       ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=dev",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ]
   ])('given %p with %p event', tagsLabelsTest);
 });
 
@@ -1836,6 +1836,43 @@ describe('pr', () => {
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=8-bal",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'pr09',
+      'event_pull_request_target.env',
+      {
+        images: ['org/app'],
+        tags: [
+          `type=ref,event=tag`,
+          `type=ref,event=pr`,
+          `type=ref,event=branch`,
+          `type=sha`,
+          `type=sha,format=long`
+        ]
+      } as Inputs,
+      {
+        main: 'pr-8',
+        partial: [
+          'sha-f24900b',
+          'sha-f24900bfcfee76d8055c8421a164c7e57ad20e68'
+        ],
+        latest: false
+      } as Version,
+      [
+        'org/app:pr-8',
+        'org/app:sha-f24900b',
+        'org/app:sha-f24900bfcfee76d8055c8421a164c7e57ad20e68'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=pr-8",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
         "org.opencontainers.image.licenses=MIT"
