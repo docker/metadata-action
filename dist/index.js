@@ -642,7 +642,7 @@ class Meta {
                 tags.push(`${imageLc}:${partial}`);
             }
             if (this.version.latest) {
-                if (this.flavor.on_latest === "true") {
+                if (this.flavor.on_latest === 'true') {
                     tags.push(`${imageLc}:${this.flavor.prefix}latest${this.flavor.suffix}`);
                 }
                 else {
