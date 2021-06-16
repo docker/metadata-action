@@ -12,29 +12,30 @@ GitHub Action to extract metadata (tags, labels) for Docker. This action is part
 
 ___
 
-* [Usage](#usage)
-  * [Basic](#basic)
-  * [Semver](#semver)
-  * [Bake definition](#bake-definition)
-* [Customizing](#customizing)
-  * [inputs](#inputs)
-  * [outputs](#outputs)
-* [`flavor` input](#flavor-input)
-* [`tags` input](#tags-input)
-  * [`type=schedule`](#typeschedule)
-  * [`type=semver`](#typesemver)
-  * [`type=match`](#typematch)
-  * [`type=edge`](#typeedge)
-  * [`type=ref`](#typeref)
-  * [`type=raw`](#typeraw)
-  * [`type=sha`](#typesha)
-* [Notes](#notes)
-  * [Latest tag](#latest-tag)
-  * [Global expressions](#global-expressions)
-  * [Major version zero](#major-version-zero)
-  * [JSON output object](#json-output-object)
-  * [Overwrite labels](#overwrite-labels)
-* [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
+- [About](#about)
+- [Usage](#usage)
+  - [Basic](#basic)
+  - [Semver](#semver)
+  - [Bake definition](#bake-definition)
+- [Customizing](#customizing)
+  - [inputs](#inputs)
+  - [outputs](#outputs)
+- [`flavor` input](#flavor-input)
+- [`tags` input](#tags-input)
+  - [`type=schedule`](#typeschedule)
+  - [`type=semver`](#typesemver)
+  - [`type=match`](#typematch)
+  - [`type=edge`](#typeedge)
+  - [`type=ref`](#typeref)
+  - [`type=raw`](#typeraw)
+  - [`type=sha`](#typesha)
+- [Notes](#notes)
+  - [Latest tag](#latest-tag)
+  - [Global expressions](#global-expressions)
+  - [Major version zero](#major-version-zero)
+  - [JSON output object](#json-output-object)
+  - [Overwrite labels](#overwrite-labels)
+- [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
 
 ## Usage
 
@@ -287,11 +288,13 @@ flavor: |
   latest=auto
   prefix=
   suffix=
+  on_latest=
 ```
 
 * `latest=<auto|true|false>`: Handle [latest tag](#latest-tag) (default `auto`)
 * `prefix=<string>`: A global prefix for each generated tag
 * `suffix=<string>`: A global suffix for each generated tag
+* `on_latest=<true|false>`: Apply prefix and suffix to [latest tag](#latest-tag) (default `false`)
 
 ## `tags` input
 
