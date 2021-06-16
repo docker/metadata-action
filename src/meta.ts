@@ -304,7 +304,11 @@ export class Meta {
         tags.push(`${imageLc}:${partial}`);
       }
       if (this.version.latest) {
-        tags.push(`${imageLc}:latest`);
+        if (this.flavor.on_latest === 'true') {
+          tags.push(`${imageLc}:${this.flavor.prefix}latest${this.flavor.suffix}`);
+        } else {
+          tags.push(`${imageLc}:latest`);
+        }
       }
     }
     return tags;

@@ -4,13 +4,15 @@ export interface Flavor {
   latest: string;
   prefix: string;
   suffix: string;
+  on_latest: string;
 }
 
 export function Transform(inputs: string[]): Flavor {
   const flavor: Flavor = {
     latest: 'auto',
     prefix: '',
-    suffix: ''
+    suffix: '',
+    on_latest: 'false'
   };
 
   for (const input of inputs) {
@@ -34,6 +36,13 @@ export function Transform(inputs: string[]): Flavor {
         flavor.suffix = parts[1];
         break;
       }
+      case 'on_latest': {
+        flavor.on_latest = parts[1];
+        if (!['true', 'false'].includes(flavor.on_latest)) {
+          throw new Error(`Invalid on_latest flavor entry: ${input}`);
+        }
+        break;
+      }
       default: {
         throw new Error(`Unknown entry: ${input}`);
       }
@@ -44,6 +53,8 @@ export function Transform(inputs: string[]): Flavor {
   core.info(`latest=${flavor.latest}`);
   core.info(`prefix=${flavor.prefix}`);
   core.info(`suffix=${flavor.suffix}`);
+  core.info(`on_latest=${flavor.on_latest}`);
+
   core.endGroup();
 
   return flavor;

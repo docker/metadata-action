@@ -32,7 +32,8 @@ describe('transform', () => {
       {
         latest: "true",
         prefix: "",
-        suffix: ""
+        suffix: "",
+        on_latest: "false"
       } as Flavor,
       false
     ],
@@ -43,7 +44,8 @@ describe('transform', () => {
       {
         latest: "false",
         prefix: "",
-        suffix: ""
+        suffix: "",
+        on_latest: "false"
       } as Flavor,
       false
     ],
@@ -54,7 +56,8 @@ describe('transform', () => {
       {
         latest: "auto",
         prefix: "",
-        suffix: ""
+        suffix: "",
+        on_latest: "false"
       } as Flavor,
       false
     ],
@@ -72,7 +75,8 @@ describe('transform', () => {
       {
         latest: "auto",
         prefix: "sha-",
-        suffix: ""
+        suffix: "",
+        on_latest: "false"
       } as Flavor,
       false
     ],
@@ -83,7 +87,8 @@ describe('transform', () => {
       {
         latest: "auto",
         prefix: "",
-        suffix: "-alpine"
+        suffix: "-alpine",
+        on_latest: "false"
       } as Flavor,
       false
     ],
@@ -96,10 +101,36 @@ describe('transform', () => {
       {
         latest: "false",
         prefix: "dev-",
-        suffix: "-alpine"
+        suffix: "-alpine",
+        on_latest: "false"
       } as Flavor,
       false
     ],
+    [
+      [
+        `latest=auto`,
+        `prefix=`,
+        `suffix=-alpine`,
+        `on_latest=true`
+      ],
+      {
+        latest: "auto",
+        prefix: "",
+        suffix: "-alpine",
+        on_latest: "true"
+      } as Flavor,
+      false
+    ],
+    [
+      [
+        `latest=true`,
+        `prefix=`,
+        `suffix=-alpine`,
+        `on_latest=fail`
+      ],
+      {} as Flavor,
+      true
+    ]
   ])('given %p attributes ', async (inputs: string[], expected: Flavor, invalid: boolean) => {
     try {
       const flavor = Transform(inputs);

@@ -136,7 +136,8 @@ function Transform(inputs) {
     const flavor = {
         latest: 'auto',
         prefix: '',
-        suffix: ''
+        suffix: '',
+        on_latest: 'false'
     };
     for (const input of inputs) {
         const parts = input.split('=', 2);
@@ -159,6 +160,13 @@ function Transform(inputs) {
                 flavor.suffix = parts[1];
                 break;
             }
+            case 'on_latest': {
+                flavor.on_latest = parts[1];
+                if (!['true', 'false'].includes(flavor.on_latest)) {
+                    throw new Error(`Invalid on_latest flavor entry: ${input}`);
+                }
+                break;
+            }
             default: {
                 throw new Error(`Unknown entry: ${input}`);
             }
@@ -168,6 +176,7 @@ function Transform(inputs) {
     core.info(`latest=${flavor.latest}`);
     core.info(`prefix=${flavor.prefix}`);
     core.info(`suffix=${flavor.suffix}`);
+    core.info(`on_latest=${flavor.on_latest}`);
     core.endGroup();
     return flavor;
 }
@@ -633,7 +642,12 @@ class Meta {
                 tags.push(`${imageLc}:${partial}`);
             }
             if (this.version.latest) {
-                tags.push(`${imageLc}:latest`);
+                if (this.flavor.on_latest === "true") {
+                    tags.push(`${imageLc}:${this.flavor.prefix}latest${this.flavor.suffix}`);
+                }
+                else {
+                    tags.push(`${imageLc}:latest`);
+                }
             }
         }
         return tags;
