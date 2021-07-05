@@ -129,45 +129,78 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Transform = void 0;
 const core = __importStar(__webpack_require__(2186));
+const sync_1 = __importDefault(__webpack_require__(8750));
 function Transform(inputs) {
     const flavor = {
         latest: 'auto',
         prefix: '',
-        suffix: ''
+        prefixLatest: false,
+        suffix: '',
+        suffixLatest: false
     };
     for (const input of inputs) {
-        const parts = input.split('=', 2);
-        if (parts.length == 1) {
-            throw new Error(`Invalid entry: ${input}`);
-        }
-        switch (parts[0]) {
-            case 'latest': {
-                flavor.latest = parts[1];
-                if (!['auto', 'true', 'false'].includes(flavor.latest)) {
-                    throw new Error(`Invalid latest flavor entry: ${input}`);
+        const fields = sync_1.default(input, {
+            relaxColumnCount: true,
+            skipLinesWithEmptyValues: true
+        })[0];
+        let onlatestfor = '';
+        for (const field of fields) {
+            const parts = field.toString().split('=', 2);
+            if (parts.length == 1) {
+                throw new Error(`Invalid flavor entry: ${input}`);
+            }
+            switch (parts[0]) {
+                case 'latest': {
+                    flavor.latest = parts[1];
+                    if (!['auto', 'true', 'false'].includes(flavor.latest)) {
+                        throw new Error(`Invalid latest flavor entry: ${input}`);
+                    }
+                    break;
                 }
-                break;
-            }
-            case 'prefix': {
-                flavor.prefix = parts[1];
-                break;
-            }
-            case 'suffix': {
-                flavor.suffix = parts[1];
-                break;
-            }
-            default: {
-                throw new Error(`Unknown entry: ${input}`);
+                case 'prefix': {
+                    flavor.prefix = parts[1];
+                    onlatestfor = 'prefix';
+                    break;
+                }
+                case 'suffix': {
+                    flavor.suffix = parts[1];
+                    onlatestfor = 'suffix';
+                    break;
+                }
+                case 'onlatest': {
+                    if (!['true', 'false'].includes(parts[1])) {
+                        throw new Error(`Invalid value for onlatest attribute: ${parts[1]}`);
+                    }
+                    switch (onlatestfor) {
+                        case 'prefix': {
+                            flavor.prefixLatest = /true/i.test(parts[1]);
+                            break;
+                        }
+                        case 'suffix': {
+                            flavor.suffixLatest = /true/i.test(parts[1]);
+                            break;
+                        }
+                    }
+                    break;
+                }
+                default: {
+                    throw new Error(`Unknown flavor entry: ${input}`);
+                }
             }
         }
     }
     core.startGroup(`Processing flavor input`);
     core.info(`latest=${flavor.latest}`);
     core.info(`prefix=${flavor.prefix}`);
+    core.info(`prefixLatest=${flavor.prefixLatest}`);
     core.info(`suffix=${flavor.suffix}`);
+    core.info(`suffixLatest=${flavor.suffixLatest}`);
     core.endGroup();
     return flavor;
 }
@@ -501,7 +534,6 @@ class Meta {
         else {
             vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
         }
-        let latest = false;
         let tmatch;
         const isRegEx = tag.attrs['pattern'].match(/^\/(.+)\/(.*)$/);
         if (isRegEx) {
@@ -633,7 +665,7 @@ class Meta {
                 tags.push(`${imageLc}:${partial}`);
             }
             if (this.version.latest) {
-                tags.push(`${imageLc}:latest`);
+                tags.push(`${imageLc}:${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`);
             }
         }
         return tags;
@@ -817,7 +849,7 @@ function Parse(s) {
             switch (key) {
                 case 'type': {
                     if (!Object.values(Type).includes(value)) {
-                        throw new Error(`Unknown type attribute: ${value}`);
+                        throw new Error(`Unknown tag type attribute: ${value}`);
                     }
                     tag.type = value;
                     break;

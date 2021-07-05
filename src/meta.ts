@@ -159,7 +159,6 @@ export class Meta {
       vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
     }
 
-    let latest: boolean = false;
     let tmatch;
     const isRegEx = tag.attrs['pattern'].match(/^\/(.+)\/(.*)$/);
     if (isRegEx) {
@@ -304,7 +303,7 @@ export class Meta {
         tags.push(`${imageLc}:${partial}`);
       }
       if (this.version.latest) {
-        tags.push(`${imageLc}:latest`);
+        tags.push(`${imageLc}:${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`);
       }
     }
     return tags;
