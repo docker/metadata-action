@@ -296,8 +296,8 @@ flavor: |
 ```
 
 * `latest=<auto|true|false>`: Handle [latest tag](#latest-tag) (default `auto`)
-* `prefix=<string>`: A global prefix for each generated tag
-* `suffix=<string>`: A global suffix for each generated tag
+* `prefix=<string>,onlatest=<true|false>`: A global prefix for each generated tag and optionnally for `latest`
+* `suffix=<string>,onlatest=<true|false>`: A global suffix for each generated tag and optionnally for `latest`
 
 ## `tags` input
 

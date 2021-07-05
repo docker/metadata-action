@@ -32,7 +32,9 @@ describe('transform', () => {
       {
         latest: "true",
         prefix: "",
-        suffix: ""
+        prefixLatest: false,
+        suffix: "",
+        suffixLatest: false,
       } as Flavor,
       false
     ],
@@ -43,7 +45,9 @@ describe('transform', () => {
       {
         latest: "false",
         prefix: "",
-        suffix: ""
+        prefixLatest: false,
+        suffix: "",
+        suffixLatest: false,
       } as Flavor,
       false
     ],
@@ -54,7 +58,9 @@ describe('transform', () => {
       {
         latest: "auto",
         prefix: "",
-        suffix: ""
+        prefixLatest: false,
+        suffix: "",
+        suffixLatest: false,
       } as Flavor,
       false
     ],
@@ -72,7 +78,9 @@ describe('transform', () => {
       {
         latest: "auto",
         prefix: "sha-",
-        suffix: ""
+        prefixLatest: false,
+        suffix: "",
+        suffixLatest: false,
       } as Flavor,
       false
     ],
@@ -83,7 +91,9 @@ describe('transform', () => {
       {
         latest: "auto",
         prefix: "",
-        suffix: "-alpine"
+        prefixLatest: false,
+        suffix: "-alpine",
+        suffixLatest: false,
       } as Flavor,
       false
     ],
@@ -96,7 +106,49 @@ describe('transform', () => {
       {
         latest: "false",
         prefix: "dev-",
-        suffix: "-alpine"
+        prefixLatest: false,
+        suffix: "-alpine",
+        suffixLatest: false,
+      } as Flavor,
+      false
+    ],
+    [
+      [
+        `prefix=dev-,onlatest=true`,
+      ],
+      {
+        latest: "auto",
+        prefix: "dev-",
+        prefixLatest: true,
+        suffix: "",
+        suffixLatest: false,
+      } as Flavor,
+      false
+    ],
+    [
+      [
+        `suffix=-alpine,onlatest=true`,
+      ],
+      {
+        latest: "auto",
+        prefix: "",
+        prefixLatest: false,
+        suffix: "-alpine",
+        suffixLatest: true,
+      } as Flavor,
+      false
+    ],
+    [
+      [
+        `prefix=dev-,onlatest=true`,
+        `suffix=-alpine,onlatest=true`,
+      ],
+      {
+        latest: "auto",
+        prefix: "dev-",
+        prefixLatest: true,
+        suffix: "-alpine",
+        suffixLatest: true,
       } as Flavor,
       false
     ],

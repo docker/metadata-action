@@ -100,7 +100,7 @@ export function Parse(s: string): Tag {
       switch (key) {
         case 'type': {
           if (!Object.values(Type).includes(value)) {
-            throw new Error(`Unknown type attribute: ${value}`);
+            throw new Error(`Unknown tag type attribute: ${value}`);
           }
           tag.type = value;
           break;
