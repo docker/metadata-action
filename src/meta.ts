@@ -2,6 +2,7 @@ import * as handlebars from 'handlebars';
 import * as fs from 'fs';
 import * as path from 'path';
 import moment from 'moment';
+import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
 import {Inputs, tmpDir} from './context';
 import {ReposGetResponseData} from './github';
@@ -60,6 +61,10 @@ export class Meta {
         }
         case tcl.Type.Semver: {
           version = this.procSemver(version, tag);
+          break;
+        }
+        case tcl.Type.Pep440: {
+          version = this.procPep440(version, tag);
           break;
         }
         case tcl.Type.Match: {
@@ -141,6 +146,53 @@ export class Meta {
       vraw = this.setValue(handlebars.compile('{{version}}')(sver), tag);
     } else {
       vraw = this.setValue(handlebars.compile(tag.attrs['pattern'])(sver), tag);
+      latest = true;
+    }
+
+    return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true');
+  }
+
+  private procPep440(version: Version, tag: tcl.Tag): Version {
+    if (!/^refs\/tags\//.test(this.context.ref) && tag.attrs['value'].length == 0) {
+      return version;
+    }
+
+    let vraw: string;
+    if (tag.attrs['value'].length > 0) {
+      vraw = this.setGlobalExp(tag.attrs['value']);
+    } else {
+      vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+    }
+    if (!pep440.valid(vraw)) {
+      core.warning(`${vraw} does not conform to PEP 440. More info: https://www.python.org/dev/peps/pep-0440`);
+      return version;
+    }
+
+    let latest: boolean = false;
+    const pver = pep440.explain(vraw);
+    if (pver.is_prerelease || pver.is_postrelease || pver.is_devrelease) {
+      vraw = this.setValue(pep440.clean(vraw), tag);
+    } else {
+      vraw = this.setValue(
+        handlebars.compile(tag.attrs['pattern'])({
+          raw: function () {
+            return vraw;
+          },
+          version: function () {
+            return pep440.clean(vraw);
+          },
+          major: function () {
+            return pep440.major(vraw);
+          },
+          minor: function () {
+            return pep440.minor(vraw);
+          },
+          patch: function () {
+            return pep440.patch(vraw);
+          }
+        }),
+        tag
+      );
       latest = true;
     }
 
