@@ -23,6 +23,7 @@ ___
 * [`tags` input](#tags-input)
   * [`type=schedule`](#typeschedule)
   * [`type=semver`](#typesemver)
+  * [`type=pep440`](#typepep440)
   * [`type=match`](#typematch)
   * [`type=edge`](#typeedge)
   * [`type=ref`](#typeref)
@@ -384,11 +385,11 @@ tags: |
 ```
 
 Will be used on a [push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push)
-and requires a valid Git tag [semver](https://semver.org/) but you can also use a custom value through `value`
+and requires a valid [semver](https://semver.org/) Git tag, but you can also use a custom value through `value`
 attribute.
 
 `pattern` attribute supports [Handlebars template](https://handlebarsjs.com/guide/) with the following expressions:
-* `raw` ; the actual semver
+* `raw` ; the actual tag
 * `version` ; shorthand for `{{major}}.{{minor}}.{{patch}}` (can include pre-release)
 * `major` ; major version identifier
 * `minor` ; minor version identifier
@@ -414,6 +415,51 @@ Extended attributes and default values:
 ```yaml
 tags: |
   type=semver,enable=true,priority=900,prefix=,suffix=,pattern=,value=
+```
+
+### `type=pep440`
+
+```yaml
+tags: |
+  # minimal
+  type=pep440,pattern={{version}}
+  # use custom value instead of git tag
+  type=pep440,pattern={{version}},value=1.0.0
+```
+
+Will be used on a [push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push)
+and requires a Git tag that conforms to [PEP 440](https://www.python.org/dev/peps/pep-0440/), but you can also use a
+custom value through `value` attribute.
+
+`pattern` attribute supports [Handlebars template](https://handlebarsjs.com/guide/) with the following expressions:
+* `raw` ; the actual tag
+* `version` ; cleaned version
+* `major` ; major version identifier
+* `minor` ; minor version identifier
+* `patch` ; patch version identifier
+
+| Git tag            | Pattern                                                  | Output               |
+|--------------------|----------------------------------------------------------|----------------------|
+| `1.2.3`            | `{{raw}}`                                                | `1.2.3`              |
+| `1.2.3`            | `{{version}}`                                            | `1.2.3`              |
+| `v1.2.3`           | `{{version}}`                                            | `1.2.3`              |
+| `1.2.3`            | `{{major}}.{{minor}}`                                    | `1.2`                |
+| `1.2.3`            | `v{{major}}`                                             | `v1`                 |
+| `1.2.3rc2`         | `{{raw}}`                                                | `1.2.3rc2`*          |
+| `1.2.3rc2`         | `{{version}}`                                            | `1.2.3rc2`           |
+| `1.2.3rc2`         | `{{major}}.{{minor}}`                                    | `1.2.3rc2`*          |
+| `1.2.3post1`       | `{{major}}.{{minor}}`                                    | `1.2.3.post1`*       |
+| `1.2.3beta2`       | `{{major}}.{{minor}}`                                    | `1.2.3b2`*           |
+| `1.0dev4`          | `{{major}}.{{minor}}`                                    | `1.0.dev4`*          |
+
+> *dev/pre/post release will only extend `{{version}}` as tag because they are updated frequently,
+> and contain many breaking changes that are (by the author's design) not yet fit for public consumption.
+
+Extended attributes and default values:
+
+```yaml
+tags: |
+  type=pep440,enable=true,priority=900,prefix=,suffix=,pattern=,value=
 ```
 
 ### `type=match`
