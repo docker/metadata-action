@@ -7,17 +7,13 @@ import * as github from '../src/github';
 import {Meta, Version} from '../src/meta';
 import {Context} from '@actions/github/lib/context';
 
-jest.spyOn(github, 'repo').mockImplementation(
-  (): Promise<github.ReposGetResponseData> => {
-    return <Promise<github.ReposGetResponseData>>require(path.join(__dirname, 'fixtures', 'repo.json'));
-  }
-);
+jest.spyOn(github, 'repo').mockImplementation((): Promise<github.ReposGetResponseData> => {
+  return <Promise<github.ReposGetResponseData>>require(path.join(__dirname, 'fixtures', 'repo.json'));
+});
 
-jest.spyOn(github, 'context').mockImplementation(
-  (): Context => {
-    return new Context();
-  }
-);
+jest.spyOn(github, 'context').mockImplementation((): Context => {
+  return new Context();
+});
 
 jest.spyOn(global.Date.prototype, 'toISOString').mockImplementation(() => {
   return '2020-01-10T00:30:00.000Z';
