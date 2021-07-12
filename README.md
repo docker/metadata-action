@@ -544,11 +544,11 @@ Extended attributes and default values:
 ```yaml
 tags: |
   # branch event
-  type=ref,enable=true,priority=600,prefix=,suffix=,event=
+  type=ref,enable=true,priority=600,prefix=,suffix=,event=branch
   # tag event
-  type=ref,enable=true,priority=600,prefix=,suffix=,event=
+  type=ref,enable=true,priority=600,prefix=,suffix=,event=tag
   # pull request event
-  type=ref,enable=true,priority=600,prefix=pr-,suffix=,event=
+  type=ref,enable=true,priority=600,prefix=pr-,suffix=,event=pr
 ```
 
 ### `type=raw`

@@ -629,10 +629,10 @@ class Meta {
         if (tag.attrs['branch'].length == 0) {
             tag.attrs['branch'] = this.repo.default_branch;
         }
-        if (tag.attrs['branch'] === val) {
-            val = 'edge';
+        if (tag.attrs['branch'] != val) {
+            return version;
         }
-        const vraw = this.setValue(val, tag);
+        const vraw = this.setValue('edge', tag);
         return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true');
     }
     procRaw(version, tag) {
