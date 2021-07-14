@@ -379,14 +379,12 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'master',
-        partial: ['sha-90dd603'],
+        main: 'sha-90dd603',
+        partial: [],
         latest: false
       } as Version,
       [
-        'org/app:master',
         'org/app:sha-90dd603',
-        'ghcr.io/user/app:master',
         'ghcr.io/user/app:sha-90dd603'
       ],
       [
@@ -394,7 +392,7 @@ describe('push', () => {
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=master",
+        "org.opencontainers.image.version=sha-90dd603",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
@@ -411,14 +409,12 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'my-feature-1245',
-        partial: ['sha-90dd603'],
+        main: 'sha-90dd603',
+        partial: [],
         latest: false
       } as Version,
       [
-        'org/app:my-feature-1245',
         'org/app:sha-90dd603',
-        'ghcr.io/user/app:my-feature-1245',
         'ghcr.io/user/app:sha-90dd603'
       ],
       [
@@ -426,7 +422,7 @@ describe('push', () => {
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=my-feature-1245",
+        "org.opencontainers.image.version=sha-90dd603",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
@@ -444,20 +440,17 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'my-feature-1245',
+        main: undefined,
         partial: [],
         latest: false
       } as Version,
-      [
-        'org/app:my-feature-1245',
-        'ghcr.io/user/app:my-feature-1245'
-      ],
+      [],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=my-feature-1245",
+        "org.opencontainers.image.version=",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
@@ -642,6 +635,37 @@ describe('push', () => {
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'push19',
+      'event_push.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=edge,branch=master`,
+          `type=ref,event=branch,enable=false`,
+          `type=sha,format=long`
+        ],
+      } as Inputs,
+      {
+        main: 'sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
+        'ghcr.io/user/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=sha-90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
@@ -1377,20 +1401,18 @@ describe('tag', () => {
       {
         images: ['org/app'],
         tags: [
-          `type=pep440,pattern={{version}}`,
-          `type=pep440,pattern={{major}}.{{minor}}`,
-          `type=pep440,pattern={{major}}`
+          `type=pep440,pattern={{raw}}`,
+          `type=pep440,pattern={{major}}.{{minor}}`
         ]
       } as Inputs,
       {
-        main: '1.1.1',
-        partial: ['1.1', '1'],
+        main: 'v1.1.1',
+        partial: ['1.1'],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1',
+        'org/app:v1.1.1',
         'org/app:1.1',
-        'org/app:1',
         'org/app:latest'
       ],
       [
@@ -1398,7 +1420,7 @@ describe('tag', () => {
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1",
+        "org.opencontainers.image.version=v1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
         "org.opencontainers.image.licenses=MIT"
