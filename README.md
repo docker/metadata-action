@@ -5,8 +5,8 @@
 
 ## About
 
-GitHub Action to extract metadata (tags, labels) for Docker. This action is particularly useful if used with
-[Docker Build Push](https://github.com/docker/build-push-action) action.
+GitHub Action to extract metadata from Git reference and GitHub events.
+This action is particularly useful if used with [Docker Build Push](https://github.com/docker/build-push-action) action to tag and label Docker images.
 
 ![Screenshot](.github/metadata-action.png)
 
