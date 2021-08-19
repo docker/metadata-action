@@ -585,16 +585,18 @@ describe('push', () => {
         images: ['user/app'],
         tags: [
           `type=raw,value=mytag-{{branch}}`,
+          `type=raw,value=mytag-{{date 'YYYYMMDD'}}`,
           `type=raw,value=mytag-{{tag}}`
         ],
       } as Inputs,
       {
         main: 'mytag-master',
-        partial: ['mytag-'],
+        partial: ['mytag-20200110', 'mytag-'],
         latest: false
       } as Version,
       [
         'user/app:mytag-master',
+        'user/app:mytag-20200110',
         'user/app:mytag-'
       ],
       [
