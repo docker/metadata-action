@@ -682,6 +682,7 @@ class Meta {
     }
     setGlobalExp(val) {
         const ctx = this.context;
+        const currentDate = this.date;
         return handlebars.compile(val)({
             branch: function () {
                 if (!/^refs\/heads\//.test(ctx.ref)) {
@@ -697,6 +698,9 @@ class Meta {
             },
             sha: function () {
                 return ctx.sha.substr(0, 7);
+            },
+            date: function (format) {
+                return moment_1.default(currentDate).utc().format(format);
             }
         });
     }

@@ -612,6 +612,7 @@ attributes are available:
 | `{{branch}}`             | `master`             |
 | `{{tag}}`                | `v1.2.3`             |
 | `{{sha}}`                | `90dd603`            |
+| `{{date 'YYYYMMDD'}}`    | `20210326`           |
 
 ```yaml
 tags: |
