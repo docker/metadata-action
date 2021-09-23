@@ -297,8 +297,8 @@ flavor: |
 ```
 
 * `latest=<auto|true|false>`: Handle [latest tag](#latest-tag) (default `auto`)
-* `prefix=<string>,onlatest=<true|false>`: A global prefix for each generated tag and optionnally for `latest`
-* `suffix=<string>,onlatest=<true|false>`: A global suffix for each generated tag and optionnally for `latest`
+* `prefix=<string>,onlatest=<true|false>`: A global prefix for each generated tag and optionally for `latest`
+* `suffix=<string>,onlatest=<true|false>`: A global suffix for each generated tag and optionally for `latest`
 
 ## `tags` input
 
@@ -644,7 +644,7 @@ tags: |
 ### JSON output object
 
 The `json` output is a JSON object composed of the generated tags and labels so that you can reuse them further in your
-workflow using the [`fromJSON` function](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#fromjson):
+workflow using the [`fromJSON` function](https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson):
 
 ```yaml
       -
