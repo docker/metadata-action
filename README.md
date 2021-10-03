@@ -309,11 +309,11 @@ the form of a key-value pair list in CSV format to remove limitations intrinsica
 ```yaml
 tags: |
   type=schedule
-  type=ref,event=branch
-  type=ref,event=pr
   type=semver,pattern={{version}}
   type=semver,pattern={{major}}.{{minor}}
   type=semver,pattern={{major}}
+  type=ref,event=branch
+  type=ref,event=pr
   type=sha
 ```
 
@@ -321,6 +321,7 @@ Each entry is defined by a `type`, which are:
 
 * [`type=schedule`](#typeschedule)
 * [`type=semver`](#typesemver)
+* [`type=pep440`](#typepep440)
 * [`type=match`](#typematch)
 * [`type=edge`](#typeedge)
 * [`type=ref`](#typeref)
