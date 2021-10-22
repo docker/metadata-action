@@ -151,39 +151,44 @@ function Transform(inputs) {
         })[0];
         let onlatestfor = '';
         for (const field of fields) {
-            const parts = field.toString().split('=', 2);
+            const parts = field
+                .toString()
+                .split('=')
+                .map(item => item.trim());
             if (parts.length == 1) {
                 throw new Error(`Invalid flavor entry: ${input}`);
             }
-            switch (parts[0]) {
+            const key = parts[0].toLowerCase();
+            const value = parts[1];
+            switch (key) {
                 case 'latest': {
-                    flavor.latest = parts[1];
+                    flavor.latest = value;
                     if (!['auto', 'true', 'false'].includes(flavor.latest)) {
                         throw new Error(`Invalid latest flavor entry: ${input}`);
                     }
                     break;
                 }
                 case 'prefix': {
-                    flavor.prefix = parts[1];
+                    flavor.prefix = value;
                     onlatestfor = 'prefix';
                     break;
                 }
                 case 'suffix': {
-                    flavor.suffix = parts[1];
+                    flavor.suffix = value;
                     onlatestfor = 'suffix';
                     break;
                 }
                 case 'onlatest': {
-                    if (!['true', 'false'].includes(parts[1])) {
-                        throw new Error(`Invalid value for onlatest attribute: ${parts[1]}`);
+                    if (!['true', 'false'].includes(value)) {
+                        throw new Error(`Invalid value for onlatest attribute: ${value}`);
                     }
                     switch (onlatestfor) {
                         case 'prefix': {
-                            flavor.prefixLatest = /true/i.test(parts[1]);
+                            flavor.prefixLatest = /true/i.test(value);
                             break;
                         }
                         case 'suffix': {
-                            flavor.suffixLatest = /true/i.test(parts[1]);
+                            flavor.suffixLatest = /true/i.test(value);
                             break;
                         }
                     }
@@ -902,13 +907,16 @@ function Parse(s) {
     })[0];
     const tag = new Tag();
     for (const field of fields) {
-        const parts = field.toString().split('=', 2);
+        const parts = field
+            .toString()
+            .split('=')
+            .map(item => item.trim());
         if (parts.length == 1) {
-            tag.attrs['value'] = parts[0].trim();
+            tag.attrs['value'] = parts[0];
         }
         else {
-            const key = parts[0].trim().toLowerCase();
-            const value = parts[1].trim();
+            const key = parts[0].toLowerCase();
+            const value = parts[1];
             switch (key) {
                 case 'type': {
                     if (!Object.values(Type).includes(value)) {

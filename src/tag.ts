@@ -93,12 +93,15 @@ export function Parse(s: string): Tag {
 
   const tag = new Tag();
   for (const field of fields) {
-    const parts = field.toString().split('=', 2);
+    const parts = field
+      .toString()
+      .split('=')
+      .map(item => item.trim());
     if (parts.length == 1) {
-      tag.attrs['value'] = parts[0].trim();
+      tag.attrs['value'] = parts[0];
     } else {
-      const key = parts[0].trim().toLowerCase();
-      const value = parts[1].trim();
+      const key = parts[0].toLowerCase();
+      const value = parts[1];
       switch (key) {
         case 'type': {
           if (!Object.values(Type).includes(value)) {
