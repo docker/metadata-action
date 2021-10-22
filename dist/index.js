@@ -699,6 +699,16 @@ class Meta {
             sha: function () {
                 return ctx.sha.substr(0, 7);
             },
+            base_ref: function () {
+                var _a, _b, _c, _d;
+                if (/^refs\/tags\//.test(ctx.ref)) {
+                    return (_a = ctx.payload) === null || _a === void 0 ? void 0 : _a.base_ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
+                }
+                if (/^refs\/pull\//.test(ctx.ref)) {
+                    return (_d = (_c = (_b = ctx.payload) === null || _b === void 0 ? void 0 : _b.pull_request) === null || _c === void 0 ? void 0 : _c.base) === null || _d === void 0 ? void 0 : _d.ref;
+                }
+                return '';
+            },
             date: function (format) {
                 return moment_1.default(currentDate).utc().format(format);
             }

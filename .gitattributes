@@ -1,2 +1,3 @@
+/__tests__/fixtures/** -linguist-detectable
 /dist/** linguist-generated=true
 /lib/** linguist-generated=true
