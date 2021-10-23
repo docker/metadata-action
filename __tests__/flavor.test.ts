@@ -152,6 +152,19 @@ describe('transform', () => {
       } as Flavor,
       false
     ],
+    [
+      [
+        `prefix= `,
+      ],
+      {
+        latest: "auto",
+        prefix: "",
+        prefixLatest: false,
+        suffix: "",
+        suffixLatest: false,
+      } as Flavor,
+      false
+    ]
   ])('given %p attributes ', async (inputs: string[], expected: Flavor, invalid: boolean) => {
     try {
       const flavor = Transform(inputs);
