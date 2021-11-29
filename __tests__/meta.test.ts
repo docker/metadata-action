@@ -1921,7 +1921,7 @@ describe('latest', () => {
         labels: [
           "maintainer=CrazyMax",
           "org.opencontainers.image.title=MyCustomTitle",
-          "org.opencontainers.image.description=Another description",
+          `org.opencontainers.image.description=this is a "good" example`,
           "org.opencontainers.image.vendor=MyCompany",
         ]
       } as Inputs,
@@ -1945,7 +1945,7 @@ describe('latest', () => {
         "org.opencontainers.image.licenses=MIT",
         "maintainer=CrazyMax",
         "org.opencontainers.image.title=MyCustomTitle",
-        "org.opencontainers.image.description=Another description",
+        `org.opencontainers.image.description=this is a "good" example`,
         "org.opencontainers.image.vendor=MyCompany"
       ]
     ],

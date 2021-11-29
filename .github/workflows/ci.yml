@@ -162,7 +162,7 @@ jobs:
           labels: |
             maintainer=CrazyMax
             org.opencontainers.image.title=MyCustomTitle
-            org.opencontainers.image.description=Another description
+            org.opencontainers.image.description=this is a "good" example
             org.opencontainers.image.vendor=MyCompany
 
   json:
