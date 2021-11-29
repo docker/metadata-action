@@ -1,4 +1,4 @@
-import csvparse from 'csv-parse/lib/sync';
+import {parse as csvparse} from 'csv-parse/sync';
 import * as core from '@actions/core';
 
 export enum Type {
@@ -88,7 +88,7 @@ export function Transform(inputs: string[]): Tag[] {
 export function Parse(s: string): Tag {
   const fields = csvparse(s, {
     relaxColumnCount: true,
-    skipLinesWithEmptyValues: true
+    skipRecordsWithEmptyValues: true
   })[0];
 
   const tag = new Tag();

@@ -1,4 +1,4 @@
-import csvparse from 'csv-parse/lib/sync';
+import {parse as csvparse} from 'csv-parse/sync';
 import * as core from '@actions/core';
 import {issueCommand} from '@actions/core/lib/command';
 import * as fs from 'fs';
@@ -49,7 +49,7 @@ export function getInputList(name: string, ignoreComma?: boolean): string[] {
   for (let output of csvparse(items, {
     columns: false,
     relaxColumnCount: true,
-    skipLinesWithEmptyValues: true
+    skipRecordsWithEmptyValues: true
   }) as Array<string[]>) {
     if (output.length == 1) {
       res.push(output[0]);
