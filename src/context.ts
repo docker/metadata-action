@@ -48,6 +48,7 @@ export function getInputList(name: string, ignoreComma?: boolean): string[] {
 
   for (let output of csvparse(items, {
     columns: false,
+    relax: true,
     relaxColumnCount: true,
     skipLinesWithEmptyValues: true
   }) as Array<string[]>) {
