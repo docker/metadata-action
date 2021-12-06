@@ -99,7 +99,6 @@ describe('transform', () => {
   ])('given %p', async (l: string[], expected: Tag[], invalid: boolean) => {
     try {
       const tags = Transform(l);
-      console.log(tags);
       expect(tags).toEqual(expected);
     } catch (err) {
       if (!invalid) {
@@ -429,7 +428,6 @@ describe('parse', () => {
   ])('given %p event ', async (s: string, expected: Tag, invalid: boolean) => {
     try {
       const tag = Parse(s);
-      console.log(tag);
       expect(tag).toEqual(expected);
     } catch (err) {
       if (!invalid) {

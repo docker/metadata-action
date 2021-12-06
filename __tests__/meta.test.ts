@@ -34,21 +34,17 @@ beforeEach(() => {
 const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>) => {
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
   const context = github.context();
-  console.log(process.env, context);
 
   const repo = await github.repo(process.env.GITHUB_TOKEN || '');
   const meta = new Meta({...getInputs(), ...inputs}, context, repo);
 
   const version = meta.version;
-  console.log('version', version);
   expect(version).toEqual(exVersion);
 
   const tags = meta.getTags();
-  console.log('tags', tags);
   expect(tags).toEqual(exTags);
 
   const labels = meta.getLabels();
-  console.log('labels', labels);
   expect(labels).toEqual(exLabels);
 };
 
@@ -3152,13 +3148,11 @@ describe('json', () => {
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: {}) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     const context = github.context();
-    console.log(process.env, context);
 
     const repo = await github.repo(process.env.GITHUB_TOKEN || '');
     const meta = new Meta({...getInputs(), ...inputs}, context, repo);
 
     const jsonOutput = meta.getJSON();
-    console.log('json', jsonOutput);
     expect(jsonOutput).toEqual(exJSON);
   });
 });
@@ -3459,13 +3453,11 @@ describe('bake', () => {
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: {}) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     const context = github.context();
-    console.log(process.env, context);
 
     const repo = await github.repo(process.env.GITHUB_TOKEN || '');
     const meta = new Meta({...getInputs(), ...inputs}, context, repo);
 
     const bakeFile = meta.getBakeFile();
-    console.log('bakeFile', bakeFile, fs.readFileSync(bakeFile, 'utf8'));
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
   });
 });

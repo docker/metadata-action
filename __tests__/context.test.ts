@@ -16,63 +16,54 @@ describe('getInputList', () => {
   it('single line correctly', async () => {
     await setInput('foo', 'bar');
     const res = await context.getInputList('foo');
-    console.log(res);
     expect(res).toEqual(['bar']);
   });
 
   it('multiline correctly', async () => {
     setInput('foo', 'bar\nbaz');
     const res = await context.getInputList('foo');
-    console.log(res);
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('empty lines correctly', async () => {
     setInput('foo', 'bar\n\nbaz');
     const res = await context.getInputList('foo');
-    console.log(res);
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('comma correctly', async () => {
     setInput('foo', 'bar,baz');
     const res = await context.getInputList('foo');
-    console.log(res);
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('empty result correctly', async () => {
     setInput('foo', 'bar,baz,');
     const res = await context.getInputList('foo');
-    console.log(res);
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('different new lines correctly', async () => {
     setInput('foo', 'bar\r\nbaz');
     const res = await context.getInputList('foo');
-    console.log(res);
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('different new lines and comma correctly', async () => {
     setInput('foo', 'bar\r\nbaz,bat');
     const res = await context.getInputList('foo');
-    console.log(res);
     expect(res).toEqual(['bar', 'baz', 'bat']);
   });
 
   it('multiline and ignoring comma correctly', async () => {
     setInput('cache-from', 'user/app:cache\ntype=local,src=path/to/dir');
     const res = await context.getInputList('cache-from', true);
-    console.log(res);
     expect(res).toEqual(['user/app:cache', 'type=local,src=path/to/dir']);
   });
 
   it('different new lines and ignoring comma correctly', async () => {
     setInput('cache-from', 'user/app:cache\r\ntype=local,src=path/to/dir');
     const res = await context.getInputList('cache-from', true);
-    console.log(res);
     expect(res).toEqual(['user/app:cache', 'type=local,src=path/to/dir']);
   });
 
@@ -86,7 +77,6 @@ ccccccccc"
 FOO=bar`
     );
     const res = await context.getInputList('secrets', true);
-    console.log(res);
     expect(res).toEqual([
       'GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789',
       `MYSECRET=aaaaaaaa
@@ -110,7 +100,6 @@ bbbb
 ccc"`
     );
     const res = await context.getInputList('secrets', true);
-    console.log(res);
     expect(res).toEqual([
       'GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789',
       `MYSECRET=aaaaaaaa
@@ -134,7 +123,6 @@ ccccccccc
 FOO=bar`
     );
     const res = await context.getInputList('secrets', true);
-    console.log(res);
     expect(res).toEqual(['GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789', 'MYSECRET=aaaaaaaa', 'bbbbbbb', 'ccccccccc', 'FOO=bar']);
   });
 
@@ -148,7 +136,6 @@ ccccccccc"
 FOO=bar`
     );
     const res = await context.getInputList('secrets', true);
-    console.log(res);
     expect(res).toEqual([
       'GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789',
       `MYSECRET=aaaaaaaa

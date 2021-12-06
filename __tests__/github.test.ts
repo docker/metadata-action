@@ -8,7 +8,6 @@ jest.spyOn(github, 'repo').mockImplementation((): Promise<github.ReposGetRespons
 describe('repo', () => {
   it('returns GitHub repository', async () => {
     const repo = await github.repo(process.env.GITHUB_TOKEN || '');
-    console.log(repo);
     expect(repo.name).not.toBeNull();
   });
 });
