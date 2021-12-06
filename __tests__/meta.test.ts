@@ -1700,6 +1700,38 @@ describe('tag', () => {
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
+    [
+      'tag32',
+      'event_tag_v1.2.3rc2.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=pep440,pattern={{raw}}`,
+          `type=pep440,pattern={{major}}.{{minor}}`
+        ]
+      } as Inputs,
+      {
+        main: 'v1.2.3rc2',
+        partial: ['1.2.3rc2'],
+        latest: false
+      } as Version,
+      [
+        'org/app:v1.2.3rc2',
+        'org/app:1.2.3rc2',
+        'ghcr.io/user/app:v1.2.3rc2',
+        'ghcr.io/user/app:1.2.3rc2'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.2.3rc2",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
   ])('given %p with %p event', tagsLabelsTest);
 });
 

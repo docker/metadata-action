@@ -404,12 +404,13 @@ attribute.
 | `v1.2.3`           | `v{{major}}`                                             | `v1`                 |
 | `v1.2.3`           | `{{minor}}`                                              | `2`                  |
 | `v1.2.3`           | `{{patch}}`                                              | `3`                  |
-| `v2.0.8-beta.67`   | `{{raw}}`                                                | `2.0.8-beta.67`*     |
+| `v2.0.8-beta.67`   | `{{raw}}`                                                | `v2.0.8-beta.67`     |
 | `v2.0.8-beta.67`   | `{{version}}`                                            | `2.0.8-beta.67`      |
 | `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | `2.0.8-beta.67`*     |
 
-> *Pre-release (rc, beta, alpha) will only extend `{{version}}` as tag because they are updated frequently,
-> and contain many breaking changes that are (by the author's design) not yet fit for public consumption.
+> *Pre-release (rc, beta, alpha) will only extend `{{version}}` (or `{{raw}}` if specified) as tag
+> because they are updated frequently, and contain many breaking changes that are (by the author's design)
+> not yet fit for public consumption.
 
 Extended attributes and default values:
 
@@ -446,15 +447,16 @@ custom value through `value` attribute.
 | `v1.2.3`           | `{{version}}`                                            | `1.2.3`              |
 | `1.2.3`            | `{{major}}.{{minor}}`                                    | `1.2`                |
 | `1.2.3`            | `v{{major}}`                                             | `v1`                 |
-| `1.2.3rc2`         | `{{raw}}`                                                | `1.2.3rc2`*          |
+| `v1.2.3rc2`        | `{{raw}}`                                                | `v1.2.3rc2`          |
 | `1.2.3rc2`         | `{{version}}`                                            | `1.2.3rc2`           |
 | `1.2.3rc2`         | `{{major}}.{{minor}}`                                    | `1.2.3rc2`*          |
 | `1.2.3post1`       | `{{major}}.{{minor}}`                                    | `1.2.3.post1`*       |
 | `1.2.3beta2`       | `{{major}}.{{minor}}`                                    | `1.2.3b2`*           |
 | `1.0dev4`          | `{{major}}.{{minor}}`                                    | `1.0.dev4`*          |
 
-> *dev/pre/post release will only extend `{{version}}` as tag because they are updated frequently,
-> and contain many breaking changes that are (by the author's design) not yet fit for public consumption.
+> *dev/pre/post release will only extend `{{version}}` (or `{{raw}}` if specified) as tag
+> because they are updated frequently, and contain many breaking changes that are (by the author's design)
+> not yet fit for public consumption.
 
 Extended attributes and default values:
 

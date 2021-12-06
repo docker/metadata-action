@@ -557,7 +557,12 @@ class Meta {
         let latest = false;
         const pver = pep440.explain(vraw);
         if (pver.is_prerelease || pver.is_postrelease || pver.is_devrelease) {
-            vraw = this.setValue(pep440.clean(vraw), tag);
+            if (Meta.isRawStatement(tag.attrs['pattern'])) {
+                vraw = this.setValue(vraw, tag);
+            }
+            else {
+                vraw = this.setValue(pep440.clean(vraw), tag);
+            }
         }
         else {
             vraw = this.setValue(handlebars.compile(tag.attrs['pattern'])({
