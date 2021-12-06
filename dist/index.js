@@ -526,7 +526,12 @@ class Meta {
             includePrerelease: true
         });
         if (semver.prerelease(vraw)) {
-            vraw = this.setValue(handlebars.compile('{{version}}')(sver), tag);
+            if (Meta.isRawStatement(tag.attrs['pattern'])) {
+                vraw = this.setValue(handlebars.compile(tag.attrs['pattern'])(sver), tag);
+            }
+            else {
+                vraw = this.setValue(handlebars.compile('{{version}}')(sver), tag);
+            }
         }
         else {
             vraw = this.setValue(handlebars.compile(tag.attrs['pattern'])(sver), tag);
@@ -670,6 +675,18 @@ class Meta {
             version.latest = latest;
         }
         return version;
+    }
+    static isRawStatement(pattern) {
+        try {
+            const hp = handlebars.parseWithoutProcessing(pattern);
+            if (hp.body.length == 1 && hp.body[0].type == 'MustacheStatement') {
+                return hp.body[0]['path']['parts'].length == 1 && hp.body[0]['path']['parts'][0] == 'raw';
+            }
+        }
+        catch (err) {
+            return false;
+        }
+        return false;
     }
     setValue(val, tag) {
         if (tag.attrs.hasOwnProperty('prefix')) {

@@ -31,24 +31,33 @@ beforeEach(() => {
   });
 });
 
+describe('isRawStatement', () => {
+  // prettier-ignore
+  test.each([
+    ['{{ raw }}.{{ version }}', false],
+    ['{{ version }},{{raw }.', false],
+    ['{{ raw }}', true],
+    ['{{ raw}}', true],
+    ['{{raw}}', true],
+  ])('given %p pattern ', async (pattern: string, expected: boolean) => {
+    expect(Meta.isRawStatement(pattern)).toEqual(expected);
+  });
+});
+
 const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>) => {
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
   const context = github.context();
-  console.log(process.env, context);
 
   const repo = await github.repo(process.env.GITHUB_TOKEN || '');
   const meta = new Meta({...getInputs(), ...inputs}, context, repo);
 
   const version = meta.version;
-  console.log('version', version);
   expect(version).toEqual(exVersion);
 
   const tags = meta.getTags();
-  console.log('tags', tags);
   expect(tags).toEqual(exTags);
 
   const labels = meta.getLabels();
-  console.log('labels', labels);
   expect(labels).toEqual(exLabels);
 };
 
@@ -1662,6 +1671,35 @@ describe('tag', () => {
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
+    [
+      'tag31',
+      'event_tag_v2.0.8-beta.67.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=semver,pattern={{raw}}`
+        ]
+      } as Inputs,
+      {
+        main: 'v2.0.8-beta.67',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:v2.0.8-beta.67',
+        'ghcr.io/user/app:v2.0.8-beta.67'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v2.0.8-beta.67",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
   ])('given %p with %p event', tagsLabelsTest);
 });
 
@@ -3152,13 +3190,11 @@ describe('json', () => {
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: {}) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     const context = github.context();
-    console.log(process.env, context);
 
     const repo = await github.repo(process.env.GITHUB_TOKEN || '');
     const meta = new Meta({...getInputs(), ...inputs}, context, repo);
 
     const jsonOutput = meta.getJSON();
-    console.log('json', jsonOutput);
     expect(jsonOutput).toEqual(exJSON);
   });
 });
@@ -3459,13 +3495,11 @@ describe('bake', () => {
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: {}) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     const context = github.context();
-    console.log(process.env, context);
 
     const repo = await github.repo(process.env.GITHUB_TOKEN || '');
     const meta = new Meta({...getInputs(), ...inputs}, context, repo);
 
     const bakeFile = meta.getBakeFile();
-    console.log('bakeFile', bakeFile, fs.readFileSync(bakeFile, 'utf8'));
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
   });
 });
