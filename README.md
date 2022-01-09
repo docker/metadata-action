@@ -605,6 +605,14 @@ tags: |
 * [`type=semver,pattern=...`](#typesemver)
 * [`type=match,pattern=...`](#typematch)
 
+For conditionally tagging with latest for a specific branch name, e.g. if your default branch name
+is not `master`, use `type=raw` with a boolean expression:
+
+```yaml
+tags: |
+  type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
+```
+
 ### Global expressions
 
 The following [Handlebars template](https://handlebarsjs.com/guide/) expressions for `prefix`, `suffix` and `value`
