@@ -610,7 +610,7 @@ is not `master`, use `type=raw` with a boolean expression:
 
 ```yaml
 tags: |
-  type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
+  type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
 ```
 
 ### Global expressions
