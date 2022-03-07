@@ -359,7 +359,7 @@ tags: |
 
 Will be used on [schedule event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule).
 
-`pattern` is a specially crafted attribute to support [Handlebars template](https://handlebarsjs.com/guide/) with
+`pattern` is a specially crafted attribute to support [Handlebars' template](https://handlebarsjs.com/guide/) with
 the following expressions:
 * `date 'format'` ; render date by its [moment format](https://momentjs.com/docs/#/displaying/format/)
 
@@ -478,7 +478,7 @@ tags: |
 ```
 
 Can create a regular expression for matching Git tag with a pattern and capturing group. Will be used on a
-[push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push) but you can also use
+[push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push) but, you can also use
 a custom value through `value` attribute.
 
 | Git tag                 | Pattern                       | Group   | Output                 |
@@ -615,7 +615,7 @@ tags: |
 
 ### Global expressions
 
-The following [Handlebars template](https://handlebarsjs.com/guide/) expressions for `prefix`, `suffix` and `value`
+The following [Handlebars' template](https://handlebarsjs.com/guide/) expressions for `prefix`, `suffix` and `value`
 attributes are available:
 
 | Expression               | Output               |
@@ -679,7 +679,7 @@ workflow using the [`fromJSON` function](https://docs.github.com/en/actions/lear
 
 ### Overwrite labels
 
-If some of the [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
+If some [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
 labels generated are not suitable, you can overwrite them like this:
 
 ```yaml

@@ -15,55 +15,61 @@ jest.spyOn(context, 'tmpDir').mockImplementation((): string => {
 describe('getInputList', () => {
   it('single line correctly', async () => {
     await setInput('foo', 'bar');
-    const res = await context.getInputList('foo');
+    const res = context.getInputList('foo');
     expect(res).toEqual(['bar']);
   });
 
   it('multiline correctly', async () => {
     setInput('foo', 'bar\nbaz');
-    const res = await context.getInputList('foo');
+    const res = context.getInputList('foo');
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('empty lines correctly', async () => {
     setInput('foo', 'bar\n\nbaz');
-    const res = await context.getInputList('foo');
+    const res = context.getInputList('foo');
     expect(res).toEqual(['bar', 'baz']);
+  });
+
+  it('comment correctly', async () => {
+    setInput('foo', 'bar\n#com\n"#taken"\nhello#comment\nbaz');
+    const res = context.getInputList('foo');
+    expect(res).toEqual(['bar', '#taken', 'hello', 'baz']);
   });
 
   it('comma correctly', async () => {
     setInput('foo', 'bar,baz');
-    const res = await context.getInputList('foo');
+    const res = context.getInputList('foo');
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('empty result correctly', async () => {
     setInput('foo', 'bar,baz,');
-    const res = await context.getInputList('foo');
+    const res = context.getInputList('foo');
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('different new lines correctly', async () => {
     setInput('foo', 'bar\r\nbaz');
-    const res = await context.getInputList('foo');
+    const res = context.getInputList('foo');
     expect(res).toEqual(['bar', 'baz']);
   });
 
   it('different new lines and comma correctly', async () => {
     setInput('foo', 'bar\r\nbaz,bat');
-    const res = await context.getInputList('foo');
+    const res = context.getInputList('foo');
     expect(res).toEqual(['bar', 'baz', 'bat']);
   });
 
   it('multiline and ignoring comma correctly', async () => {
     setInput('cache-from', 'user/app:cache\ntype=local,src=path/to/dir');
-    const res = await context.getInputList('cache-from', true);
+    const res = context.getInputList('cache-from', true);
     expect(res).toEqual(['user/app:cache', 'type=local,src=path/to/dir']);
   });
 
   it('different new lines and ignoring comma correctly', async () => {
     setInput('cache-from', 'user/app:cache\r\ntype=local,src=path/to/dir');
-    const res = await context.getInputList('cache-from', true);
+    const res = context.getInputList('cache-from', true);
     expect(res).toEqual(['user/app:cache', 'type=local,src=path/to/dir']);
   });
 
@@ -76,7 +82,7 @@ bbbbbbb
 ccccccccc"
 FOO=bar`
     );
-    const res = await context.getInputList('secrets', true);
+    const res = context.getInputList('secrets', true);
     expect(res).toEqual([
       'GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789',
       `MYSECRET=aaaaaaaa
@@ -99,7 +105,7 @@ FOO=bar
 bbbb
 ccc"`
     );
-    const res = await context.getInputList('secrets', true);
+    const res = context.getInputList('secrets', true);
     expect(res).toEqual([
       'GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789',
       `MYSECRET=aaaaaaaa
@@ -122,7 +128,7 @@ bbbbbbb
 ccccccccc
 FOO=bar`
     );
-    const res = await context.getInputList('secrets', true);
+    const res = context.getInputList('secrets', true);
     expect(res).toEqual(['GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789', 'MYSECRET=aaaaaaaa', 'bbbbbbb', 'ccccccccc', 'FOO=bar']);
   });
 
@@ -135,7 +141,7 @@ bbbb""bbb
 ccccccccc"
 FOO=bar`
     );
-    const res = await context.getInputList('secrets', true);
+    const res = context.getInputList('secrets', true);
     expect(res).toEqual([
       'GIT_AUTH_TOKEN=abcdefgh,ijklmno=0123456789',
       `MYSECRET=aaaaaaaa

@@ -75,6 +75,7 @@ function getInputList(name, ignoreComma) {
     for (let output of sync_1.default(items, {
         columns: false,
         relax: true,
+        comment: '#',
         relaxColumnCount: true,
         skipLinesWithEmptyValues: true
     })) {
