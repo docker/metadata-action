@@ -42,6 +42,8 @@ outputs:
     description: 'Generated Docker labels'
   bake-file:
     description: 'Bake definiton file'
+  json:
+    description: 'JSON output of tags and labels'
 
 runs:
   using: 'node12'
