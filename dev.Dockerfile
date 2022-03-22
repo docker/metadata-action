@@ -1,6 +1,6 @@
-# syntax=docker/dockerfile:1.3-labs
+# syntax=docker/dockerfile:1
 
-ARG NODE_VERSION
+ARG NODE_VERSION=12
 
 FROM node:${NODE_VERSION}-alpine AS base
 RUN apk add --no-cache cpio findutils git
@@ -55,10 +55,10 @@ RUN --mount=type=bind,target=.,rw \
 FROM scratch AS format-update
 COPY --from=format /out /
 
-FROM deps AS format-validate
+FROM deps AS lint
 RUN --mount=type=bind,target=.,rw \
   --mount=type=cache,target=/src/node_modules \
-  yarn run format-check
+  yarn run lint
 
 FROM deps AS test
 ENV RUNNER_TEMP=/tmp/github_runner

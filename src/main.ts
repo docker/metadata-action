@@ -43,7 +43,7 @@ async function run() {
       core.warning('No Docker tag has been generated. Check tags input.');
     } else {
       core.startGroup(`Docker tags`);
-      for (let tag of tags) {
+      for (const tag of tags) {
         core.info(tag);
       }
       core.endGroup();
@@ -53,7 +53,7 @@ async function run() {
     // Docker labels
     const labels: Array<string> = meta.getLabels();
     core.startGroup(`Docker labels`);
-    for (let label of labels) {
+    for (const label of labels) {
       core.info(label);
     }
     core.endGroup();

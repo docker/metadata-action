@@ -138,7 +138,7 @@ export class Meta {
       return version;
     }
 
-    let latest: boolean = false;
+    let latest = false;
     const sver = semver.parse(vraw, {
       includePrerelease: true
     });
@@ -172,7 +172,7 @@ export class Meta {
       return version;
     }
 
-    let latest: boolean = false;
+    let latest = false;
     const pver = pep440.explain(vraw);
     if (pver.is_prerelease || pver.is_postrelease || pver.is_devrelease) {
       if (Meta.isRawStatement(tag.attrs['pattern'])) {
@@ -269,7 +269,7 @@ export class Meta {
       return version;
     }
 
-    let val = this.context.ref.replace(/^refs\/heads\//g, '').replace(/[^a-zA-Z0-9._-]+/g, '-');
+    const val = this.context.ref.replace(/^refs\/heads\//g, '').replace(/[^a-zA-Z0-9._-]+/g, '-');
     if (tag.attrs['branch'].length == 0) {
       tag.attrs['branch'] = this.repo.default_branch;
     }
@@ -328,12 +328,12 @@ export class Meta {
   }
 
   private setValue(val: string, tag: tcl.Tag): string {
-    if (tag.attrs.hasOwnProperty('prefix')) {
+    if (Object.prototype.hasOwnProperty.call(tag.attrs, 'prefix')) {
       val = `${this.setGlobalExp(tag.attrs['prefix'])}${val}`;
     } else if (this.flavor.prefix.length > 0) {
       val = `${this.setGlobalExp(this.flavor.prefix)}${val}`;
     }
-    if (tag.attrs.hasOwnProperty('suffix')) {
+    if (Object.prototype.hasOwnProperty.call(tag.attrs, 'suffix')) {
       val = `${val}${this.setGlobalExp(tag.attrs['suffix'])}`;
     } else if (this.flavor.suffix.length > 0) {
       val = `${val}${this.setGlobalExp(this.flavor.suffix)}`;
@@ -380,7 +380,7 @@ export class Meta {
       return [];
     }
 
-    let tags: Array<string> = [];
+    const tags: Array<string> = [];
     for (const image of this.inputs.images) {
       const imageLc = image.toLowerCase();
       tags.push(`${imageLc}:${this.version.main}`);
@@ -395,7 +395,7 @@ export class Meta {
   }
 
   public getLabels(): Array<string> {
-    let labels: Array<string> = [
+    const labels: Array<string> = [
       `org.opencontainers.image.title=${this.repo.name || ''}`,
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
@@ -409,7 +409,7 @@ export class Meta {
     return labels;
   }
 
-  public getJSON(): {} {
+  public getJSON(): unknown {
     return {
       tags: this.getTags(),
       labels: this.getLabels().reduce((res, label) => {

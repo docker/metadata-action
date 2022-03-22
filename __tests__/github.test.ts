@@ -1,8 +1,9 @@
-import * as path from 'path';
+import {describe, expect, jest, it} from '@jest/globals';
 import * as github from '../src/github';
 
+import * as repoFixture from './fixtures/repo.json';
 jest.spyOn(github, 'repo').mockImplementation((): Promise<github.ReposGetResponseData> => {
-  return <Promise<github.ReposGetResponseData>>require(path.join(__dirname, 'fixtures', 'repo.json'));
+  return <Promise<github.ReposGetResponseData>>(repoFixture as unknown);
 });
 
 describe('repo', () => {
