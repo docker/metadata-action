@@ -1,3 +1,4 @@
+import {describe, expect, test} from '@jest/globals';
 import {Transform, Parse, Tag, Type, RefEvent, ShaFormat, DefaultPriorities} from '../src/tag';
 
 describe('transform', () => {
@@ -104,6 +105,7 @@ describe('transform', () => {
       if (!invalid) {
         console.error(err);
       }
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(true).toBe(invalid);
     }
   });
@@ -425,7 +427,7 @@ describe('parse', () => {
       {} as Tag,
       true
     ]
-  ])('given %p event ', async (s: string, expected: Tag, invalid: boolean) => {
+  ])('given %p event', async (s: string, expected: Tag, invalid: boolean) => {
     try {
       const tag = Parse(s);
       expect(tag).toEqual(expected);
@@ -433,6 +435,7 @@ describe('parse', () => {
       if (!invalid) {
         console.error(err);
       }
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(true).toBe(invalid);
     }
   });

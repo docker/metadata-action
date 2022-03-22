@@ -39,14 +39,14 @@ export function getInputs(): Inputs {
 }
 
 export function getInputList(name: string, ignoreComma?: boolean): string[] {
-  let res: Array<string> = [];
+  const res: Array<string> = [];
 
   const items = core.getInput(name);
   if (items == '') {
     return res;
   }
 
-  for (let output of csvparse(items, {
+  for (const output of csvparse(items, {
     columns: false,
     relax: true,
     comment: '#',
@@ -73,6 +73,6 @@ export const asyncForEach = async (array, callback) => {
 };
 
 // FIXME: Temp fix https://github.com/actions/toolkit/issues/777
-export function setOutput(name: string, value: any): void {
+export function setOutput(name: string, value: unknown): void {
   issueCommand('set-output', {name}, value);
 }

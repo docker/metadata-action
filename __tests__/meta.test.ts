@@ -1,3 +1,4 @@
+import {beforeEach, describe, expect, jest, test} from '@jest/globals';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
@@ -7,8 +8,9 @@ import * as github from '../src/github';
 import {Meta, Version} from '../src/meta';
 import {Context} from '@actions/github/lib/context';
 
+import * as repoFixture from './fixtures/repo.json';
 jest.spyOn(github, 'repo').mockImplementation((): Promise<github.ReposGetResponseData> => {
-  return <Promise<github.ReposGetResponseData>>require(path.join(__dirname, 'fixtures', 'repo.json'));
+  return <Promise<github.ReposGetResponseData>>(repoFixture as unknown);
 });
 
 jest.spyOn(github, 'context').mockImplementation((): Context => {
@@ -20,7 +22,7 @@ jest.spyOn(global.Date.prototype, 'toISOString').mockImplementation(() => {
 });
 
 jest.mock('moment', () => {
-  return () => jest.requireActual('moment')('2020-01-10T00:30:00.000Z');
+  return () => (jest.requireActual('moment') as typeof import('moment'))('2020-01-10T00:30:00.000Z');
 });
 
 beforeEach(() => {
@@ -39,7 +41,7 @@ describe('isRawStatement', () => {
     ['{{ raw }}', true],
     ['{{ raw}}', true],
     ['{{raw}}', true],
-  ])('given %p pattern ', async (pattern: string, expected: boolean) => {
+  ])('given %p pattern', async (pattern: string, expected: boolean) => {
     expect(Meta.isRawStatement(pattern)).toEqual(expected);
   });
 });
@@ -3219,7 +3221,7 @@ describe('json', () => {
         }
       }
     ]
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: {}) => {
+  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     const context = github.context();
 
@@ -3524,7 +3526,7 @@ describe('bake', () => {
         }
       }
     ]
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: {}) => {
+  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     const context = github.context();
 
