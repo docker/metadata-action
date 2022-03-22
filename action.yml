@@ -46,5 +46,5 @@ outputs:
     description: 'JSON output of tags and labels'
 
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
