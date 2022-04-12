@@ -35,7 +35,7 @@
     "csv-parse": "^4.16.3",
     "handlebars": "^4.7.7",
     "moment": "^2.29.2",
-    "semver": "^7.3.5"
+    "semver": "^7.3.7"
   },
   "devDependencies": {
     "@types/csv-parse": "^1.2.2",
