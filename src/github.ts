@@ -11,8 +11,6 @@ export function context(): Context {
 export async function repo(token: string): Promise<ReposGetResponseData> {
   return github
     .getOctokit(token)
-    .rest.repos.get({
-      ...github.context.repo
-    })
+    .rest.repos.get({...github.context.repo})
     .then(response => response.data as ReposGetResponseData);
 }

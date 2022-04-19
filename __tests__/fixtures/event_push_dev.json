@@ -1,10 +1,29 @@
 {
   "after": "860c1904a1ce19322e91ac35af1ab07466440c37",
-  "base_ref": "refs/heads/master",
-  "before": "0000000000000000000000000000000000000000",
-  "commits": [],
-  "compare": "https://github.com/docker/test-docker-action/compare/v1.1.1",
-  "created": true,
+  "base_ref": null,
+  "before": "5f3331d7f7044c18ca9f12c77d961c4d7cf3276a",
+  "commits": [
+    {
+      "author": {
+        "email": "crazy-max@users.noreply.github.com",
+        "name": "CrazyMax",
+        "username": "crazy-max"
+      },
+      "committer": {
+        "email": "crazy-max@users.noreply.github.com",
+        "name": "CrazyMax",
+        "username": "crazy-max"
+      },
+      "distinct": true,
+      "id": "860c1904a1ce19322e91ac35af1ab07466440c37",
+      "message": "hello dev",
+      "timestamp": "2022-04-19T11:27:24+02:00",
+      "tree_id": "d2c60af597e863787d2d27f569e30495b0b92820",
+      "url": "https://github.com/docker/test-docker-action/commit/860c1904a1ce19322e91ac35af1ab07466440c37"
+    }
+  ],
+  "compare": "https://github.com/docker/test-docker-action/compare/5f3331d7f704...860c1904a1ce",
+  "created": false,
   "deleted": false,
   "forced": false,
   "head_commit": {
@@ -20,9 +39,9 @@
     },
     "distinct": true,
     "id": "860c1904a1ce19322e91ac35af1ab07466440c37",
-    "message": "scheduled",
-    "timestamp": "2022-04-19T11:39:35+02:00",
-    "tree_id": "1d3608c3f204a4d754a1db925264929afd54daad",
+    "message": "hello dev",
+    "timestamp": "2022-04-19T11:27:24+02:00",
+    "tree_id": "d2c60af597e863787d2d27f569e30495b0b92820",
     "url": "https://github.com/docker/test-docker-action/commit/860c1904a1ce19322e91ac35af1ab07466440c37"
   },
   "organization": {
@@ -43,7 +62,7 @@
     "email": "github@crazymax.dev",
     "name": "crazy-max"
   },
-  "ref": "refs/tags/v1.1.1",
+  "ref": "refs/heads/dev",
   "repository": {
     "allow_forking": true,
     "archive_url": "https://api.github.com/repos/docker/test-docker-action/{archive_format}{/ref}",
@@ -132,7 +151,7 @@
     },
     "private": true,
     "pulls_url": "https://api.github.com/repos/docker/test-docker-action/pulls{/number}",
-    "pushed_at": 1650361263,
+    "pushed_at": 1650360446,
     "releases_url": "https://api.github.com/repos/docker/test-docker-action/releases{/id}",
     "size": 796,
     "ssh_url": "git@github.com:docker/test-docker-action.git",

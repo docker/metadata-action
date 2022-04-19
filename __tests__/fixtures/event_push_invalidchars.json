@@ -1,12 +1,31 @@
 {
-  "after": "860c1904a1ce19322e91ac35af1ab07466440c37",
-  "base_ref": "refs/heads/master",
-  "before": "0000000000000000000000000000000000000000",
-  "commits": [],
-  "compare": "https://github.com/docker/test-docker-action/compare/v1.1.1",
-  "created": true,
+  "after": "983315b5e8d46e46fc4c49869e85e7ee5fb289ba",
+  "base_ref": null,
+  "before": "4af2cc040e1cee6ee91e2491f34e5787121eb902",
+  "commits": [
+    {
+      "author": {
+        "email": "crazy-max@users.noreply.github.com",
+        "name": "CrazyMax",
+        "username": "crazy-max"
+      },
+      "committer": {
+        "email": "crazy-max@users.noreply.github.com",
+        "name": "CrazyMax",
+        "username": "crazy-max"
+      },
+      "distinct": true,
+      "id": "983315b5e8d46e46fc4c49869e85e7ee5fb289ba",
+      "message": "feature 1245",
+      "timestamp": "2022-04-19T11:36:08+02:00",
+      "tree_id": "e9f7b0bf689a49a4792d518088710dadb52d7e9a",
+      "url": "https://github.com/docker/test-docker-action/commit/983315b5e8d46e46fc4c49869e85e7ee5fb289ba"
+    }
+  ],
+  "compare": "https://github.com/docker/test-docker-action/compare/4af2cc040e1c...983315b5e8d4",
+  "created": false,
   "deleted": false,
-  "forced": false,
+  "forced": true,
   "head_commit": {
     "author": {
       "email": "crazy-max@users.noreply.github.com",
@@ -19,11 +38,11 @@
       "username": "crazy-max"
     },
     "distinct": true,
-    "id": "860c1904a1ce19322e91ac35af1ab07466440c37",
-    "message": "scheduled",
-    "timestamp": "2022-04-19T11:39:35+02:00",
-    "tree_id": "1d3608c3f204a4d754a1db925264929afd54daad",
-    "url": "https://github.com/docker/test-docker-action/commit/860c1904a1ce19322e91ac35af1ab07466440c37"
+    "id": "983315b5e8d46e46fc4c49869e85e7ee5fb289ba",
+    "message": "feature 1245",
+    "timestamp": "2022-04-19T11:36:08+02:00",
+    "tree_id": "e9f7b0bf689a49a4792d518088710dadb52d7e9a",
+    "url": "https://github.com/docker/test-docker-action/commit/983315b5e8d46e46fc4c49869e85e7ee5fb289ba"
   },
   "organization": {
     "avatar_url": "https://avatars.githubusercontent.com/u/5429470?v=4",
@@ -43,7 +62,7 @@
     "email": "github@crazymax.dev",
     "name": "crazy-max"
   },
-  "ref": "refs/tags/v1.1.1",
+  "ref": "refs/heads/my/feature#1245",
   "repository": {
     "allow_forking": true,
     "archive_url": "https://api.github.com/repos/docker/test-docker-action/{archive_format}{/ref}",
@@ -132,7 +151,7 @@
     },
     "private": true,
     "pulls_url": "https://api.github.com/repos/docker/test-docker-action/pulls{/number}",
-    "pushed_at": 1650361263,
+    "pushed_at": 1650360972,
     "releases_url": "https://api.github.com/repos/docker/test-docker-action/releases{/id}",
     "size": 796,
     "ssh_url": "git@github.com:docker/test-docker-action.git",
