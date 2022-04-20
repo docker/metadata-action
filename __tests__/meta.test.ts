@@ -124,7 +124,7 @@ describe('push', () => {
   test.each([
     [
       'push01',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
       } as Inputs,
@@ -143,13 +143,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push02',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['user/app'],
         tags: [
@@ -171,13 +171,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push03',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['user/app'],
       } as Inputs,
@@ -196,7 +196,7 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=master",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -224,13 +224,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push05',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
       } as Inputs,
@@ -250,13 +250,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push06',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -279,13 +279,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push07',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -295,14 +295,14 @@ describe('push', () => {
       } as Inputs,
       {
         main: 'dev',
-        partial: ['sha-90dd603'],
+        partial: ['sha-860c190'],
         latest: false
       } as Version,
       [
         'org/app:dev',
-        'org/app:sha-90dd603',
+        'org/app:sha-860c190',
         'ghcr.io/user/app:dev',
-        'ghcr.io/user/app:sha-90dd603'
+        'ghcr.io/user/app:sha-860c190'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -311,13 +311,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push08',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -327,14 +327,14 @@ describe('push', () => {
       } as Inputs,
       {
         main: 'edge',
-        partial: ['sha-90dd603'],
+        partial: ['sha-2665741'],
         latest: false
       } as Version,
       [
         'org/app:edge',
-        'org/app:sha-90dd603',
+        'org/app:sha-2665741',
         'ghcr.io/user/app:edge',
-        'ghcr.io/user/app:sha-90dd603'
+        'ghcr.io/user/app:sha-2665741'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -343,13 +343,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push09',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -359,14 +359,14 @@ describe('push', () => {
       } as Inputs,
       {
         main: 'edge',
-        partial: ['sha-90dd603'],
+        partial: ['sha-860c190'],
         latest: false
       } as Version,
       [
         'org/app:edge',
-        'org/app:sha-90dd603',
+        'org/app:sha-860c190',
         'ghcr.io/user/app:edge',
-        'ghcr.io/user/app:sha-90dd603'
+        'ghcr.io/user/app:sha-860c190'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -375,13 +375,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push10',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -390,22 +390,22 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'sha-90dd603',
+        main: 'sha-2665741',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:sha-90dd603',
-        'ghcr.io/user/app:sha-90dd603'
+        'org/app:sha-2665741',
+        'ghcr.io/user/app:sha-2665741'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-90dd603",
+        "org.opencontainers.image.version=sha-2665741",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -420,22 +420,22 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'sha-90dd603',
+        main: 'sha-983315b',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:sha-90dd603',
-        'ghcr.io/user/app:sha-90dd603'
+        'org/app:sha-983315b',
+        'ghcr.io/user/app:sha-983315b'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-90dd603",
+        "org.opencontainers.image.version=sha-983315b",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=983315b5e8d46e46fc4c49869e85e7ee5fb289ba",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -463,13 +463,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=983315b5e8d46e46fc4c49869e85e7ee5fb289ba",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push13',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['user/app'],
         tags: [
@@ -493,13 +493,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=master",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push14',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['user/app'],
         tags: [
@@ -525,13 +525,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.3",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push15',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['user/app'],
         tags: [
@@ -556,13 +556,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.3",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push16',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['user/app'],
         tags: [
@@ -585,13 +585,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push17',
-      'event_push_defbranch.env',
+      'event_push_master.env',
       {
         images: ['user/app'],
         tags: [
@@ -623,13 +623,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=mytag-master",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push18',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -639,14 +639,14 @@ describe('push', () => {
       } as Inputs,
       {
         main: 'dev',
-        partial: ['sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'],
+        partial: ['sha-860c1904a1ce19322e91ac35af1ab07466440c37'],
         latest: false
       } as Version,
       [
         'org/app:dev',
-        'org/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
+        'org/app:sha-860c1904a1ce19322e91ac35af1ab07466440c37',
         'ghcr.io/user/app:dev',
-        'ghcr.io/user/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'
+        'ghcr.io/user/app:sha-860c1904a1ce19322e91ac35af1ab07466440c37'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -655,13 +655,13 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'push19',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -671,22 +671,22 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
+        main: 'sha-860c1904a1ce19322e91ac35af1ab07466440c37',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071',
-        'ghcr.io/user/app:sha-90dd6032fac8bda1b6c4436a2e65de27961ed071'
+        'org/app:sha-860c1904a1ce19322e91ac35af1ab07466440c37',
+        'ghcr.io/user/app:sha-860c1904a1ce19322e91ac35af1ab07466440c37'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.version=sha-860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ]
@@ -718,7 +718,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=release1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -744,7 +744,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110-RC2",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -775,7 +775,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -806,7 +806,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -837,7 +837,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -868,7 +868,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -899,7 +899,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8-beta.67",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -930,7 +930,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -964,7 +964,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -990,7 +990,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1027,7 +1027,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1059,7 +1059,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1089,7 +1089,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8-beta.67",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1123,7 +1123,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sometag",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1158,7 +1158,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1191,7 +1191,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1210,17 +1210,17 @@ describe('tag', () => {
       } as Inputs,
       {
         main: '1.0.0',
-        partial: ['1.0', 'sha-90dd603'],
+        partial: ['1.0', 'sha-860c190'],
         latest: true
       } as Version,
       [
         'org/app:1.0.0',
         'org/app:1.0',
-        'org/app:sha-90dd603',
+        'org/app:sha-860c190',
         'org/app:latest',
         'ghcr.io/user/app:1.0.0',
         'ghcr.io/user/app:1.0',
-        'ghcr.io/user/app:sha-90dd603',
+        'ghcr.io/user/app:sha-860c190',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1230,7 +1230,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.0",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1249,17 +1249,17 @@ describe('tag', () => {
       } as Inputs,
       {
         main: '1.0.0',
-        partial: ['1.0', 'sha-90dd603'],
+        partial: ['1.0', 'sha-860c190'],
         latest: true
       } as Version,
       [
         'org/app:1.0.0',
         'org/app:1.0',
-        'org/app:sha-90dd603',
+        'org/app:sha-860c190',
         'org/app:latest',
         'ghcr.io/user/app:1.0.0',
         'ghcr.io/user/app:1.0',
-        'ghcr.io/user/app:sha-90dd603',
+        'ghcr.io/user/app:sha-860c190',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1269,7 +1269,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.0",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1290,17 +1290,17 @@ describe('tag', () => {
       } as Inputs,
       {
         main: '1.0.0-dev',
-        partial: ['1.0', 'sha-90dd603-dev'],
+        partial: ['1.0', 'sha-860c190-dev'],
         latest: true
       } as Version,
       [
         'org/app:1.0.0-dev',
         'org/app:1.0',
-        'org/app:sha-90dd603-dev',
+        'org/app:sha-860c190-dev',
         'org/app:latest',
         'ghcr.io/user/app:1.0.0-dev',
         'ghcr.io/user/app:1.0',
-        'ghcr.io/user/app:sha-90dd603-dev',
+        'ghcr.io/user/app:sha-860c190-dev',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1310,7 +1310,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.0-dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1325,16 +1325,16 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1-90dd603-foo',
+        main: 'v1.1.1-860c190-foo',
         partial: [
           'master-foo'
         ],
         latest: false
       } as Version,
       [
-        'org/app:v1.1.1-90dd603-foo',
+        'org/app:v1.1.1-860c190-foo',
         'org/app:master-foo',
-        'ghcr.io/user/app:v1.1.1-90dd603-foo',
+        'ghcr.io/user/app:v1.1.1-860c190-foo',
         'ghcr.io/user/app:master-foo'
       ],
       [
@@ -1342,9 +1342,9 @@ describe('tag', () => {
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1-90dd603-foo",
+        "org.opencontainers.image.version=v1.1.1-860c190-foo",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1379,7 +1379,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1-dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1415,7 +1415,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo-1.1.1-dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1446,7 +1446,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1476,7 +1476,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1506,7 +1506,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1b2",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1536,7 +1536,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.dev4",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1568,7 +1568,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.3rc2",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1605,7 +1605,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1635,7 +1635,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.post1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1669,7 +1669,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sometag",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1698,7 +1698,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v2.0.8-beta.67",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1730,7 +1730,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.2.3rc2",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1765,7 +1765,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=release1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1794,7 +1794,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110-RC2",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1823,7 +1823,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1852,7 +1852,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1880,7 +1880,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1911,7 +1911,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1943,7 +1943,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -1975,7 +1975,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2013,7 +2013,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT",
         "maintainer=CrazyMax",
         "org.opencontainers.image.title=MyCustomTitle",
@@ -2034,21 +2034,21 @@ describe('pr', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        main: 'pr-2',
+        main: 'pr-15',
         partial: [],
         latest: false
       } as Version,
       [
-        'user/app:pr-2'
+        'user/app:pr-15'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=pr-2",
+        "org.opencontainers.image.version=pr-15",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2059,22 +2059,22 @@ describe('pr', () => {
         images: ['org/app', 'ghcr.io/user/app'],
       } as Inputs,
       {
-        main: 'pr-2',
+        main: 'pr-15',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:pr-2',
-        'ghcr.io/user/app:pr-2'
+        'org/app:pr-15',
+        'ghcr.io/user/app:pr-15'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=pr-2",
+        "org.opencontainers.image.version=pr-15",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2089,24 +2089,24 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: 'pr-2',
-        partial: ['sha-1e9249f'],
+        main: 'pr-15',
+        partial: ['sha-a9c8c58'],
         latest: false
       } as Version,
       [
-        'org/app:pr-2',
-        'org/app:sha-1e9249f',
-        'ghcr.io/user/app:pr-2',
-        'ghcr.io/user/app:sha-1e9249f'
+        'org/app:pr-15',
+        'org/app:sha-a9c8c58',
+        'ghcr.io/user/app:pr-15',
+        'ghcr.io/user/app:sha-a9c8c58'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=pr-2",
+        "org.opencontainers.image.version=pr-15",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2121,24 +2121,24 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-1e9249f',
-        partial: ['pr-2'],
+        main: 'sha-a9c8c58',
+        partial: ['pr-15'],
         latest: false
       } as Version,
       [
-        'org/app:sha-1e9249f',
-        'org/app:pr-2',
-        'ghcr.io/user/app:sha-1e9249f',
-        'ghcr.io/user/app:pr-2'
+        'org/app:sha-a9c8c58',
+        'org/app:pr-15',
+        'ghcr.io/user/app:sha-a9c8c58',
+        'ghcr.io/user/app:pr-15'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-1e9249f",
+        "org.opencontainers.image.version=sha-a9c8c58",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2156,22 +2156,22 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: 'pr-2-bal',
+        main: 'pr-15-bal',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:pr-2-bal',
-        'ghcr.io/user/app:pr-2-bal'
+        'org/app:pr-15-bal',
+        'ghcr.io/user/app:pr-15-bal'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=pr-2-bal",
+        "org.opencontainers.image.version=pr-15-bal",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2189,22 +2189,22 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: '2-bal',
+        main: '15-bal',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:2-bal',
-        'ghcr.io/user/app:2-bal'
+        'org/app:15-bal',
+        'ghcr.io/user/app:15-bal'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=2-bal",
+        "org.opencontainers.image.version=15-bal",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2219,24 +2219,24 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-f24900b',
-        partial: ['pr-8'],
+        main: 'sha-2665741',
+        partial: ['pr-15'],
         latest: false
       } as Version,
       [
-        'org/app:sha-f24900b',
-        'org/app:pr-8',
-        'ghcr.io/user/app:sha-f24900b',
-        'ghcr.io/user/app:pr-8'
+        'org/app:sha-2665741',
+        'org/app:pr-15',
+        'ghcr.io/user/app:sha-2665741',
+        'ghcr.io/user/app:pr-15'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-f24900b",
+        "org.opencontainers.image.version=sha-2665741",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2254,22 +2254,22 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: '8-bal',
+        main: '15-bal',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:8-bal',
-        'ghcr.io/user/app:8-bal'
+        'org/app:15-bal',
+        'ghcr.io/user/app:15-bal'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=8-bal",
+        "org.opencontainers.image.version=15-bal",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2287,26 +2287,26 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: 'pr-8',
+        main: 'pr-15',
         partial: [
-          'sha-f24900b',
-          'sha-f24900bfcfee76d8055c8421a164c7e57ad20e68'
+          'sha-2665741',
+          'sha-266574110acf203503badf966df2ea24b5d732d7'
         ],
         latest: false
       } as Version,
       [
-        'org/app:pr-8',
-        'org/app:sha-f24900b',
-        'org/app:sha-f24900bfcfee76d8055c8421a164c7e57ad20e68'
+        'org/app:pr-15',
+        'org/app:sha-2665741',
+        'org/app:sha-266574110acf203503badf966df2ea24b5d732d7'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=pr-8",
+        "org.opencontainers.image.version=pr-15",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2334,7 +2334,7 @@ describe('pr', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=mytag-master",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=f24900bfcfee76d8055c8421a164c7e57ad20e68",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2362,7 +2362,7 @@ describe('pr', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=mytag-master",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=1e9249f05bfc090e0688b8fb9c1b347586add504",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2394,7 +2394,7 @@ describe('schedule', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=nightly",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2422,7 +2422,7 @@ describe('schedule', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2450,7 +2450,7 @@ describe('schedule', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110-003000",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2478,7 +2478,7 @@ describe('schedule', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=nightly",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2494,14 +2494,14 @@ describe('schedule', () => {
       } as Inputs,
       {
         main: 'nightly',
-        partial: ['sha-90dd603'],
+        partial: ['sha-860c190'],
         latest: false
       } as Version,
       [
         'org/app:nightly',
-        'org/app:sha-90dd603',
+        'org/app:sha-860c190',
         'ghcr.io/user/app:nightly',
-        'ghcr.io/user/app:sha-90dd603'
+        'ghcr.io/user/app:sha-860c190'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -2510,7 +2510,7 @@ describe('schedule', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=nightly",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2525,14 +2525,14 @@ describe('schedule', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-90dd603',
+        main: 'sha-860c190',
         partial: ['nightly'],
         latest: false
       } as Version,
       [
-        'org/app:sha-90dd603',
+        'org/app:sha-860c190',
         'org/app:nightly',
-        'ghcr.io/user/app:sha-90dd603',
+        'ghcr.io/user/app:sha-860c190',
         'ghcr.io/user/app:nightly'
       ],
       [
@@ -2540,9 +2540,9 @@ describe('schedule', () => {
         "org.opencontainers.image.description=This your first repo!",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-90dd603",
+        "org.opencontainers.image.version=sha-860c190",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2575,7 +2575,7 @@ describe('schedule', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=glo-nightly-bal",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2587,7 +2587,7 @@ describe('release', () => {
   test.each([
     [
       'release01',
-      'event_release.env',
+      'event_release_created.env',
       {
         images: ['user/app'],
       } as Inputs,
@@ -2607,7 +2607,7 @@ describe('release', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2619,7 +2619,7 @@ describe('raw', () => {
   test.each([
     [
       'raw01',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -2647,13 +2647,13 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'raw02',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -2677,7 +2677,7 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2712,7 +2712,7 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=release1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2749,7 +2749,7 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2795,7 +2795,7 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2830,13 +2830,13 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=my",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'raw07',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -2868,13 +2868,13 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=my",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'raw08',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -2904,13 +2904,13 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=my",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'raw09',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -2942,13 +2942,13 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo-my-bar",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
     [
       'raw10',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -2976,7 +2976,7 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision=90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
@@ -2988,7 +2988,7 @@ describe('json', () => {
   test.each([
     [
       'json01',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -3015,14 +3015,14 @@ describe('json', () => {
           "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "dev",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
           "org.opencontainers.image.licenses": "MIT"
         }
       }
     ],
     [
       'json02',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -3042,7 +3042,7 @@ describe('json', () => {
           "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "dev",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
           "org.opencontainers.image.licenses": "MIT"
         }
       }
@@ -3075,7 +3075,7 @@ describe('json', () => {
           "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "release1",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
           "org.opencontainers.image.licenses": "MIT"
         }
       }
@@ -3109,7 +3109,7 @@ describe('json', () => {
           "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "20200110",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
           "org.opencontainers.image.licenses": "MIT"
         }
       }
@@ -3152,7 +3152,7 @@ describe('json', () => {
           "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "1.1.1",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
           "org.opencontainers.image.licenses": "MIT"
         }
       }
@@ -3184,7 +3184,7 @@ describe('json', () => {
           "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "my",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
           "org.opencontainers.image.licenses": "MIT"
         }
       }
@@ -3216,7 +3216,7 @@ describe('json', () => {
           "org.opencontainers.image.vendor": "MyCompany",
           "org.opencontainers.image.version": "v1.1.1",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-          "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+          "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
           "org.opencontainers.image.licenses": "MIT"
         }
       }
@@ -3238,7 +3238,7 @@ describe('bake', () => {
   test.each([
     [
       'bake01',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -3267,7 +3267,7 @@ describe('bake', () => {
               "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "dev",
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
               "org.opencontainers.image.licenses": "MIT"
             },
             "args": {
@@ -3280,7 +3280,7 @@ describe('bake', () => {
     ],
     [
       'bake02',
-      'event_push.env',
+      'event_push_dev.env',
       {
         images: ['user/app'],
         tags: [
@@ -3302,7 +3302,7 @@ describe('bake', () => {
               "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "dev",
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
               "org.opencontainers.image.licenses": "MIT"
             },
             "args": {
@@ -3343,7 +3343,7 @@ describe('bake', () => {
               "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "release1",
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
               "org.opencontainers.image.licenses": "MIT"
             },
             "args": {
@@ -3385,7 +3385,7 @@ describe('bake', () => {
               "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "20200110",
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
               "org.opencontainers.image.licenses": "MIT"
             },
             "args": {
@@ -3436,7 +3436,7 @@ describe('bake', () => {
               "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "1.1.1",
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
               "org.opencontainers.image.licenses": "MIT"
             },
             "args": {
@@ -3476,7 +3476,7 @@ describe('bake', () => {
               "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "my",
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
               "org.opencontainers.image.licenses": "MIT"
             },
             "args": {
@@ -3515,7 +3515,7 @@ describe('bake', () => {
               "org.opencontainers.image.vendor": "MyCompany",
               "org.opencontainers.image.version": "v1.1.1",
               "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
               "org.opencontainers.image.licenses": "MIT"
             },
             "args": {

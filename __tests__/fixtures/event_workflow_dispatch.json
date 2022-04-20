@@ -1,29 +1,6 @@
 {
-  "after": "860c1904a1ce19322e91ac35af1ab07466440c37",
-  "base_ref": "refs/heads/master",
-  "before": "0000000000000000000000000000000000000000",
-  "commits": [],
-  "compare": "https://github.com/docker/test-docker-action/compare/v1.1.1",
-  "created": true,
-  "deleted": false,
-  "forced": false,
-  "head_commit": {
-    "author": {
-      "email": "crazy-max@users.noreply.github.com",
-      "name": "CrazyMax",
-      "username": "crazy-max"
-    },
-    "committer": {
-      "email": "crazy-max@users.noreply.github.com",
-      "name": "CrazyMax",
-      "username": "crazy-max"
-    },
-    "distinct": true,
-    "id": "860c1904a1ce19322e91ac35af1ab07466440c37",
-    "message": "scheduled",
-    "timestamp": "2022-04-19T11:39:35+02:00",
-    "tree_id": "1d3608c3f204a4d754a1db925264929afd54daad",
-    "url": "https://github.com/docker/test-docker-action/commit/860c1904a1ce19322e91ac35af1ab07466440c37"
+  "inputs": {
+    "logLevel": "warning"
   },
   "organization": {
     "avatar_url": "https://avatars.githubusercontent.com/u/5429470?v=4",
@@ -39,11 +16,7 @@
     "repos_url": "https://api.github.com/orgs/docker/repos",
     "url": "https://api.github.com/orgs/docker"
   },
-  "pusher": {
-    "email": "github@crazymax.dev",
-    "name": "crazy-max"
-  },
-  "ref": "refs/tags/v1.1.1",
+  "ref": "refs/heads/master",
   "repository": {
     "allow_forking": true,
     "archive_url": "https://api.github.com/repos/docker/test-docker-action/{archive_format}{/ref}",
@@ -58,7 +31,7 @@
     "compare_url": "https://api.github.com/repos/docker/test-docker-action/compare/{base}...{head}",
     "contents_url": "https://api.github.com/repos/docker/test-docker-action/contents/{+path}",
     "contributors_url": "https://api.github.com/repos/docker/test-docker-action/contributors",
-    "created_at": 1596792180,
+    "created_at": "2020-08-07T09:23:00Z",
     "default_branch": "master",
     "deployments_url": "https://api.github.com/repos/docker/test-docker-action/deployments",
     "description": "Test \"Docker\" Actions",
@@ -98,7 +71,6 @@
       "spdx_id": "MIT",
       "url": "https://api.github.com/licenses/mit"
     },
-    "master_branch": "master",
     "merges_url": "https://api.github.com/repos/docker/test-docker-action/merges",
     "milestones_url": "https://api.github.com/repos/docker/test-docker-action/milestones{/number}",
     "mirror_url": null,
@@ -107,10 +79,8 @@
     "notifications_url": "https://api.github.com/repos/docker/test-docker-action/notifications{?since,all,participating}",
     "open_issues": 6,
     "open_issues_count": 6,
-    "organization": "docker",
     "owner": {
       "avatar_url": "https://avatars.githubusercontent.com/u/5429470?v=4",
-      "email": "info@docker.com",
       "events_url": "https://api.github.com/users/docker/events{/privacy}",
       "followers_url": "https://api.github.com/users/docker/followers",
       "following_url": "https://api.github.com/users/docker/following{/other_user}",
@@ -119,7 +89,6 @@
       "html_url": "https://github.com/docker",
       "id": 5429470,
       "login": "docker",
-      "name": "docker",
       "node_id": "MDEyOk9yZ2FuaXphdGlvbjU0Mjk0NzA=",
       "organizations_url": "https://api.github.com/users/docker/orgs",
       "received_events_url": "https://api.github.com/users/docker/received_events",
@@ -132,11 +101,10 @@
     },
     "private": true,
     "pulls_url": "https://api.github.com/repos/docker/test-docker-action/pulls{/number}",
-    "pushed_at": 1650361263,
+    "pushed_at": "2022-04-19T09:41:03Z",
     "releases_url": "https://api.github.com/repos/docker/test-docker-action/releases{/id}",
     "size": 796,
     "ssh_url": "git@github.com:docker/test-docker-action.git",
-    "stargazers": 0,
     "stargazers_count": 0,
     "stargazers_url": "https://api.github.com/repos/docker/test-docker-action/stargazers",
     "statuses_url": "https://api.github.com/repos/docker/test-docker-action/statuses/{sha}",
@@ -148,7 +116,7 @@
     "topics": [],
     "trees_url": "https://api.github.com/repos/docker/test-docker-action/git/trees{/sha}",
     "updated_at": "2022-04-19T09:05:09Z",
-    "url": "https://github.com/docker/test-docker-action",
+    "url": "https://api.github.com/repos/docker/test-docker-action",
     "visibility": "private",
     "watchers": 0,
     "watchers_count": 0
@@ -172,5 +140,6 @@
     "subscriptions_url": "https://api.github.com/users/crazy-max/subscriptions",
     "type": "User",
     "url": "https://api.github.com/users/crazy-max"
-  }
+  },
+  "workflow": ".github/workflows/metadata.yml"
 }

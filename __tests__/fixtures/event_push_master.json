@@ -1,10 +1,29 @@
 {
-  "after": "860c1904a1ce19322e91ac35af1ab07466440c37",
-  "base_ref": "refs/heads/master",
-  "before": "0000000000000000000000000000000000000000",
-  "commits": [],
-  "compare": "https://github.com/docker/test-docker-action/compare/v1.1.1",
-  "created": true,
+  "after": "266574110acf203503badf966df2ea24b5d732d7",
+  "base_ref": null,
+  "before": "ef1a8e2e6a91ffa6837f19f7743405b709363225",
+  "commits": [
+    {
+      "author": {
+        "email": "crazy-max@users.noreply.github.com",
+        "name": "CrazyMax",
+        "username": "crazy-max"
+      },
+      "committer": {
+        "email": "crazy-max@users.noreply.github.com",
+        "name": "CrazyMax",
+        "username": "crazy-max"
+      },
+      "distinct": true,
+      "id": "266574110acf203503badf966df2ea24b5d732d7",
+      "message": "more events",
+      "timestamp": "2022-04-19T11:04:39+02:00",
+      "tree_id": "03b667a843ece33c75ef5eb23ca5bc8fc3b876e4",
+      "url": "https://github.com/docker/test-docker-action/commit/266574110acf203503badf966df2ea24b5d732d7"
+    }
+  ],
+  "compare": "https://github.com/docker/test-docker-action/compare/ef1a8e2e6a91...266574110acf",
+  "created": false,
   "deleted": false,
   "forced": false,
   "head_commit": {
@@ -19,11 +38,11 @@
       "username": "crazy-max"
     },
     "distinct": true,
-    "id": "860c1904a1ce19322e91ac35af1ab07466440c37",
-    "message": "scheduled",
-    "timestamp": "2022-04-19T11:39:35+02:00",
-    "tree_id": "1d3608c3f204a4d754a1db925264929afd54daad",
-    "url": "https://github.com/docker/test-docker-action/commit/860c1904a1ce19322e91ac35af1ab07466440c37"
+    "id": "266574110acf203503badf966df2ea24b5d732d7",
+    "message": "more events",
+    "timestamp": "2022-04-19T11:04:39+02:00",
+    "tree_id": "03b667a843ece33c75ef5eb23ca5bc8fc3b876e4",
+    "url": "https://github.com/docker/test-docker-action/commit/266574110acf203503badf966df2ea24b5d732d7"
   },
   "organization": {
     "avatar_url": "https://avatars.githubusercontent.com/u/5429470?v=4",
@@ -43,7 +62,7 @@
     "email": "github@crazymax.dev",
     "name": "crazy-max"
   },
-  "ref": "refs/tags/v1.1.1",
+  "ref": "refs/heads/master",
   "repository": {
     "allow_forking": true,
     "archive_url": "https://api.github.com/repos/docker/test-docker-action/{archive_format}{/ref}",
@@ -75,10 +94,10 @@
     "git_tags_url": "https://api.github.com/repos/docker/test-docker-action/git/tags{/sha}",
     "git_url": "git://github.com/docker/test-docker-action.git",
     "has_downloads": true,
-    "has_issues": true,
+    "has_issues": false,
     "has_pages": false,
-    "has_projects": true,
-    "has_wiki": true,
+    "has_projects": false,
+    "has_wiki": false,
     "homepage": "",
     "hooks_url": "https://api.github.com/repos/docker/test-docker-action/hooks",
     "html_url": "https://github.com/docker/test-docker-action",
@@ -105,8 +124,8 @@
     "name": "test-docker-action",
     "node_id": "MDEwOlJlcG9zaXRvcnkyODU3ODk0OTM=",
     "notifications_url": "https://api.github.com/repos/docker/test-docker-action/notifications{?since,all,participating}",
-    "open_issues": 6,
-    "open_issues_count": 6,
+    "open_issues": 4,
+    "open_issues_count": 4,
     "organization": "docker",
     "owner": {
       "avatar_url": "https://avatars.githubusercontent.com/u/5429470?v=4",
@@ -132,7 +151,7 @@
     },
     "private": true,
     "pulls_url": "https://api.github.com/repos/docker/test-docker-action/pulls{/number}",
-    "pushed_at": 1650361263,
+    "pushed_at": 1650359090,
     "releases_url": "https://api.github.com/repos/docker/test-docker-action/releases{/id}",
     "size": 796,
     "ssh_url": "git@github.com:docker/test-docker-action.git",
@@ -147,7 +166,7 @@
     "teams_url": "https://api.github.com/repos/docker/test-docker-action/teams",
     "topics": [],
     "trees_url": "https://api.github.com/repos/docker/test-docker-action/git/trees{/sha}",
-    "updated_at": "2022-04-19T09:05:09Z",
+    "updated_at": "2021-12-21T21:49:29Z",
     "url": "https://github.com/docker/test-docker-action",
     "visibility": "private",
     "watchers": 0,
