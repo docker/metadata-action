@@ -165,6 +165,27 @@ jobs:
             org.opencontainers.image.description=this is a "good" example
             org.opencontainers.image.vendor=MyCompany
 
+  global-exps:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          tags: |
+            type=sha
+            type=raw,value=gexp-branch-{{branch}}
+            type=raw,value=gexp-date-{{date 'YYYYMMDD'}}
+            type=raw,value=gexp-tag-{{tag}}
+            type=raw,value=gexp-baseref-{{base_ref}}
+            type=raw,value=gexp-defbranch,enable={{is_default_branch}}
+
   json:
     runs-on: ubuntu-latest
     steps:

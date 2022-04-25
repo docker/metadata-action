@@ -25,6 +25,12 @@ async function run() {
     core.info(`runId: ${context.runId}`);
     core.endGroup();
 
+    if (core.isDebug()) {
+      core.startGroup(`Webhook payload`);
+      core.info(JSON.stringify(context.payload, null, 2));
+      core.endGroup();
+    }
+
     const meta: Meta = new Meta(inputs, context, repo);
 
     const version: Version = meta.version;

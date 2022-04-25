@@ -206,9 +206,6 @@ export function Parse(s: string): Tag {
   if (!Object.prototype.hasOwnProperty.call(tag.attrs, 'priority')) {
     tag.attrs['priority'] = DefaultPriorities[tag.type];
   }
-  if (!['true', 'false'].includes(tag.attrs['enable'])) {
-    throw new Error(`Invalid value for enable attribute: ${tag.attrs['enable']}`);
-  }
 
   return tag;
 }
