@@ -1,5 +1,5 @@
+import {parse} from 'csv-parse/sync';
 import * as core from '@actions/core';
-import csvparse from 'csv-parse/lib/sync';
 
 export interface Flavor {
   latest: string;
@@ -19,9 +19,9 @@ export function Transform(inputs: string[]): Flavor {
   };
 
   for (const input of inputs) {
-    const fields = csvparse(input, {
+    const fields = parse(input, {
       relaxColumnCount: true,
-      skipLinesWithEmptyValues: true
+      skipEmptyLines: true
     })[0];
     let onlatestfor = '';
     for (const field of fields) {
