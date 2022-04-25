@@ -30,6 +30,7 @@ export class Meta {
   constructor(inputs: Inputs, context: Context, repo: ReposGetResponseData) {
     // Needs to override Git reference with pr ref instead of upstream branch ref
     // for pull_request_target event
+    // https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target
     if (/pull_request_target/.test(context.eventName)) {
       context.ref = `refs/pull/${context.payload.number}/merge`;
     }
@@ -51,7 +52,11 @@ export class Meta {
     };
 
     for (const tag of this.tags) {
-      if (!/true/i.test(tag.attrs['enable'])) {
+      const enabled = this.setGlobalExp(tag.attrs['enable']);
+      if (!['true', 'false'].includes(enabled)) {
+        throw new Error(`Invalid value for enable attribute: ${enabled}`);
+      }
+      if (!/true/i.test(enabled)) {
         continue;
       }
       switch (tag.type) {
@@ -368,6 +373,27 @@ export class Meta {
           return ctx.payload?.pull_request?.base?.ref;
         }
         return '';
+      },
+      is_default_branch: function () {
+        let branch = ctx.ref.replace(/^refs\/heads\//g, '');
+        if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
+          branch = ctx.payload.base_ref.replace(/^refs\/heads\//g, '');
+        }
+        if (/^refs\/pull\//.test(ctx.ref) && ctx.payload?.pull_request?.base?.ref != undefined) {
+          branch = ctx.payload.pull_request.base.ref;
+        }
+        if (branch == undefined || branch.length == 0) {
+          return 'false';
+        }
+        if (ctx.payload?.repository?.default_branch == branch) {
+          return 'true';
+        }
+        // following events always trigger for last commit on default branch
+        // https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+        if (/create/.test(ctx.eventName) || /discussion/.test(ctx.eventName) || /issues/.test(ctx.eventName) || /schedule/.test(ctx.eventName)) {
+          return 'true';
+        }
+        return 'false';
       },
       date: function (format) {
         return moment(currentDate).utc().format(format);

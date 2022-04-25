@@ -598,7 +598,8 @@ describe('push', () => {
           `type=raw,value=mytag-{{branch}}`,
           `type=raw,value=mytag-{{date 'YYYYMMDD'}}`,
           `type=raw,value=mytag-tag-{{tag}}`,
-          `type=raw,value=mytag-baseref-{{base_ref}}`
+          `type=raw,value=mytag-baseref-{{base_ref}}`,
+          `type=raw,value=mytag-defbranch,enable={{is_default_branch}}`
         ],
       } as Inputs,
       {
@@ -606,7 +607,8 @@ describe('push', () => {
         partial: [
           'mytag-20200110',
           'mytag-tag-',
-          'mytag-baseref-'
+          'mytag-baseref-',
+          'mytag-defbranch'
         ],
         latest: false
       } as Version,
@@ -614,7 +616,8 @@ describe('push', () => {
         'user/app:mytag-master',
         'user/app:mytag-20200110',
         'user/app:mytag-tag-',
-        'user/app:mytag-baseref-'
+        'user/app:mytag-baseref-',
+        'user/app:mytag-defbranch'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -667,7 +670,8 @@ describe('push', () => {
         tags: [
           `type=edge,branch=master`,
           `type=ref,event=branch,enable=false`,
-          `type=sha,format=long`
+          `type=sha,format=long`,
+          `type=raw,value=defbranch,enable={{is_default_branch}}`
         ],
       } as Inputs,
       {
@@ -1321,21 +1325,25 @@ describe('tag', () => {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
           `type=raw,{{tag}}-{{sha}}-foo`,
-          `type=raw,{{base_ref}}-foo`
+          `type=raw,{{base_ref}}-foo`,
+          `type=raw,defbranch-foo,enable={{is_default_branch}}`
         ]
       } as Inputs,
       {
         main: 'v1.1.1-860c190-foo',
         partial: [
-          'master-foo'
+          'master-foo',
+          'defbranch-foo'
         ],
         latest: false
       } as Version,
       [
         'org/app:v1.1.1-860c190-foo',
         'org/app:master-foo',
+        'org/app:defbranch-foo',
         'ghcr.io/user/app:v1.1.1-860c190-foo',
-        'ghcr.io/user/app:master-foo'
+        'ghcr.io/user/app:master-foo',
+        'ghcr.io/user/app:defbranch-foo'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -2317,15 +2325,19 @@ describe('pr', () => {
         images: ['org/app'],
         tags: [
           `type=raw,value=mytag-{{base_ref}}`,
+          `type=raw,mytag-defbranch,enable={{is_default_branch}}`
         ]
       } as Inputs,
       {
         main: 'mytag-master',
-        partial: [],
+        partial: [
+          'mytag-defbranch'
+        ],
         latest: false
       } as Version,
       [
-        'org/app:mytag-master'
+        'org/app:mytag-master',
+        'org/app:mytag-defbranch'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -2339,21 +2351,25 @@ describe('pr', () => {
       ]
     ],
     [
-      'pr06',
+      'pr11',
       'event_pull_request.env',
       {
         images: ['org/app'],
         tags: [
           `type=raw,value=mytag-{{base_ref}}`,
+          `type=raw,mytag-defbranch,enable={{is_default_branch}}`
         ]
       } as Inputs,
       {
         main: 'mytag-master',
-        partial: [],
+        partial: [
+          'mytag-defbranch'
+        ],
         latest: false
       } as Version,
       [
-        'org/app:mytag-master'
+        'org/app:mytag-master',
+        'org/app:mytag-defbranch'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -2521,19 +2537,25 @@ describe('schedule', () => {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
           `type=schedule`,
-          `type=sha,priority=2000`
+          `type=sha,priority=2000`,
+          `type=raw,value=defbranch,enable={{is_default_branch}}`
         ]
       } as Inputs,
       {
         main: 'sha-860c190',
-        partial: ['nightly'],
+        partial: [
+          'nightly',
+          'defbranch'
+        ],
         latest: false
       } as Version,
       [
         'org/app:sha-860c190',
         'org/app:nightly',
+        'org/app:defbranch',
         'ghcr.io/user/app:sha-860c190',
-        'ghcr.io/user/app:nightly'
+        'ghcr.io/user/app:nightly',
+        'ghcr.io/user/app:defbranch'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -2611,6 +2633,40 @@ describe('release', () => {
         "org.opencontainers.image.licenses=MIT"
       ]
     ],
+    [
+      'release02',
+      'event_release_created.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=tag`,
+          `type=raw,value=baseref-{{base_ref}}`,
+          `type=raw,value=defbranch,enable={{is_default_branch}}`
+        ]
+      } as Inputs,
+      {
+        main: 'v1.1.1',
+        partial: [
+          'baseref-'
+        ],
+        latest: true
+      } as Version,
+      [
+        'user/app:v1.1.1',
+        'user/app:baseref-',
+        'user/app:latest'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=v1.1.1",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ]
   ])('given %s with %p event', tagsLabelsTest);
 });
 

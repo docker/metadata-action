@@ -32,6 +32,12 @@ ___
 * [Notes](#notes)
   * [Latest tag](#latest-tag)
   * [Global expressions](#global-expressions)
+    * [`{{branch}}`](#branch)
+    * [`{{tag}}`](#tag)
+    * [`{{sha}}`](#sha)
+    * [`{{base_ref}}`](#base_ref)
+    * [`{{is_default_branch}}`](#is_default_branch)
+    * [`{{date '<format>'}}`](#date-format)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
   * [Overwrite labels](#overwrite-labels)
@@ -232,7 +238,7 @@ Content of `${{ steps.meta.outputs.bake-file }}` file will look like this with `
         "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version": "1.2.3",
         "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-        "org.opencontainers.image.revision": "90dd6032fac8bda1b6c4436a2e65de27961ed071",
+        "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses": "MIT"
       },
       "args": {
@@ -605,26 +611,28 @@ tags: |
 * [`type=semver,pattern=...`](#typesemver)
 * [`type=match,pattern=...`](#typematch)
 
-For conditionally tagging with latest for a specific branch name, e.g. if your default branch name
-is not `master`, use `type=raw` with a boolean expression:
+For conditionally tagging with latest for a specific branch name, e.g. if your
+default branch name is not `master`, use `type=raw` with a boolean expression:
 
 ```yaml
 tags: |
-  type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+  # set latest tag for master branch
+  type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+```
+
+You can also use the [`{{is_default_branch}}` global expression](#is_default_branch)
+to conditionally tag with latest for the default branch:
+
+```yaml
+tags: |
+  # set latest tag for default branch
+  type=raw,value=latest,enable={{is_default_branch}}
 ```
 
 ### Global expressions
 
-The following [Handlebars' template](https://handlebarsjs.com/guide/) expressions for `prefix`, `suffix` and `value`
-attributes are available:
-
-| Expression               | Output               |
-|--------------------------|----------------------|
-| `{{branch}}`             | `master`             |
-| `{{tag}}`                | `v1.2.3`             |
-| `{{sha}}`                | `90dd603`            |
-| `{{base_ref}}`           | `master`             |
-| `{{date 'YYYYMMDD'}}`    | `20210326`           |
+The following [Handlebars' template](https://handlebarsjs.com/guide/) expressions
+for `prefix`, `suffix`, `value` and `enable` attributes are available:
 
 ```yaml
 tags: |
@@ -633,6 +641,63 @@ tags: |
   # dynamically set the branch name and sha as a custom tag
   type=raw,value=mytag-{{branch}}-{{sha}}
 ```
+
+#### `{{branch}}`
+
+Returns the branch name that triggered the workflow run. Will be empty if not 
+a branch reference:
+
+| Event           | Ref                           | Output              |
+|-----------------|-------------------------------|---------------------|
+| `pull_request`  | `refs/pull/2/merge`           |                     |
+| `push`          | `refs/heads/master`           | `master`            |
+| `push`          | `refs/heads/my/branch`        | `my-branch`         |
+| `push tag`      | `refs/tags/v1.2.3`            |                     |
+
+#### `{{tag}}`
+
+Returns the tag name that triggered the workflow run. Will be empty if not a
+tag reference:
+
+| Event           | Ref                           | Output             |
+|-----------------|-------------------------------|--------------------|
+| `pull_request`  | `refs/pull/2/merge`           |                    |
+| `push`          | `refs/heads/master`           |                    |
+| `push`          | `refs/heads/my/branch`        |                    |
+| `push tag`      | `refs/tags/v1.2.3`            | `v1.2.3`           |
+
+#### `{{sha}}`
+
+Returns the short commit SHA that triggered the workflow run (e.g., `90dd603`).
+
+#### `{{base_ref}}`
+
+Returns the base ref or target branch of the pull request that triggered the
+workflow run. Will be empty for a branch reference:
+
+| Event           | Ref                           | Output             |
+|-----------------|-------------------------------|--------------------|
+| `pull_request`  | `refs/pull/2/merge`           | `master`           |
+| `push`          | `refs/heads/master`           |                    |
+| `push`          | `refs/heads/my/branch`        |                    |
+| `push tag`      | `refs/tags/v1.2.3`            | `master`           |
+
+#### `{{is_default_branch}}`
+
+Returns `true` if the branch that triggered the workflow run is the default
+one, otherwise `false`.
+
+Will compare against the branch name that triggered the workflow run or the 
+base ref or target branch for a pull request or a tag.
+
+#### `{{date '<format>'}}`
+
+Returns the current date rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/).
+
+| Expression                                 | Output example                          |
+|--------------------------------------------|-----------------------------------------|
+| `{{date 'YYYYMMDD'}}`                      | `20200110`                              |
+| `{{date 'dddd, MMMM Do YYYY, h:mm:ss a'}}` | `Friday, January 10th 2020, 3:25:50 pm` |
 
 ### Major version zero
 

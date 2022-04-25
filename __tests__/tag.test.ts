@@ -418,11 +418,6 @@ describe('parse', () => {
       true
     ],
     [
-      `type=sha,enable=foo`,
-      {} as Tag,
-      true
-    ],
-    [
       `type=sha,format=foo`,
       {} as Tag,
       true
