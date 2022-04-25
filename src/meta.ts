@@ -366,11 +366,11 @@ export class Meta {
         return ctx.sha.substr(0, 7);
       },
       base_ref: function () {
-        if (/^refs\/tags\//.test(ctx.ref)) {
-          return ctx.payload?.base_ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
+        if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
+          return ctx.payload.base_ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
         }
-        if (/^refs\/pull\//.test(ctx.ref)) {
-          return ctx.payload?.pull_request?.base?.ref;
+        if (/^refs\/pull\//.test(ctx.ref) && ctx.payload?.pull_request?.base?.ref != undefined) {
+          return ctx.payload.pull_request.base.ref;
         }
         return '';
       },
