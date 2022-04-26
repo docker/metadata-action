@@ -369,6 +369,8 @@ export class Meta {
         if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
           return ctx.payload.base_ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
         }
+        // FIXME: keep this for backward compatibility even if doesn't always seem
+        //  to return the expected branch. See the comment below.
         if (/^refs\/pull\//.test(ctx.ref) && ctx.payload?.pull_request?.base?.ref != undefined) {
           return ctx.payload.pull_request.base.ref;
         }
@@ -376,9 +378,13 @@ export class Meta {
       },
       is_default_branch: function () {
         let branch = ctx.ref.replace(/^refs\/heads\//g, '');
-        if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
-          branch = ctx.payload.base_ref.replace(/^refs\/heads\//g, '');
-        }
+        // TODO: "base_ref" is available in the push payload but doesn't always seem to
+        //  return the expected branch when the push tag event occurs. It's also not
+        //  documented in GitHub docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push
+        //  more context: https://github.com/docker/metadata-action/pull/192#discussion_r854673012
+        // if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
+        //   branch = ctx.payload.base_ref.replace(/^refs\/heads\//g, '');
+        // }
         if (/^refs\/pull\//.test(ctx.ref) && ctx.payload?.pull_request?.base?.ref != undefined) {
           branch = ctx.payload.pull_request.base.ref;
         }

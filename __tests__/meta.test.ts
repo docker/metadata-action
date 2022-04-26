@@ -1332,18 +1332,15 @@ describe('tag', () => {
       {
         main: 'v1.1.1-860c190-foo',
         partial: [
-          'master-foo',
-          'defbranch-foo'
+          'master-foo'
         ],
         latest: false
       } as Version,
       [
         'org/app:v1.1.1-860c190-foo',
         'org/app:master-foo',
-        'org/app:defbranch-foo',
         'ghcr.io/user/app:v1.1.1-860c190-foo',
-        'ghcr.io/user/app:master-foo',
-        'ghcr.io/user/app:defbranch-foo'
+        'ghcr.io/user/app:master-foo'
       ],
       [
         "org.opencontainers.image.title=Hello-World",

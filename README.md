@@ -675,12 +675,18 @@ Returns the short commit SHA that triggered the workflow run (e.g., `90dd603`).
 Returns the base ref or target branch of the pull request that triggered the
 workflow run. Will be empty for a branch reference:
 
-| Event           | Ref                           | Output             |
-|-----------------|-------------------------------|--------------------|
-| `pull_request`  | `refs/pull/2/merge`           | `master`           |
-| `push`          | `refs/heads/master`           |                    |
-| `push`          | `refs/heads/my/branch`        |                    |
-| `push tag`      | `refs/tags/v1.2.3`            | `master`           |
+| Event          | Ref                           | Output             |
+|----------------|-------------------------------|--------------------|
+| `pull_request` | `refs/pull/2/merge`           | `master`           |
+| `push`         | `refs/heads/master`           |                    |
+| `push`         | `refs/heads/my/branch`        |                    |
+| `push tag`*    | `refs/tags/v1.2.3`            | `master`           |
+
+> *`base_ref` is available in the push payload but doesn't always seem to 
+> return the expected branch when the push tag event occurs. It's also
+> [not documented in GitHub docs](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push).
+> We keep it for backward compatibility, but it's **not recommended relying on it**.
+> More context in [#192](https://github.com/docker/metadata-action/pull/192#discussion_r854673012). 
 
 #### `{{is_default_branch}}`
 
@@ -688,7 +694,7 @@ Returns `true` if the branch that triggered the workflow run is the default
 one, otherwise `false`.
 
 Will compare against the branch name that triggered the workflow run or the 
-base ref or target branch for a pull request or a tag.
+base ref for a pull request.
 
 #### `{{date '<format>'}}`
 
