@@ -377,7 +377,7 @@ export class Meta {
         return '';
       },
       is_default_branch: function () {
-        let branch = ctx.ref.replace(/^refs\/heads\//g, '');
+        const branch = ctx.ref.replace(/^refs\/heads\//g, '');
         // TODO: "base_ref" is available in the push payload but doesn't always seem to
         //  return the expected branch when the push tag event occurs. It's also not
         //  documented in GitHub docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push
@@ -385,9 +385,6 @@ export class Meta {
         // if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
         //   branch = ctx.payload.base_ref.replace(/^refs\/heads\//g, '');
         // }
-        if (/^refs\/pull\//.test(ctx.ref) && ctx.payload?.pull_request?.base?.ref != undefined) {
-          branch = ctx.payload.pull_request.base.ref;
-        }
         if (branch == undefined || branch.length == 0) {
           return 'false';
         }
