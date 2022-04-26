@@ -693,9 +693,6 @@ workflow run. Will be empty for a branch reference:
 Returns `true` if the branch that triggered the workflow run is the default
 one, otherwise `false`.
 
-Will compare against the branch name that triggered the workflow run or the 
-base ref for a pull request.
-
 #### `{{date '<format>'}}`
 
 Returns the current date rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/).

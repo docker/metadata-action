@@ -2327,14 +2327,11 @@ describe('pr', () => {
       } as Inputs,
       {
         main: 'mytag-master',
-        partial: [
-          'mytag-defbranch'
-        ],
+        partial: [],
         latest: false
       } as Version,
       [
-        'org/app:mytag-master',
-        'org/app:mytag-defbranch'
+        'org/app:mytag-master'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
@@ -2359,14 +2356,11 @@ describe('pr', () => {
       } as Inputs,
       {
         main: 'mytag-master',
-        partial: [
-          'mytag-defbranch'
-        ],
+        partial: [],
         latest: false
       } as Version,
       [
-        'org/app:mytag-master',
-        'org/app:mytag-defbranch'
+        'org/app:mytag-master'
       ],
       [
         "org.opencontainers.image.title=Hello-World",
