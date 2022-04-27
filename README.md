@@ -19,6 +19,7 @@ ___
 * [Customizing](#customizing)
   * [inputs](#inputs)
   * [outputs](#outputs)
+* [`images` input](#images-input)
 * [`flavor` input](#flavor-input)
 * [`tags` input](#tags-input)
   * [`type=schedule`](#typeschedule)
@@ -290,6 +291,29 @@ Following outputs are available
 | `labels`      | String  | Docker labels |
 | `json`        | String  | JSON output of tags and labels |
 | `bake-file`   | File    | [Bake definition file](https://github.com/docker/buildx#file-definition) path |
+
+## `images` input
+
+`images` defines a list of Docker images to use as base name for [`tags`](#tags-input):
+
+```yaml
+images: |
+  name/foo
+  ghcr.io/name/bar
+  # or
+  name=name/foo
+  name=ghcr.io/name/bar
+```
+
+Extended attributes and default values:
+
+```yaml
+images: |
+  name=,enable=true
+```
+
+* `name=<string>` image base name
+* `enable=<true|false>` enable this entry (default `true`)
 
 ## `flavor` input
 
