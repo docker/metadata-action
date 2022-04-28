@@ -6,6 +6,7 @@ import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
 import {Inputs, tmpDir} from './context';
 import {ReposGetResponseData} from './github';
+import * as icl from './image';
 import * as tcl from './tag';
 import * as fcl from './flavor';
 import * as core from '@actions/core';
@@ -23,6 +24,7 @@ export class Meta {
   private readonly inputs: Inputs;
   private readonly context: Context;
   private readonly repo: ReposGetResponseData;
+  private readonly images: icl.Image[];
   private readonly tags: tcl.Tag[];
   private readonly flavor: fcl.Flavor;
   private readonly date: Date;
@@ -38,6 +40,7 @@ export class Meta {
     this.inputs = inputs;
     this.context = context;
     this.repo = repo;
+    this.images = icl.Transform(inputs.images);
     this.tags = tcl.Transform(inputs.tags);
     this.flavor = fcl.Transform(inputs.flavor);
     this.date = new Date();
@@ -404,20 +407,29 @@ export class Meta {
     });
   }
 
+  private getImageNames(): Array<string> {
+    const images: Array<string> = [];
+    for (const image of this.images) {
+      if (!image.enable) {
+        continue;
+      }
+      images.push(image.name);
+    }
+    return images;
+  }
+
   public getTags(): Array<string> {
     if (!this.version.main) {
       return [];
     }
-
     const tags: Array<string> = [];
-    for (const image of this.inputs.images) {
-      const imageLc = image.toLowerCase();
-      tags.push(`${imageLc}:${this.version.main}`);
+    for (const imageName of this.getImageNames()) {
+      tags.push(`${imageName}:${this.version.main}`);
       for (const partial of this.version.partial) {
-        tags.push(`${imageLc}:${partial}`);
+        tags.push(`${imageName}:${partial}`);
       }
       if (this.version.latest) {
-        tags.push(`${imageLc}:${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`);
+        tags.push(`${imageName}:${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`);
       }
     }
     return tags;
@@ -470,7 +482,7 @@ export class Meta {
                 return res;
               }, {}),
               args: {
-                DOCKER_META_IMAGES: this.inputs.images.join(','),
+                DOCKER_META_IMAGES: this.getImageNames().join(','),
                 DOCKER_META_VERSION: this.version.main
               }
             }

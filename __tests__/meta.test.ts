@@ -693,6 +693,39 @@ describe('push', () => {
         "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"
       ]
+    ],
+    [
+      'push20',
+      'event_push_dev.env',
+      {
+        images: [
+          'org/app',
+          'ghcr.io/user/app,enable=false'
+        ],
+        tags: [
+          `type=edge,branch=master`,
+          `type=ref,event=branch,enable=false`,
+          `type=sha,format=long`
+        ],
+      } as Inputs,
+      {
+        main: 'sha-860c1904a1ce19322e91ac35af1ab07466440c37',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:sha-860c1904a1ce19322e91ac35af1ab07466440c37'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=sha-860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.licenses=MIT"
+      ]
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });

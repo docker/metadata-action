@@ -19,6 +19,7 @@ ___
 * [Customizing](#customizing)
   * [inputs](#inputs)
   * [outputs](#outputs)
+* [`images` input](#images-input)
 * [`flavor` input](#flavor-input)
 * [`tags` input](#tags-input)
   * [`type=schedule`](#typeschedule)
@@ -125,7 +126,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: name/app
+          images: |
+            name/app
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -202,7 +204,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: name/app
+          images: |
+            name/app
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -264,32 +267,50 @@ Following inputs can be used as `step.with` keys
 >   org.opencontainers.image.vendor=MyCompany
 > ```
 
-> `CSV` type is a comma-delimited string
-> ```yaml
-> images: name/app,ghcr.io/name/app
-> ```
-
-| Name                | Type     | Description                        |
-|---------------------|----------|------------------------------------|
-| `images`            | List/CSV | List of Docker images to use as base name for tags |
-| `tags`              | List     | List of [tags](#tags-input) as key-value pair attributes |
-| `flavor`            | List     | [Flavor](#flavor-input) to apply |
-| `labels`            | List     | List of custom labels |
-| `sep-tags`          | String   | Separator to use for tags output (default `\n`) |
-| `sep-labels`        | String   | Separator to use for labels output (default `\n`) |
-| `bake-target`       | String   | Bake target name (default `docker-metadata-action`) |
+| Name                | Type   | Description                                              |
+|---------------------|--------|----------------------------------------------------------|
+| `images`            | List   | List of Docker images to use as base name for tags       |
+| `tags`              | List   | List of [tags](#tags-input) as key-value pair attributes |
+| `flavor`            | List   | [Flavor](#flavor-input) to apply                         |
+| `labels`            | List   | List of custom labels                                    |
+| `sep-tags`          | String | Separator to use for tags output (default `\n`)          |
+| `sep-labels`        | String | Separator to use for labels output (default `\n`)        |
+| `bake-target`       | String | Bake target name (default `docker-metadata-action`)      |
 
 ### outputs
 
 Following outputs are available
 
-| Name          | Type    | Description                           |
-|---------------|---------|---------------------------------------|
-| `version`     | String  | Docker image version |
-| `tags`        | String  | Docker tags |
-| `labels`      | String  | Docker labels |
-| `json`        | String  | JSON output of tags and labels |
+| Name          | Type    | Description                                                                   |
+|---------------|---------|-------------------------------------------------------------------------------|
+| `version`     | String  | Docker image version                                                          |
+| `tags`        | String  | Docker tags                                                                   |
+| `labels`      | String  | Docker labels                                                                 |
+| `json`        | String  | JSON output of tags and labels                                                |
 | `bake-file`   | File    | [Bake definition file](https://github.com/docker/buildx#file-definition) path |
+
+## `images` input
+
+`images` defines a list of Docker images to use as base name for [`tags`](#tags-input):
+
+```yaml
+images: |
+  name/foo
+  ghcr.io/name/bar
+  # or
+  name=name/foo
+  name=ghcr.io/name/bar
+```
+
+Extended attributes and default values:
+
+```yaml
+images: |
+  name=,enable=true
+```
+
+* `name=<string>` image base name
+* `enable=<true|false>` enable this entry (default `true`)
 
 ## `flavor` input
 

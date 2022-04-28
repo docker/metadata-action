@@ -146,6 +146,21 @@ jobs:
             prefix=foo-
             suffix=-bar
 
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          images: |
+            name=${{ env.DOCKER_IMAGE }}
+            name=ghcr.io/name/app,enable=${{ github.event_name == 'pull_request' }}
+            name=ghcr.io/name/release,enable=${{ startsWith(github.ref, 'refs/tags/') }}
+
   labels:
     runs-on: ubuntu-latest
     steps:
@@ -226,7 +241,8 @@ jobs:
         id: docker_meta
         uses: ./
         with:
-          images: ${{ env.DOCKER_IMAGE }}
+          images: |
+            ${{ env.DOCKER_IMAGE }}
           tags: |
             type=schedule
             type=ref,event=branch
