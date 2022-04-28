@@ -1,4 +1,5 @@
 import {parse} from 'csv-parse/sync';
+import * as core from '@actions/core';
 
 export interface Image {
   name: string;
@@ -6,7 +7,33 @@ export interface Image {
 }
 
 export function Transform(inputs: string[]): Image[] {
-  const images: Image[] = [];
+  let images: Image[] = [];
+
+  // backward compatibility with old format
+  if (inputs.length == 1) {
+    let newformat = false;
+    const fields = parse(inputs[0], {
+      relaxColumnCount: true,
+      skipEmptyLines: true
+    })[0];
+    for (const field of fields) {
+      const parts = field
+        .toString()
+        .split('=')
+        .map(item => item.trim());
+      if (parts.length == 1) {
+        images.push({name: parts[0].toLowerCase(), enable: true});
+      } else {
+        newformat = true;
+        break;
+      }
+    }
+    if (!newformat) {
+      return output(images);
+    }
+  }
+
+  images = [];
   for (const input of inputs) {
     const image: Image = {name: '', enable: true};
     const fields = parse(input, {
@@ -46,5 +73,14 @@ export function Transform(inputs: string[]): Image[] {
     }
     images.push(image);
   }
+  return output(images);
+}
+
+function output(images: Image[]): Image[] {
+  core.startGroup(`Processing images input`);
+  for (const image of images) {
+    core.info(`name=${image.name},enable=${image.enable}`);
+  }
+  core.endGroup();
   return images;
 }

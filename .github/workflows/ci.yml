@@ -241,7 +241,8 @@ jobs:
         id: docker_meta
         uses: ./
         with:
-          images: ${{ env.DOCKER_IMAGE }}
+          images: |
+            ${{ env.DOCKER_IMAGE }}
           tags: |
             type=schedule
             type=ref,event=branch

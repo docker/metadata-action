@@ -27,7 +27,7 @@ export function tmpDir(): string {
 
 export function getInputs(): Inputs {
   return {
-    images: getInputList('images'),
+    images: getInputList('images', true),
     tags: getInputList('tags', true),
     flavor: getInputList('flavor', true),
     labels: getInputList('labels', true),

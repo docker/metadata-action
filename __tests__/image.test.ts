@@ -18,6 +18,22 @@ describe('transform', () => {
     ],
     [
       [
+        `name/foo,name/bar`
+      ],
+      [
+        {
+          name: `name/foo`,
+          enable: true,
+        },
+        {
+          name: `name/bar`,
+          enable: true,
+        }
+      ] as Image[],
+      false
+    ],
+    [
+      [
         `name/foo`,
         `name/bar`
       ],
@@ -66,6 +82,9 @@ describe('transform', () => {
     ],
     [
       [`name=,enable=true`], undefined, true
+    ],
+    [
+      [`name/foo,name=name/bar,enable=true`], undefined, true
     ]
   ])('given %p', async (l: string[], expected: Image[], invalid: boolean) => {
     try {
