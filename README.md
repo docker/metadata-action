@@ -508,13 +508,13 @@ Can create a regular expression for matching Git tag with a pattern and capturin
 [push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push) but, you can also use
 a custom value through `value` attribute.
 
-| Git tag                 | Pattern                       | Group   | Output                 |
-|-------------------------|-------------------------------|---------|------------------------|
-| `v1.2.3`                | `\d.\d.\d`                    | `0`     | `1.2.3`                |
-| `v2.0.8-beta.67`        | `v(.*)`                       | `1`     | `2.0.8-beta.67`        |
-| `v2.0.8-beta.67`        | `v(\d.\d)`                    | `1`     | `2.0`                  |
-| `20200110-RC2`          | `\d+`                         | `0`     | `20200110`             |
-| `p1/v1.2.3`             | `p1-v(\d.\d.\d)`              | `1`     | `1.2.3`                |
+| Git tag                 | Pattern          | Group   | Output                 |
+|-------------------------|------------------|---------|------------------------|
+| `v1.2.3`                | `\d.\d.\d`       | `0`     | `1.2.3`                |
+| `v2.0.8-beta.67`        | `v(.*)`          | `1`     | `2.0.8-beta.67`        |
+| `v2.0.8-beta.67`        | `v(\d.\d)`       | `1`     | `2.0`                  |
+| `20200110-RC2`          | `\d+`            | `0`     | `20200110`             |
+| `p1/v1.2.3`             | `p1/v(\d.\d.\d)` | `1`     | `1.2.3`                |
 
 Extended attributes and default values:
 

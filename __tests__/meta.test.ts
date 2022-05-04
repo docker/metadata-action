@@ -1277,9 +1277,9 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,pattern=p1-v(\\d.\\d.\\d),group=1`,
-          `type=match,pattern=p1-v(\\d.\\d),group=1`,
-          `type=match,pattern=p1-v(\\d.\\d),group=3`,
+          `type=match,pattern=p1/v(\\d.\\d.\\d),group=1`,
+          `type=match,pattern=p1/v(\\d.\\d),group=1`,
+          `type=match,pattern=p1/v(\\d.\\d),group=3`,
           `type=ref,event=pr`,
           `type=sha`
         ]
@@ -1316,8 +1316,8 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,pattern=p1-v(\\d.\\d.\\d),group=1`,
-          `type=match,pattern=p1-v(\\d.\\d),group=1,suffix=`,
+          `type=match,pattern=p1/v(\\d.\\d.\\d),group=1`,
+          `type=match,pattern=p1/v(\\d.\\d),group=1,suffix=`,
           `type=ref,event=pr`,
           `type=sha`
         ],

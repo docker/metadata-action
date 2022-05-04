@@ -22,7 +22,7 @@ export function Transform(inputs: string[]): Image[] {
         .split('=')
         .map(item => item.trim());
       if (parts.length == 1) {
-        images.push({name: parts[0].toLowerCase(), enable: true});
+        images.push({name: parts[0], enable: true});
       } else {
         newformat = true;
         break;
@@ -46,13 +46,13 @@ export function Transform(inputs: string[]): Image[] {
         .split('=')
         .map(item => item.trim());
       if (parts.length == 1) {
-        image.name = parts[0].toLowerCase();
+        image.name = parts[0];
       } else {
         const key = parts[0].toLowerCase();
         const value = parts[1];
         switch (key) {
           case 'name': {
-            image.name = value.toLowerCase();
+            image.name = value;
             break;
           }
           case 'enable': {

@@ -224,7 +224,7 @@ export class Meta {
     if (tag.attrs['value'].length > 0) {
       vraw = this.setGlobalExp(tag.attrs['value']);
     } else {
-      vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+      vraw = this.context.ref.replace(/^refs\/tags\//g, '');
     }
 
     let tmatch;
@@ -251,7 +251,7 @@ export class Meta {
     if (!/^refs\/heads\//.test(this.context.ref)) {
       return version;
     }
-    const vraw = this.setValue(this.context.ref.replace(/^refs\/heads\//g, '').replace(/[^a-zA-Z0-9._-]+/g, '-'), tag);
+    const vraw = this.setValue(this.context.ref.replace(/^refs\/heads\//g, ''), tag);
     return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? false : this.flavor.latest == 'true');
   }
 
@@ -259,7 +259,7 @@ export class Meta {
     if (!/^refs\/tags\//.test(this.context.ref)) {
       return version;
     }
-    const vraw = this.setValue(this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-'), tag);
+    const vraw = this.setValue(this.context.ref.replace(/^refs\/tags\//g, ''), tag);
     return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? true : this.flavor.latest == 'true');
   }
 
@@ -277,7 +277,7 @@ export class Meta {
       return version;
     }
 
-    const val = this.context.ref.replace(/^refs\/heads\//g, '').replace(/[^a-zA-Z0-9._-]+/g, '-');
+    const val = this.context.ref.replace(/^refs\/heads\//g, '');
     if (tag.attrs['branch'].length == 0) {
       tag.attrs['branch'] = this.repo.default_branch;
     }
@@ -357,20 +357,20 @@ export class Meta {
         if (!/^refs\/heads\//.test(ctx.ref)) {
           return '';
         }
-        return ctx.ref.replace(/^refs\/heads\//g, '').replace(/[^a-zA-Z0-9._-]+/g, '-');
+        return ctx.ref.replace(/^refs\/heads\//g, '');
       },
       tag: function () {
         if (!/^refs\/tags\//.test(ctx.ref)) {
           return '';
         }
-        return ctx.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+        return ctx.ref.replace(/^refs\/tags\//g, '');
       },
       sha: function () {
         return ctx.sha.substr(0, 7);
       },
       base_ref: function () {
         if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
-          return ctx.payload.base_ref.replace(/^refs\/heads\//g, '').replace(/\//g, '-');
+          return ctx.payload.base_ref.replace(/^refs\/heads\//g, '');
         }
         // FIXME: keep this for backward compatibility even if doesn't always seem
         //  to return the expected branch. See the comment below.
@@ -413,7 +413,7 @@ export class Meta {
       if (!image.enable) {
         continue;
       }
-      images.push(image.name);
+      images.push(Meta.sanitizeImageName(image.name));
     }
     return images;
   }
@@ -424,12 +424,13 @@ export class Meta {
     }
     const tags: Array<string> = [];
     for (const imageName of this.getImageNames()) {
-      tags.push(`${imageName}:${this.version.main}`);
+      tags.push(`${imageName}:${Meta.sanitizeTag(this.version.main)}`);
       for (const partial of this.version.partial) {
-        tags.push(`${imageName}:${partial}`);
+        tags.push(`${imageName}:${Meta.sanitizeTag(partial)}`);
       }
       if (this.version.latest) {
-        tags.push(`${imageName}:${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`);
+        const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
+        tags.push(`${imageName}:${Meta.sanitizeTag(latestTag)}`);
       }
     }
     return tags;
@@ -494,5 +495,13 @@ export class Meta {
     );
 
     return bakeFile;
+  }
+
+  private static sanitizeImageName(name: string): string {
+    return name.toLowerCase();
+  }
+
+  private static sanitizeTag(tag: string): string {
+    return tag.replace(/[^a-zA-Z0-9._-]+/g, '-');
   }
 }

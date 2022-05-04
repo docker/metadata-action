@@ -53,7 +53,7 @@ describe('transform', () => {
       [
         `name=name/bar`,
         `name/foo,enable=false`,
-        `name=ghcr.io/name/foo,enable=true`
+        `name=ghcr.io/UserName/Foo,enable=true`
       ],
       [
         {
@@ -65,7 +65,7 @@ describe('transform', () => {
           enable: false,
         },
         {
-          name: `ghcr.io/name/foo`,
+          name: `ghcr.io/UserName/Foo`,
           enable: true,
         },
       ] as Image[],
