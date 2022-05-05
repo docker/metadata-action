@@ -31,6 +31,7 @@ ___
   * [`type=raw`](#typeraw)
   * [`type=sha`](#typesha)
 * [Notes](#notes)
+  * [Image name and tag sanitization](#image-name-and-tag-sanitization)
   * [Latest tag](#latest-tag)
   * [Global expressions](#global-expressions)
     * [`{{branch}}`](#branch)
@@ -508,13 +509,13 @@ Can create a regular expression for matching Git tag with a pattern and capturin
 [push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push) but, you can also use
 a custom value through `value` attribute.
 
-| Git tag                 | Pattern                       | Group   | Output                 |
-|-------------------------|-------------------------------|---------|------------------------|
-| `v1.2.3`                | `\d.\d.\d`                    | `0`     | `1.2.3`                |
-| `v2.0.8-beta.67`        | `v(.*)`                       | `1`     | `2.0.8-beta.67`        |
-| `v2.0.8-beta.67`        | `v(\d.\d)`                    | `1`     | `2.0`                  |
-| `20200110-RC2`          | `\d+`                         | `0`     | `20200110`             |
-| `p1/v1.2.3`             | `p1-v(\d.\d.\d)`              | `1`     | `1.2.3`                |
+| Git tag                 | Pattern          | Group   | Output                 |
+|-------------------------|------------------|---------|------------------------|
+| `v1.2.3`                | `\d.\d.\d`       | `0`     | `1.2.3`                |
+| `v2.0.8-beta.67`        | `v(.*)`          | `1`     | `2.0.8-beta.67`        |
+| `v2.0.8-beta.67`        | `v(\d.\d)`       | `1`     | `2.0`                  |
+| `20200110-RC2`          | `\d+`            | `0`     | `20200110`             |
+| `p1/v1.2.3`             | `p1/v(\d.\d.\d)` | `1`     | `1.2.3`                |
 
 Extended attributes and default values:
 
@@ -624,6 +625,22 @@ tags: |
 ```
 
 ## Notes
+
+### Image name and tag sanitization
+
+In order to comply with [the specification](https://docs.docker.com/engine/reference/commandline/tag/#extended-description),
+the image name components may contain lowercase letters, digits and separators.
+A separator is defined as a period, one or two underscores, or one or more
+dashes. A name component may not start or end with a separator.
+
+A tag name must be a valid ASCII chars sequences and may contain lowercase and
+uppercase letters, digits, underscores, periods and dashes. A tag name may not
+start with a period or a dash and may contain a maximum of 128 characters.
+
+To ease the integration in your workflow, this action will automatically:
+
+* Lowercase the image name
+* Replace invalid chars sequences with `-` for tags
 
 ### Latest tag
 
