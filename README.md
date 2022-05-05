@@ -72,7 +72,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: name/app
       -
@@ -125,7 +125,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: |
             name/app
@@ -203,7 +203,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: |
             name/app
@@ -767,7 +767,7 @@ workflow using the [`fromJSON` function](https://docs.github.com/en/actions/lear
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         id: meta
         with:
           images: name/app
@@ -792,7 +792,7 @@ labels generated are not suitable, you can overwrite them like this:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: name/app
           labels: |
