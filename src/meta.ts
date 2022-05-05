@@ -312,6 +312,7 @@ export class Meta {
     if (val.length == 0) {
       return version;
     }
+    val = Meta.sanitizeTag(val);
     if (version.main == undefined) {
       version.main = val;
     } else if (val !== version.main) {
@@ -424,9 +425,9 @@ export class Meta {
     }
     const tags: Array<string> = [];
     for (const imageName of this.getImageNames()) {
-      tags.push(`${imageName}:${Meta.sanitizeTag(this.version.main)}`);
+      tags.push(`${imageName}:${this.version.main}`);
       for (const partial of this.version.partial) {
-        tags.push(`${imageName}:${Meta.sanitizeTag(partial)}`);
+        tags.push(`${imageName}:${partial}`);
       }
       if (this.version.latest) {
         const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
