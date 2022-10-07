@@ -33,6 +33,7 @@ ___
 * [Notes](#notes)
   * [Image name and tag sanitization](#image-name-and-tag-sanitization)
   * [Latest tag](#latest-tag)
+  * [`priority` attribute](#priority-attribute)
   * [Global expressions](#global-expressions)
     * [`{{branch}}`](#branch)
     * [`{{tag}}`](#tag)
@@ -361,7 +362,7 @@ Each entry is defined by a `type`, which are:
 And global attributes:
 
 * `enable=<true|false>` enable this entry (default `true`)
-* `priority=<number>` priority to manage the order of tags
+* `priority=<number>` set tag [priority](#priority-attribute) order
 * `prefix=<string>` add prefix
 * `suffix=<string>` add suffix
 
@@ -669,6 +670,24 @@ tags: |
   # set latest tag for default branch
   type=raw,value=latest,enable={{is_default_branch}}
 ```
+
+### `priority` attribute
+
+`priority=<int>` attribute is used to sort tags in the final list. The higher
+the value, the higher the priority. The first tag in the list (higher priority)
+will be used as the image version for generated OCI label and [`version` output](#outputs).
+Each tags `type` attribute has a default priority:
+
+| Attribute  | Default priority |
+|------------|------------------|
+| `schedule` | `1000`           |
+| `semver`   | `900`            |
+| `pep440`   | `900`            |
+| `match`    | `800`            |
+| `edge`     | `700`            |
+| `ref`      | `600`            |
+| `raw`      | `200`            |
+| `sha`      | `100`            |
 
 ### Global expressions
 
