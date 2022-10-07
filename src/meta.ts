@@ -37,6 +37,10 @@ export class Meta {
       context.ref = `refs/pull/${context.payload.number}/merge`;
     }
 
+    if ((/pull_request/.test(context.eventName) || /pull_request_target/.test(context.eventName)) && context.payload?.pull_request?.head?.sha != undefined) {
+      context.sha = context.payload.pull_request.head.sha;
+    }
+
     this.inputs = inputs;
     this.context = context;
     this.repo = repo;
@@ -301,7 +305,7 @@ export class Meta {
 
     let val = this.context.sha;
     if (tag.attrs['format'] === tcl.ShaFormat.Short) {
-      val = this.context.sha.substr(0, 7);
+      val = this.context.sha.substring(0, 7);
     }
 
     const vraw = this.setValue(val, tag);
@@ -367,7 +371,7 @@ export class Meta {
         return ctx.ref.replace(/^refs\/tags\//g, '');
       },
       sha: function () {
-        return ctx.sha.substr(0, 7);
+        return ctx.sha.substring(0, 7);
       },
       base_ref: function () {
         if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
