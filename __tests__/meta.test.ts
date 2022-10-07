@@ -65,6 +65,7 @@ const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exV
 
 describe('null', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'null01',
@@ -121,6 +122,7 @@ describe('null', () => {
 
 describe('push', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'push01',
@@ -732,6 +734,7 @@ describe('push', () => {
 
 describe('tag', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'tag01',
@@ -1777,6 +1780,7 @@ describe('tag', () => {
 
 describe('latest', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'latest01',
@@ -2064,6 +2068,7 @@ describe('latest', () => {
 
 describe('pr', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'pr01',
@@ -2411,6 +2416,7 @@ describe('pr', () => {
 
 describe('schedule', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'schedule01',
@@ -2630,6 +2636,7 @@ describe('schedule', () => {
 
 describe('release', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'release01',
@@ -2696,6 +2703,7 @@ describe('release', () => {
 
 describe('raw', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'raw01',
@@ -3065,6 +3073,7 @@ describe('raw', () => {
 
 describe('json', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'json01',
@@ -3315,6 +3324,7 @@ describe('json', () => {
 
 describe('bake', () => {
   // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
   test.each([
     [
       'bake01',
@@ -3615,5 +3625,50 @@ describe('bake', () => {
 
     const bakeFile = meta.getBakeFile();
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
+  });
+});
+
+describe('sepTags', () => {
+  // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
+  test.each([
+    [
+      'sepTags01',
+      'event_push_dev.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=branch`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        sepTags: " "
+      } as Inputs,
+      "user/app:dev user/app:my user/app:custom user/app:tags"
+    ],
+    [
+      'sepTags02',
+      'event_push_dev.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=branch`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        sepTags: ","
+      } as Inputs,
+      "user/app:dev,user/app:my,user/app:custom,user/app:tags"
+    ]
+  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, expTags: string) => {
+    process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
+    const context = github.context();
+
+    const repo = await github.repo(process.env.GITHUB_TOKEN || '');
+    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+
+    expect(meta.getTags().join(inputs.sepTags)).toEqual(expTags);
   });
 });

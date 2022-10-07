@@ -322,3 +322,31 @@ jobs:
             ${{ steps.docker_meta.outputs.bake-file }}
           targets: |
             release
+
+  sep-tags:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sep:
+          - " "
+          - ","
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Docker meta
+        id: meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          sep-tags: ${{ matrix.sep }}
+      -
+        name: Tags
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(`${{ steps.meta.outputs.tags }}`);

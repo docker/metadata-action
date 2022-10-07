@@ -31,8 +31,8 @@ export function getInputs(): Inputs {
     tags: getInputList('tags', true),
     flavor: getInputList('flavor', true),
     labels: getInputList('labels', true),
-    sepTags: core.getInput('sep-tags') || `\n`,
-    sepLabels: core.getInput('sep-labels') || `\n`,
+    sepTags: core.getInput('sep-tags', {trimWhitespace: false}) || `\n`,
+    sepLabels: core.getInput('sep-labels', {trimWhitespace: false}) || `\n`,
     bakeTarget: core.getInput('bake-target') || `docker-metadata-action`,
     githubToken: core.getInput('github-token')
   };
