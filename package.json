@@ -34,7 +34,7 @@
     "@renovate/pep440": "^1.0.0",
     "csv-parse": "^5.1.0",
     "handlebars": "^4.7.7",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "semver": "^7.3.7"
   },
   "devDependencies": {
