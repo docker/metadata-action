@@ -53,6 +53,7 @@ ___
 name: ci
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'master'
@@ -92,13 +93,14 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 ```
 
-| Event           | Ref                           | Docker Tags                         |
-|-----------------|-------------------------------|-------------------------------------|
-| `pull_request`  | `refs/pull/2/merge`           | `pr-2`                              |
-| `push`          | `refs/heads/master`           | `master`                            |
-| `push`          | `refs/heads/releases/v1`      | `releases-v1`                       |
-| `push tag`      | `refs/tags/v1.2.3`            | `v1.2.3`, `latest`                  |
-| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `v2.0.8-beta.67`, `latest`          |
+| Event               | Ref                           | Docker Tags                |
+|---------------------|-------------------------------|----------------------------|
+| `pull_request`      | `refs/pull/2/merge`           | `pr-2`                     |
+| `push`              | `refs/heads/master`           | `master`                   |
+| `push`              | `refs/heads/releases/v1`      | `releases-v1`              |
+| `push tag`          | `refs/tags/v1.2.3`            | `v1.2.3`, `latest`         |
+| `push tag`          | `refs/tags/v2.0.8-beta.67`    | `v2.0.8-beta.67`, `latest` |
+| `workflow_dispatch` | `refs/heads/master`           | `master`                   |
 
 ### Semver
 
@@ -562,13 +564,14 @@ This type handles Git ref (or reference) for the following events:
 * `tag` ; eg. `refs/tags/v1.0.0`
 * `pr` ; eg. `refs/pull/318/merge`
 
-| Event           | Ref                           | Output                        |
-|-----------------|-------------------------------|-------------------------------|
-| `pull_request`  | `refs/pull/2/merge`           | `pr-2`                        |
-| `push`          | `refs/heads/master`           | `master`                      |
-| `push`          | `refs/heads/my/branch`        | `my-branch`                   |
-| `push tag`      | `refs/tags/v1.2.3`            | `v1.2.3`                      |
-| `push tag`      | `refs/tags/v2.0.8-beta.67`    | `v2.0.8-beta.67`              |
+| Event               | Ref                           | Output           |
+|---------------------|-------------------------------|------------------|
+| `pull_request`      | `refs/pull/2/merge`           | `pr-2`           |
+| `push`              | `refs/heads/master`           | `master`         |
+| `push`              | `refs/heads/my/branch`        | `my-branch`      |
+| `push tag`          | `refs/tags/v1.2.3`            | `v1.2.3`         |
+| `push tag`          | `refs/tags/v2.0.8-beta.67`    | `v2.0.8-beta.67` |
+| `workflow_dispatch` | `refs/heads/master`           | `master`         |
 
 Extended attributes and default values:
 
