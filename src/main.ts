@@ -72,9 +72,9 @@ async function run() {
     core.endGroup();
     setOutput('json', jsonOutput);
 
-    // Bake definition file
+    // Bake file definition
     const bakeFile: string = meta.getBakeFile();
-    core.startGroup(`Bake definition file`);
+    core.startGroup(`Bake file definition`);
     core.info(fs.readFileSync(bakeFile, 'utf8'));
     core.endGroup();
     setOutput('bake-file', bakeFile);

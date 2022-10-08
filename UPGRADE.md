@@ -2,7 +2,8 @@
 
 ## v2 to v3
 
-* Repository has been moved to docker org. Replace `crazy-max/ghaction-docker-meta@v2` with `docker/metadata-action@v4`
+* Repository has been moved to docker org. Replace `crazy-max/ghaction-docker-meta@v2`
+  with `docker/metadata-action@v4`
 * The default bake target has been changed: `ghaction-docker-meta` > `docker-metadata-action`
 
 ## v1 to v2

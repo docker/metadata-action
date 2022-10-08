@@ -5,8 +5,9 @@
 
 ## About
 
-GitHub Action to extract metadata from Git reference and GitHub events.
-This action is particularly useful if used with [Docker Build Push](https://github.com/docker/build-push-action) action to tag and label Docker images.
+GitHub Action to extract metadata from Git reference and GitHub events. This action
+is particularly useful if used with [Docker Build Push](https://github.com/docker/build-push-action)
+action to tag and label Docker images.
 
 ![Screenshot](.github/metadata-action.png)
 
@@ -44,7 +45,7 @@ ___
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
   * [Overwrite labels](#overwrite-labels)
-* [Keep up-to-date with GitHub Dependabot](#keep-up-to-date-with-github-dependabot)
+* [Contributing](#contributing)
 
 ## Usage
 
@@ -165,8 +166,8 @@ jobs:
 ### Bake definition
 
 This action also handles a bake definition file that can be used with the
-[Docker Bake action](https://github.com/docker/bake-action). You just have to declare an empty target named
-`docker-metadata-action` and inherit from it.
+[Docker Bake action](https://github.com/docker/bake-action). You just have to
+declare an empty target named `docker-metadata-action` and inherit from it.
 
 ```hcl
 // docker-bake.hcl
@@ -226,7 +227,8 @@ jobs:
           targets: build
 ```
 
-Content of `${{ steps.meta.outputs.bake-file }}` file will look like this with `refs/tags/v1.2.3` ref:
+Content of `${{ steps.meta.outputs.bake-file }}` file will look like this with
+`refs/tags/v1.2.3` ref:
 
 ```json
 {
@@ -285,13 +287,13 @@ Following inputs can be used as `step.with` keys
 
 Following outputs are available
 
-| Name          | Type    | Description                                                                   |
-|---------------|---------|-------------------------------------------------------------------------------|
-| `version`     | String  | Docker image version                                                          |
-| `tags`        | String  | Docker tags                                                                   |
-| `labels`      | String  | Docker labels                                                                 |
-| `json`        | String  | JSON output of tags and labels                                                |
-| `bake-file`   | File    | [Bake definition file](https://github.com/docker/buildx#file-definition) path |
+| Name          | Type    | Description                                                                                |
+|---------------|---------|--------------------------------------------------------------------------------------------|
+| `version`     | String  | Docker image version                                                                       |
+| `tags`        | String  | Docker tags                                                                                |
+| `labels`      | String  | Docker labels                                                                              |
+| `json`        | String  | JSON output of tags and labels                                                             |
+| `bake-file`   | File    | [Bake file definition](https://docs.docker.com/build/customize/bake/file-definition/) path |
 
 ## `images` input
 
@@ -328,13 +330,16 @@ flavor: |
 ```
 
 * `latest=<auto|true|false>`: Handle [latest tag](#latest-tag) (default `auto`)
-* `prefix=<string>,onlatest=<true|false>`: A global prefix for each generated tag and optionally for `latest`
-* `suffix=<string>,onlatest=<true|false>`: A global suffix for each generated tag and optionally for `latest`
+* `prefix=<string>,onlatest=<true|false>`: A global prefix for each generated
+  tag and optionally for `latest`
+* `suffix=<string>,onlatest=<true|false>`: A global suffix for each generated
+  tag and optionally for `latest`
 
 ## `tags` input
 
-`tags` is the core input of this action as everything related to it will reflect the output metadata. This one is in
-the form of a key-value pair list in CSV format to remove limitations intrinsically linked to GitHub Actions
+`tags` is the core input of this action as everything related to it will
+reflect the output metadata. This one is in the form of a key-value pair list
+in CSV format to remove limitations intrinsically linked to GitHub Actions
 (only string format is handled in the input fields). Here is an example:
 
 ```yaml
@@ -388,10 +393,11 @@ tags: |
   type=schedule,pattern={{date 'YYYYMMDD'}}
 ```
 
-Will be used on [schedule event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule).
+Will be used on [schedule event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule).
 
-`pattern` is a specially crafted attribute to support [Handlebars' template](https://handlebarsjs.com/guide/) with
-the following expressions:
+`pattern` is a specially crafted attribute to support [Handlebars' template](https://handlebarsjs.com/guide/)
+with the following expressions:
+
 * `date 'format'` ; render date by its [moment format](https://momentjs.com/docs/#/displaying/format/)
 
 | Pattern                  | Output               |
@@ -416,11 +422,13 @@ tags: |
   type=semver,pattern={{version}},value=v1.0.0
 ```
 
-Will be used on a [push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push)
-and requires a valid [semver](https://semver.org/) Git tag, but you can also use a custom value through `value`
-attribute.
+Will be used on a [push tag event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push)
+and requires a valid [semver](https://semver.org/) Git tag, but you can also
+use a custom value through `value` attribute.
 
-`pattern` attribute supports [Handlebars template](https://handlebarsjs.com/guide/) with the following expressions:
+`pattern` attribute supports [Handlebars template](https://handlebarsjs.com/guide/)
+with the following expressions:
+
 * `raw` ; the actual tag
 * `version` ; shorthand for `{{major}}.{{minor}}.{{patch}}` (can include pre-release)
 * `major` ; major version identifier
@@ -439,9 +447,10 @@ attribute.
 | `v2.0.8-beta.67`   | `{{version}}`                                            | `2.0.8-beta.67`      |
 | `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | `2.0.8-beta.67`*     |
 
-> *Pre-release (rc, beta, alpha) will only extend `{{version}}` (or `{{raw}}` if specified) as tag
-> because they are updated frequently, and contain many breaking changes that are (by the author's design)
-> not yet fit for public consumption.
+> *Pre-release (rc, beta, alpha) will only extend `{{version}}` (or `{{raw}}`
+> if specified) as tag because they are updated frequently, and contain many
+> breaking changes that are (by the author's design) not yet fit for public
+> consumption.
 
 Extended attributes and default values:
 
@@ -460,11 +469,13 @@ tags: |
   type=pep440,pattern={{version}},value=1.0.0
 ```
 
-Will be used on a [push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push)
-and requires a Git tag that conforms to [PEP 440](https://www.python.org/dev/peps/pep-0440/), but you can also use a
-custom value through `value` attribute.
+Will be used on a [push tag event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push)
+and requires a Git tag that conforms to [PEP 440](https://www.python.org/dev/peps/pep-0440/),
+but you can also use a custom value through `value` attribute.
 
-`pattern` attribute supports [Handlebars template](https://handlebarsjs.com/guide/) with the following expressions:
+`pattern` attribute supports [Handlebars template](https://handlebarsjs.com/guide/)
+with the following expressions:
+
 * `raw` ; the actual tag
 * `version` ; cleaned version
 * `major` ; major version identifier
@@ -485,9 +496,10 @@ custom value through `value` attribute.
 | `1.2.3beta2`       | `{{major}}.{{minor}}`                                    | `1.2.3b2`*           |
 | `1.0dev4`          | `{{major}}.{{minor}}`                                    | `1.0.dev4`*          |
 
-> *dev/pre/post release will only extend `{{version}}` (or `{{raw}}` if specified) as tag
-> because they are updated frequently, and contain many breaking changes that are (by the author's design)
-> not yet fit for public consumption.
+> *dev/pre/post release will only extend `{{version}}` (or `{{raw}}` if
+> specified) as tag because they are updated frequently, and contain many
+> breaking changes that are (by the author's design) not yet fit for public
+> consumption.
 
 Extended attributes and default values:
 
@@ -508,9 +520,9 @@ tags: |
   type=match,pattern=v(.*),group=1,value=v1.0.0
 ```
 
-Can create a regular expression for matching Git tag with a pattern and capturing group. Will be used on a
-[push tag event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#push) but, you can also use
-a custom value through `value` attribute.
+Can create a regular expression for matching Git tag with a pattern and
+capturing group. Will be used on a [push tag event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push)
+but, you can also use a custom value through `value` attribute.
 
 | Git tag                 | Pattern          | Group   | Output                 |
 |-------------------------|------------------|---------|------------------------|
@@ -537,9 +549,9 @@ tags: |
   type=edge,branch=main
 ```
 
-An `edge` tag reflects the last commit of the active branch on your Git repository. I usually prefer to use `edge`
-as a Docker tag for a better distinction or common pattern. This is also used by official images
-like [Alpine](https://hub.docker.com/_/alpine).
+An `edge` tag reflects the last commit of the active branch on your Git
+repository. I usually prefer to use `edge` as a Docker tag for a better
+distinction or common pattern. This is also used by official images like [Alpine](https://hub.docker.com/_/alpine).
 
 Extended attributes and default values:
 
@@ -561,6 +573,7 @@ tags: |
 ```
 
 This type handles Git ref (or reference) for the following events:
+
 * `branch` ; eg. `refs/heads/master`
 * `tag` ; eg. `refs/tags/v1.0.0`
 * `pr` ; eg. `refs/pull/318/merge`
@@ -632,7 +645,7 @@ tags: |
 
 ### Image name and tag sanitization
 
-In order to comply with [the specification](https://docs.docker.com/engine/reference/commandline/tag/#extended-description),
+In order to comply with [the specification](https://docs.docker.com/engine/reference/commandline/tag/#description),
 the image name components may contain lowercase letters, digits and separators.
 A separator is defined as a period, one or two underscores, or one or more
 dashes. A name component may not start or end with a separator.
@@ -648,7 +661,9 @@ To ease the integration in your workflow, this action will automatically:
 
 ### Latest tag
 
-`latest` tag is handled through the [`flavor` input](#flavor-input). It will be generated by default (`auto` mode) for:
+`latest` tag is handled through the [`flavor` input](#flavor-input). It will be
+generated by default (`auto` mode) for:
+
 * [`type=ref,event=tag`](#typeref)
 * [`type=semver,pattern=...`](#typesemver)
 * [`type=match,pattern=...`](#typematch)
@@ -707,12 +722,12 @@ tags: |
 Returns the branch name that triggered the workflow run. Will be empty if not 
 a branch reference:
 
-| Event           | Ref                           | Output              |
-|-----------------|-------------------------------|---------------------|
-| `pull_request`  | `refs/pull/2/merge`           |                     |
-| `push`          | `refs/heads/master`           | `master`            |
-| `push`          | `refs/heads/my/branch`        | `my-branch`         |
-| `push tag`      | `refs/tags/v1.2.3`            |                     |
+| Event          | Ref                    | Output      |
+|----------------|------------------------|-------------|
+| `pull_request` | `refs/pull/2/merge`    |             |
+| `push`         | `refs/heads/master`    | `master`    |
+| `push`         | `refs/heads/my/branch` | `my-branch` |
+| `push tag`     | `refs/tags/v1.2.3`     |             |
 
 #### `{{tag}}`
 
@@ -764,11 +779,11 @@ Returns the current date rendered by its [moment format](https://momentjs.com/do
 
 ### Major version zero
 
-Major version zero (`0.y.z`) is for initial development and **may** change at any time. This means the public API
-[**should not** be considered stable](https://semver.org/#spec-item-4).
+Major version zero (`0.y.z`) is for initial development and **may** change at
+any time. This means the public API [**should not** be considered stable](https://semver.org/#spec-item-4).
 
-In this case, Docker tag `0` **should not** be generated if you're using [`type=semver`](#typesemver) with `{{major}}`
-pattern. You can manage this behavior like this:
+In this case, Docker tag `0` **should not** be generated if you're using [`type=semver`](#typesemver)
+with `{{major}}` pattern. You can manage this behavior like this:
 
 ```yaml
 # refs/tags/v0.1.2
@@ -783,8 +798,8 @@ tags: |
 
 ### JSON output object
 
-The `json` output is a JSON object composed of the generated tags and labels so that you can reuse them further in your
-workflow using the [`fromJSON` function](https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson):
+The `json` output is a JSON object composed of the generated tags and labels so
+that you can reuse them further in your workflow using the [`fromJSON` function](https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson):
 
 ```yaml
       -
@@ -824,18 +839,7 @@ labels generated are not suitable, you can overwrite them like this:
             org.opencontainers.image.vendor=MyCompany
 ```
 
-## Keep up-to-date with GitHub Dependabot
+## Contributing
 
-Since [Dependabot](https://docs.github.com/en/github/administering-a-repository/keeping-your-actions-up-to-date-with-github-dependabot)
-has [native GitHub Actions support](https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#package-ecosystem),
-to enable it on your GitHub repo all you need to do is add the `.github/dependabot.yml` file:
-
-```yaml
-version: 2
-updates:
-  # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
-```
+Want to contribute? Awesome! You can find information about contributing to
+this project in the [CONTRIBUTING.md](/.github/CONTRIBUTING.md)
