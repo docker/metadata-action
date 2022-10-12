@@ -1,9 +1,8 @@
-import {parse} from 'csv-parse/sync';
-import * as core from '@actions/core';
-import {issueCommand} from '@actions/core/lib/command';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import * as core from '@actions/core';
+import {parse} from 'csv-parse/sync';
 
 let _tmpDir: string;
 
@@ -73,8 +72,3 @@ export const asyncForEach = async (array, callback) => {
     await callback(array[index], index, array);
   }
 };
-
-// FIXME: Temp fix https://github.com/actions/toolkit/issues/777
-export function setOutput(name: string, value: unknown): void {
-  issueCommand('set-output', {name}, value);
-}
