@@ -20,6 +20,7 @@ ___
 * [Customizing](#customizing)
   * [inputs](#inputs)
   * [outputs](#outputs)
+  * [environment variables](#environment-variables)
 * [`images` input](#images-input)
 * [`flavor` input](#flavor-input)
 * [`tags` input](#tags-input)
@@ -294,6 +295,12 @@ Following outputs are available
 | `labels`      | String  | Docker labels                                                                              |
 | `json`        | String  | JSON output of tags and labels                                                             |
 | `bake-file`   | File    | [Bake file definition](https://docs.docker.com/build/customize/bake/file-definition/) path |
+
+### environment variables
+
+| Name                          | Type | Description                                                                                                |
+|-------------------------------|------|------------------------------------------------------------------------------------------------------------|
+| `DOCKER_METADATA_PR_HEAD_SHA` | Bool | If `true`, set associated head SHA instead of commit SHA that triggered the workflow on pull request event |
 
 ## `images` input
 
