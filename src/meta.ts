@@ -37,8 +37,13 @@ export class Meta {
       context.ref = `refs/pull/${context.payload.number}/merge`;
     }
 
-    if ((/pull_request/.test(context.eventName) || /pull_request_target/.test(context.eventName)) && context.payload?.pull_request?.head?.sha != undefined) {
-      context.sha = context.payload.pull_request.head.sha;
+    // DOCKER_METADATA_PR_HEAD_SHA env var can be used to set associated head
+    // SHA instead of commit SHA that triggered the workflow on pull request
+    // event.
+    if (/true/i.test(process.env.DOCKER_METADATA_PR_HEAD_SHA || '')) {
+      if ((/pull_request/.test(context.eventName) || /pull_request_target/.test(context.eventName)) && context.payload?.pull_request?.head?.sha != undefined) {
+        context.sha = context.payload.pull_request.head.sha;
+      }
     }
 
     this.inputs = inputs;
