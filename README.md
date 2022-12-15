@@ -22,6 +22,7 @@ ___
   * [inputs](#inputs)
   * [outputs](#outputs)
   * [environment variables](#environment-variables)
+* [`context` input](#context-input)
 * [`images` input](#images-input)
 * [`flavor` input](#flavor-input)
 * [`tags` input](#tags-input)
@@ -275,15 +276,16 @@ Following inputs can be used as `step.with` keys
 >   org.opencontainers.image.vendor=MyCompany
 > ```
 
-| Name                | Type   | Description                                              |
-|---------------------|--------|----------------------------------------------------------|
-| `images`            | List   | List of Docker images to use as base name for tags       |
-| `tags`              | List   | List of [tags](#tags-input) as key-value pair attributes |
-| `flavor`            | List   | [Flavor](#flavor-input) to apply                         |
-| `labels`            | List   | List of custom labels                                    |
-| `sep-tags`          | String | Separator to use for tags output (default `\n`)          |
-| `sep-labels`        | String | Separator to use for labels output (default `\n`)        |
-| `bake-target`       | String | Bake target name (default `docker-metadata-action`)      |
+| Name                | Type   | Description                                                                   |
+|---------------------|--------|-------------------------------------------------------------------------------|
+| `context`           | String | Where to get context data. Allowed options are: `workflow` (default), `git`.  |
+| `images`            | List   | List of Docker images to use as base name for tags                            |
+| `tags`              | List   | List of [tags](#tags-input) as key-value pair attributes                      |
+| `flavor`            | List   | [Flavor](#flavor-input) to apply                                              |
+| `labels`            | List   | List of custom labels                                                         |
+| `sep-tags`          | String | Separator to use for tags output (default `\n`)                               |
+| `sep-labels`        | String | Separator to use for labels output (default `\n`)                             |
+| `bake-target`       | String | Bake target name (default `docker-metadata-action`)                           |
 
 ### outputs
 
@@ -319,6 +321,20 @@ So it can be used with our [Docker Build Push action](https://github.com/docker/
 | Name                          | Type | Description                                                                                                |
 |-------------------------------|------|------------------------------------------------------------------------------------------------------------|
 | `DOCKER_METADATA_PR_HEAD_SHA` | Bool | If `true`, set associated head SHA instead of commit SHA that triggered the workflow on pull request event |
+
+## `context` input
+
+`context` defines where to get context metadata:
+
+```yaml
+# default
+context: workflow
+# or
+context: git
+```
+
+* `workflow`: Get context metadata from the workflow (GitHub context). See https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+* `git`: Get context metadata from the workflow and overrides some of them with current Git context, such as `ref` and `sha`.
 
 ## `images` input
 

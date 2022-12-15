@@ -7,6 +7,10 @@ branding:
   color: 'blue'
 
 inputs:
+  context:
+    description: 'Where to get context data. Allowed options are "workflow"  (default), "git".'
+    default: "workflow"
+    required: true
   images:
     description: 'List of Docker images to use as base name for tags'
     required: true
