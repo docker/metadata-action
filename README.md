@@ -43,7 +43,7 @@ ___
     * [`{{sha}}`](#sha)
     * [`{{base_ref}}`](#base_ref)
     * [`{{is_default_branch}}`](#is_default_branch)
-    * [`{{date '<format>'}}`](#date-format)
+    * [`{{date '<format>' tz='<timezone>'}}`](#date-format)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
   * [Overwrite labels](#overwrite-labels)
@@ -399,6 +399,8 @@ tags: |
   type=schedule,pattern=nightly
   # handlebars
   type=schedule,pattern={{date 'YYYYMMDD'}}
+  # handlebars with timezone
+  type=schedule,pattern={{date 'YYYYMMDD-hhmmss' tz='Asia/Tokyo'}}
 ```
 
 Will be used on [schedule event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule).
@@ -406,7 +408,7 @@ Will be used on [schedule event](https://docs.github.com/en/actions/using-workfl
 `pattern` is a specially crafted attribute to support [Handlebars' template](https://handlebarsjs.com/guide/)
 with the following expressions:
 
-* `date 'format'` ; render date by its [moment format](https://momentjs.com/docs/#/displaying/format/)
+* `date 'format' tz='Timezone'` ; render date by its [moment format](https://momentjs.com/docs/#/displaying/format/). Default `tz` is UTC.
 
 | Pattern                  | Output               |
 |--------------------------|----------------------|
@@ -776,14 +778,15 @@ workflow run. Will be empty for a branch reference:
 Returns `true` if the branch that triggered the workflow run is the default
 one, otherwise `false`.
 
-#### `{{date '<format>'}}`
+#### `{{date '<format>' tz='<timezone>'}}`
 
-Returns the current date rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/).
+Returns the current date rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/). Default `tz` is UTC.
 
-| Expression                                 | Output example                          |
-|--------------------------------------------|-----------------------------------------|
-| `{{date 'YYYYMMDD'}}`                      | `20200110`                              |
-| `{{date 'dddd, MMMM Do YYYY, h:mm:ss a'}}` | `Friday, January 10th 2020, 3:25:50 pm` |
+| Expression                                                 | Output example                             |
+|------------------------------------------------------------|--------------------------------------------|
+| `{{date 'YYYYMMDD'}}`                                      | `20200110`                                 |
+| `{{date 'dddd, MMMM Do YYYY, h:mm:ss a'}}`                 | `Friday, January 10th 2020, 3:25:50 pm`    |
+| `{{date 'dddd, MMMM Do YYYY, h:mm:ss a' tz='Asia/Tokyo'}}` | `Saturday, January 11th 2020, 12:25:50 am` |
 
 ### Major version zero
 

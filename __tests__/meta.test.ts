@@ -2,7 +2,7 @@ import {beforeEach, describe, expect, jest, test} from '@jest/globals';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import * as moment from 'moment';
+import moment from 'moment-timezone';
 import {getInputs, Inputs} from '../src/context';
 import * as github from '../src/github';
 import {Meta, Version} from '../src/meta';
@@ -21,8 +21,8 @@ jest.spyOn(global.Date.prototype, 'toISOString').mockImplementation(() => {
   return '2020-01-10T00:30:00.000Z';
 });
 
-jest.mock('moment', () => {
-  return () => (jest.requireActual('moment') as typeof import('moment'))('2020-01-10T00:30:00.000Z');
+jest.mock('moment-timezone', () => {
+  return () => (jest.requireActual('moment-timezone') as typeof import('moment-timezone'))('2020-01-10T00:30:00.000Z');
 });
 
 beforeEach(() => {
@@ -599,6 +599,7 @@ describe('push', () => {
         tags: [
           `type=raw,value=mytag-{{branch}}`,
           `type=raw,value=mytag-{{date 'YYYYMMDD'}}`,
+          `type=raw,value=mytag-{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`,
           `type=raw,value=mytag-tag-{{tag}}`,
           `type=raw,value=mytag-baseref-{{base_ref}}`,
           `type=raw,value=mytag-defbranch,enable={{is_default_branch}}`
@@ -608,6 +609,7 @@ describe('push', () => {
         main: 'mytag-master',
         partial: [
           'mytag-20200110',
+          'mytag-20200110-093000',
           'mytag-tag-',
           'mytag-baseref-',
           'mytag-defbranch'
@@ -617,6 +619,7 @@ describe('push', () => {
       [
         'user/app:mytag-master',
         'user/app:mytag-20200110',
+        'user/app:mytag-20200110-093000',
         'user/app:mytag-tag-',
         'user/app:mytag-baseref-',
         'user/app:mytag-defbranch'
@@ -2990,6 +2993,34 @@ describe('schedule', () => {
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=glo-nightly-bal",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.licenses=MIT"
+      ]
+    ],
+    [
+      'schedule08',
+      'event_schedule.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=schedule,pattern={{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`
+        ]
+      } as Inputs,
+      {
+        main: '20200110-093000',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'user/app:20200110-093000'
+      ],
+      [
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=20200110-093000",
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
         "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
         "org.opencontainers.image.licenses=MIT"

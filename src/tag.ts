@@ -95,7 +95,7 @@ export function Parse(s: string): Tag {
   for (const field of fields) {
     const parts = field
       .toString()
-      .split('=')
+      .split(/(?<=^[^=]+?)=/)
       .map(item => item.trim());
     if (parts.length == 1) {
       tag.attrs['value'] = parts[0];
