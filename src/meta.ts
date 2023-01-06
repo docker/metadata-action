@@ -1,7 +1,7 @@
 import * as handlebars from 'handlebars';
 import * as fs from 'fs';
 import * as path from 'path';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
 import {Inputs, tmpDir} from './context';
@@ -129,8 +129,19 @@ export class Meta {
     const currentDate = this.date;
     const vraw = this.setValue(
       handlebars.compile(tag.attrs['pattern'])({
-        date: function (format) {
-          return moment(currentDate).utc().format(format);
+        date: function (format, options) {
+          const m = moment(currentDate);
+          let tz = 'UTC';
+          Object.keys(options.hash).forEach(key => {
+            switch (key) {
+              case 'tz':
+                tz = options.hash[key];
+                break;
+              default:
+                throw new Error(`Unknown ${key} attribute`);
+            }
+          });
+          return m.tz(tz).format(format);
         }
       }),
       tag
@@ -411,8 +422,19 @@ export class Meta {
         }
         return 'false';
       },
-      date: function (format) {
-        return moment(currentDate).utc().format(format);
+      date: function (format, options) {
+        const m = moment(currentDate);
+        let tz = 'UTC';
+        Object.keys(options.hash).forEach(key => {
+          switch (key) {
+            case 'tz':
+              tz = options.hash[key];
+              break;
+            default:
+              throw new Error(`Unknown ${key} attribute`);
+          }
+        });
+        return m.tz(tz).format(format);
       }
     });
   }

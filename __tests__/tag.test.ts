@@ -127,6 +127,18 @@ describe('parse', () => {
       false
     ],
     [
+      `type=schedule,enable=true,pattern={{date 'YYYYMMDD' tz='Asia/Tokyo'}}`,
+      {
+        type: Type.Schedule,
+        attrs: {
+          "priority": DefaultPriorities[Type.Schedule],
+          "enable": "true",
+          "pattern": `{{date 'YYYYMMDD' tz='Asia/Tokyo'}}`
+        }
+      } as Tag,
+      false
+    ],
+    [
       `type=semver,enable=true,pattern={{version}}`,
       {
         type: Type.Semver,
