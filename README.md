@@ -43,7 +43,7 @@ ___
     * [`{{sha}}`](#sha)
     * [`{{base_ref}}`](#base_ref)
     * [`{{is_default_branch}}`](#is_default_branch)
-    * [`{{date '<format>' tz='<timezone>'}}`](#date-format)
+    * [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
   * [Overwrite labels](#overwrite-labels)
@@ -408,12 +408,14 @@ Will be used on [schedule event](https://docs.github.com/en/actions/using-workfl
 `pattern` is a specially crafted attribute to support [Handlebars' template](https://handlebarsjs.com/guide/)
 with the following expressions:
 
-* `date 'format' tz='Timezone'` ; render date by its [moment format](https://momentjs.com/docs/#/displaying/format/). Default `tz` is UTC.
+* `date 'format' tz='Timezone'` ; render date by its [moment format](https://momentjs.com/docs/#/displaying/format/).
+  Default `tz` is UTC.
 
-| Pattern                  | Output               |
-|--------------------------|----------------------|
-| `nightly`                | `nightly`            |
-| `{{date 'YYYYMMDD'}}`    | `20210326`           |
+| Pattern                                      | Output            |
+|----------------------------------------------|-------------------|
+| `nightly`                                    | `nightly`         |
+| `{{date 'YYYYMMDD'}}`                        | `20200110`        |
+| `{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}` | `20200110-093000` |
 
 Extended attributes and default values:
 
@@ -780,13 +782,14 @@ one, otherwise `false`.
 
 #### `{{date '<format>' tz='<timezone>'}}`
 
-Returns the current date rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/). Default `tz` is UTC.
+Returns the current date rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/).
+Default `tz` is UTC.
 
-| Expression                                                 | Output example                             |
-|------------------------------------------------------------|--------------------------------------------|
-| `{{date 'YYYYMMDD'}}`                                      | `20200110`                                 |
-| `{{date 'dddd, MMMM Do YYYY, h:mm:ss a'}}`                 | `Friday, January 10th 2020, 3:25:50 pm`    |
-| `{{date 'dddd, MMMM Do YYYY, h:mm:ss a' tz='Asia/Tokyo'}}` | `Saturday, January 11th 2020, 12:25:50 am` |
+| Expression                                   | Output example                          |
+|----------------------------------------------|-----------------------------------------|
+| `{{date 'YYYYMMDD'}}`                        | `20200110`                              |
+| `{{date 'dddd, MMMM Do YYYY, h:mm:ss a'}}`   | `Friday, January 10th 2020, 3:25:50 pm` |
+| `{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}` | `20200110-093000`                       |
 
 ### Major version zero
 
