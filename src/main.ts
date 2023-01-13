@@ -41,7 +41,7 @@ async function run() {
       core.info(version.main || '');
       core.endGroup();
     }
-    core.setOutput('version', version.main || '');
+    setOutput('version', version.main || '');
 
     // Docker tags
     const tags: Array<string> = meta.getTags();
@@ -54,7 +54,7 @@ async function run() {
       }
       core.endGroup();
     }
-    core.setOutput('tags', tags.join(inputs.sepTags));
+    setOutput('tags', tags.join(inputs.sepTags));
 
     // Docker labels
     const labels: Array<string> = meta.getLabels();
@@ -63,24 +63,29 @@ async function run() {
       core.info(label);
     }
     core.endGroup();
-    core.setOutput('labels', labels.join(inputs.sepLabels));
+    setOutput('labels', labels.join(inputs.sepLabels));
 
     // JSON
     const jsonOutput = meta.getJSON();
     core.startGroup(`JSON output`);
     core.info(JSON.stringify(jsonOutput, null, 2));
     core.endGroup();
-    core.setOutput('json', jsonOutput);
+    setOutput('json', JSON.stringify(jsonOutput));
 
     // Bake file definition
     const bakeFile: string = meta.getBakeFile();
     core.startGroup(`Bake file definition`);
     core.info(fs.readFileSync(bakeFile, 'utf8'));
     core.endGroup();
-    core.setOutput('bake-file', bakeFile);
+    setOutput('bake-file', bakeFile);
   } catch (error) {
     core.setFailed(error.message);
   }
+}
+
+function setOutput(name: string, value: string) {
+  core.setOutput(name, value);
+  core.exportVariable(`DOCKER_METADATA_OUTPUT_${name.replace(/\W/g, '_').toUpperCase()}`, value);
 }
 
 run();

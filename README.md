@@ -297,6 +297,23 @@ Following outputs are available
 | `json`        | String  | JSON output of tags and labels                                                             |
 | `bake-file`   | File    | [Bake file definition](https://docs.docker.com/build/customize/bake/file-definition/) path |
 
+Alternatively, each output is also exported as an environment variable:
+
+* `DOCKER_METADATA_OUTPUT_VERSION`
+* `DOCKER_METADATA_OUTPUT_TAGS`
+* `DOCKER_METADATA_OUTPUT_LABELS`
+* `DOCKER_METADATA_OUTPUT_JSON`
+* `DOCKER_METADATA_OUTPUT_BAKE_FILE`
+
+So it can be used with our [Docker Build Push action](https://github.com/docker/build-push-action/):
+
+```yaml
+- uses: docker/build-push-action@v3
+  with:
+    build-args: |
+      DOCKER_METADATA_OUTPUT_JSON
+```
+
 ### environment variables
 
 | Name                          | Type | Description                                                                                                |
