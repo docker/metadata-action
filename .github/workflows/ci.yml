@@ -227,14 +227,6 @@ jobs:
           echo "version=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}"
           echo "revision=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}"
           echo "created=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}"
-      -
-        name: JSON build arg
-        uses: docker/build-push-action@v3
-        with:
-          context: ./test
-          file: ./test/json.Dockerfile
-          build-args: |
-            BUILDINFO=${{ steps.meta.outputs.json }}
 
   docker-push:
     runs-on: ubuntu-latest
