@@ -265,7 +265,7 @@ jobs:
           driver-opts: network=host
       -
         name: Build and push to local registry
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./test
           file: ./test/Dockerfile
@@ -372,7 +372,7 @@ jobs:
             maintainer=CrazyMax
       -
         name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./test
           file: ./test/output.Dockerfile

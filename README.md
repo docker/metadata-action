@@ -89,7 +89,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -149,7 +149,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -308,7 +308,7 @@ Alternatively, each output is also exported as an environment variable:
 So it can be used with our [Docker Build Push action](https://github.com/docker/build-push-action/):
 
 ```yaml
-- uses: docker/build-push-action@v3
+- uses: docker/build-push-action@v4
   with:
     build-args: |
       DOCKER_METADATA_OUTPUT_JSON
@@ -841,7 +841,7 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
           images: name/app
       -
         name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
