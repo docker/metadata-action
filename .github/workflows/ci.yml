@@ -2,7 +2,7 @@ name: ci
 
 on:
   schedule:
-    - cron: '0 */4 * * *' # every 4 hours
+    - cron: '0 10 * * *'
   push:
     branches:
       - 'master'
@@ -10,9 +10,6 @@ on:
     tags:
       - 'v*.*.*'
   pull_request:
-    branches:
-      - 'master'
-      - 'releases/v*'
 
 env:
   DOCKER_IMAGE: localhost:5000/name/app
