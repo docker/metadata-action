@@ -1,4 +1,5 @@
 import {describe, expect, test} from '@jest/globals';
+
 import {Transform, Parse, Tag, Type, RefEvent, ShaFormat, DefaultPriorities} from '../src/tag';
 
 describe('transform', () => {

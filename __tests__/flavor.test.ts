@@ -1,4 +1,5 @@
 import {describe, expect, test} from '@jest/globals';
+
 import {Flavor, Transform} from '../src/flavor';
 
 describe('transform', () => {

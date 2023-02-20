@@ -4,13 +4,15 @@ import * as path from 'path';
 import moment from 'moment-timezone';
 import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
-import {Inputs, tmpDir} from './context';
-import {ReposGetResponseData} from './github';
+import * as core from '@actions/core';
+import {Context} from '@actions/github/lib/context';
+import {Context as ToolkitContext} from '@docker/actions-toolkit/lib/context';
+import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
+
+import {Inputs} from './context';
 import * as icl from './image';
 import * as tcl from './tag';
 import * as fcl from './flavor';
-import * as core from '@actions/core';
-import {Context} from '@actions/github/lib/context';
 
 export interface Version {
   main: string | undefined;
@@ -23,13 +25,13 @@ export class Meta {
 
   private readonly inputs: Inputs;
   private readonly context: Context;
-  private readonly repo: ReposGetResponseData;
+  private readonly repo: GitHubRepo;
   private readonly images: icl.Image[];
   private readonly tags: tcl.Tag[];
   private readonly flavor: fcl.Flavor;
   private readonly date: Date;
 
-  constructor(inputs: Inputs, context: Context, repo: ReposGetResponseData) {
+  constructor(inputs: Inputs, context: Context, repo: GitHubRepo) {
     // Needs to override Git reference with pr ref instead of upstream branch ref
     // for pull_request_target event
     // https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target
@@ -498,7 +500,7 @@ export class Meta {
   }
 
   public getBakeFile(): string {
-    const bakeFile = path.join(tmpDir(), 'docker-metadata-action-bake.json').split(path.sep).join(path.posix.sep);
+    const bakeFile = path.join(ToolkitContext.tmpDir(), 'docker-metadata-action-bake.json');
     fs.writeFileSync(
       bakeFile,
       JSON.stringify(

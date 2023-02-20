@@ -1,10 +1,5 @@
-import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
 import * as core from '@actions/core';
-import {parse} from 'csv-parse/sync';
-
-let _tmpDir: string;
+import {Util} from '@docker/actions-toolkit/lib/util';
 
 export interface Inputs {
   images: string[];
@@ -17,58 +12,15 @@ export interface Inputs {
   githubToken: string;
 }
 
-export function tmpDir(): string {
-  if (!_tmpDir) {
-    _tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'docker-metadata-action-')).split(path.sep).join(path.posix.sep);
-  }
-  return _tmpDir;
-}
-
 export function getInputs(): Inputs {
   return {
-    images: getInputList('images', true),
-    tags: getInputList('tags', true),
-    flavor: getInputList('flavor', true),
-    labels: getInputList('labels', true),
+    images: Util.getInputList('images', {ignoreComma: true}),
+    tags: Util.getInputList('tags', {ignoreComma: true}),
+    flavor: Util.getInputList('flavor', {ignoreComma: true}),
+    labels: Util.getInputList('labels', {ignoreComma: true}),
     sepTags: core.getInput('sep-tags', {trimWhitespace: false}) || `\n`,
     sepLabels: core.getInput('sep-labels', {trimWhitespace: false}) || `\n`,
     bakeTarget: core.getInput('bake-target') || `docker-metadata-action`,
     githubToken: core.getInput('github-token')
   };
 }
-
-export function getInputList(name: string, ignoreComma?: boolean): string[] {
-  const res: Array<string> = [];
-
-  const items = core.getInput(name);
-  if (items == '') {
-    return res;
-  }
-
-  const records = parse(items, {
-    columns: false,
-    relaxQuotes: true,
-    comment: '#',
-    relaxColumnCount: true,
-    skipEmptyLines: true
-  });
-
-  for (const record of records as Array<string[]>) {
-    if (record.length == 1) {
-      res.push(record[0]);
-      continue;
-    } else if (!ignoreComma) {
-      res.push(...record);
-      continue;
-    }
-    res.push(record.join(','));
-  }
-
-  return res.filter(item => item).map(pat => pat.trim());
-}
-
-export const asyncForEach = async (array, callback) => {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-};
