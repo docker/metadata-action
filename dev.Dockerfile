@@ -16,14 +16,14 @@ COPY --from=deps /vendor /
 
 FROM deps AS vendor-validate
 RUN --mount=type=bind,target=.,rw <<EOT
-set -e
-git add -A
-cp -rf /vendor/* .
-if [ -n "$(git status --porcelain -- yarn.lock)" ]; then
-  echo >&2 'ERROR: Vendor result differs. Please vendor your package with "docker buildx bake vendor-update"'
-  git status --porcelain -- yarn.lock
-  exit 1
-fi
+  set -e
+  git add -A
+  cp -rf /vendor/* .
+  if [ -n "$(git status --porcelain -- yarn.lock)" ]; then
+    echo >&2 'ERROR: Vendor result differs. Please vendor your package with "docker buildx bake vendor-update"'
+    git status --porcelain -- yarn.lock
+    exit 1
+  fi
 EOT
 
 FROM deps AS build
@@ -36,14 +36,14 @@ COPY --from=build /out /
 
 FROM build AS build-validate
 RUN --mount=type=bind,target=.,rw <<EOT
-set -e
-git add -A
-cp -rf /out/* .
-if [ -n "$(git status --porcelain -- dist)" ]; then
-  echo >&2 'ERROR: Build result differs. Please build first with "docker buildx bake build"'
-  git status --porcelain -- dist
-  exit 1
-fi
+  set -e
+  git add -A
+  cp -rf /out/* .
+  if [ -n "$(git status --porcelain -- dist)" ]; then
+    echo >&2 'ERROR: Build result differs. Please build first with "docker buildx bake build"'
+    git status --porcelain -- dist
+    exit 1
+  fi
 EOT
 
 FROM deps AS format

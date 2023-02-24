@@ -1,34 +1,45 @@
 import * as fs from 'fs';
-import {getInputs, Inputs} from './context';
-import * as github from './github';
-import {Meta, Version} from './meta';
 import * as core from '@actions/core';
+import * as actionsToolkit from '@docker/actions-toolkit';
 import {Context} from '@actions/github/lib/context';
+import {GitHub} from '@docker/actions-toolkit/lib/github';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
 
-async function run() {
-  try {
+import {getInputs, Inputs} from './context';
+import {Meta, Version} from './meta';
+
+function setOutput(name: string, value: string) {
+  core.setOutput(name, value);
+  core.exportVariable(`DOCKER_METADATA_OUTPUT_${name.replace(/\W/g, '_').toUpperCase()}`, value);
+}
+
+actionsToolkit.run(
+  // main
+  async () => {
     const inputs: Inputs = await getInputs();
     if (inputs.images.length == 0) {
       throw new Error(`images input required`);
     }
 
-    const context: Context = github.context();
-    const repo: github.ReposGetResponseData = await github.repo(inputs.githubToken);
-    core.startGroup(`Context info`);
-    core.info(`eventName: ${context.eventName}`);
-    core.info(`sha: ${context.sha}`);
-    core.info(`ref: ${context.ref}`);
-    core.info(`workflow: ${context.workflow}`);
-    core.info(`action: ${context.action}`);
-    core.info(`actor: ${context.actor}`);
-    core.info(`runNumber: ${context.runNumber}`);
-    core.info(`runId: ${context.runId}`);
-    core.endGroup();
+    const toolkit = new Toolkit({githubToken: inputs.githubToken});
+    const context: Context = GitHub.context;
+    const repo = await toolkit.github.repoData();
+
+    await core.group(`Context info`, async () => {
+      core.info(`eventName: ${context.eventName}`);
+      core.info(`sha: ${context.sha}`);
+      core.info(`ref: ${context.ref}`);
+      core.info(`workflow: ${context.workflow}`);
+      core.info(`action: ${context.action}`);
+      core.info(`actor: ${context.actor}`);
+      core.info(`runNumber: ${context.runNumber}`);
+      core.info(`runId: ${context.runId}`);
+    });
 
     if (core.isDebug()) {
-      core.startGroup(`Webhook payload`);
-      core.info(JSON.stringify(context.payload, null, 2));
-      core.endGroup();
+      await core.group(`Webhook payload`, async () => {
+        core.info(JSON.stringify(context.payload, null, 2));
+      });
     }
 
     const meta: Meta = new Meta(inputs, context, repo);
@@ -37,9 +48,9 @@ async function run() {
     if (meta.version.main == undefined || meta.version.main.length == 0) {
       core.warning(`No Docker image version has been generated. Check tags input.`);
     } else {
-      core.startGroup(`Docker image version`);
-      core.info(version.main || '');
-      core.endGroup();
+      await core.group(`Docker image version`, async () => {
+        core.info(version.main || '');
+      });
     }
     setOutput('version', version.main || '');
 
@@ -48,44 +59,35 @@ async function run() {
     if (tags.length == 0) {
       core.warning('No Docker tag has been generated. Check tags input.');
     } else {
-      core.startGroup(`Docker tags`);
-      for (const tag of tags) {
-        core.info(tag);
-      }
-      core.endGroup();
+      await core.group(`Docker tags`, async () => {
+        for (const tag of tags) {
+          core.info(tag);
+        }
+      });
     }
     setOutput('tags', tags.join(inputs.sepTags));
 
     // Docker labels
     const labels: Array<string> = meta.getLabels();
-    core.startGroup(`Docker labels`);
-    for (const label of labels) {
-      core.info(label);
-    }
-    core.endGroup();
-    setOutput('labels', labels.join(inputs.sepLabels));
+    await core.group(`Docker labels`, async () => {
+      for (const label of labels) {
+        core.info(label);
+      }
+      setOutput('labels', labels.join(inputs.sepLabels));
+    });
 
     // JSON
     const jsonOutput = meta.getJSON();
-    core.startGroup(`JSON output`);
-    core.info(JSON.stringify(jsonOutput, null, 2));
-    core.endGroup();
-    setOutput('json', JSON.stringify(jsonOutput));
+    await core.group(`JSON output`, async () => {
+      core.info(JSON.stringify(jsonOutput, null, 2));
+      setOutput('json', JSON.stringify(jsonOutput));
+    });
 
     // Bake file definition
     const bakeFile: string = meta.getBakeFile();
-    core.startGroup(`Bake file definition`);
-    core.info(fs.readFileSync(bakeFile, 'utf8'));
-    core.endGroup();
-    setOutput('bake-file', bakeFile);
-  } catch (error) {
-    core.setFailed(error.message);
+    await core.group(`Bake file definition`, async () => {
+      core.info(fs.readFileSync(bakeFile, 'utf8'));
+      setOutput('bake-file', bakeFile);
+    });
   }
-}
-
-function setOutput(name: string, value: string) {
-  core.setOutput(name, value);
-  core.exportVariable(`DOCKER_METADATA_OUTPUT_${name.replace(/\W/g, '_').toUpperCase()}`, value);
-}
-
-run();
+);

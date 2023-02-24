@@ -2,19 +2,17 @@ import {beforeEach, describe, expect, jest, test} from '@jest/globals';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import moment from 'moment-timezone';
-import {getInputs, Inputs} from '../src/context';
-import * as github from '../src/github';
-import {Meta, Version} from '../src/meta';
 import {Context} from '@actions/github/lib/context';
+import {GitHub} from '@docker/actions-toolkit/lib/github';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
+import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
 
-import * as repoFixture from './fixtures/repo.json';
-jest.spyOn(github, 'repo').mockImplementation((): Promise<github.ReposGetResponseData> => {
-  return <Promise<github.ReposGetResponseData>>(repoFixture as unknown);
-});
+import {getInputs, Inputs} from '../src/context';
+import {Meta, Version} from '../src/meta';
 
-jest.spyOn(github, 'context').mockImplementation((): Context => {
-  return new Context();
+import repoFixture from './fixtures/repo.json';
+jest.spyOn(GitHub.prototype, 'repoData').mockImplementation((): Promise<GitHubRepo> => {
+  return <Promise<GitHubRepo>>(repoFixture as unknown);
 });
 
 jest.spyOn(global.Date.prototype, 'toISOString').mockImplementation(() => {
@@ -26,6 +24,7 @@ jest.mock('moment-timezone', () => {
 });
 
 beforeEach(() => {
+  jest.clearAllMocks();
   Object.keys(process.env).forEach(function (key) {
     if (key !== 'GITHUB_TOKEN' && key.startsWith('GITHUB_')) {
       delete process.env[key];
@@ -48,10 +47,9 @@ describe('isRawStatement', () => {
 
 const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>) => {
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
-  const context = github.context();
-
-  const repo = await github.repo(process.env.GITHUB_TOKEN || '');
-  const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+  const toolkit = new Toolkit();
+  const repo = await toolkit.github.repoData();
+  const meta = new Meta({...getInputs(), ...inputs}, new Context(), repo);
 
   const version = meta.version;
   expect(version).toEqual(exVersion);
@@ -2765,10 +2763,10 @@ describe('pr-head-sha', () => {
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     process.env.DOCKER_METADATA_PR_HEAD_SHA = 'true';
-    const context = github.context();
 
-    const repo = await github.repo(process.env.GITHUB_TOKEN || '');
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const meta = new Meta({...getInputs(), ...inputs}, new Context(), repo);
 
     const version = meta.version;
     expect(version).toEqual(exVersion);
@@ -3707,10 +3705,10 @@ describe('json', () => {
     ]
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
-    const context = github.context();
 
-    const repo = await github.repo(process.env.GITHUB_TOKEN || '');
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const meta = new Meta({...getInputs(), ...inputs}, new Context(), repo);
 
     const jsonOutput = meta.getJSON();
     expect(jsonOutput).toEqual(exJSON);
@@ -4013,10 +4011,10 @@ describe('bake', () => {
     ]
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
-    const context = github.context();
 
-    const repo = await github.repo(process.env.GITHUB_TOKEN || '');
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const meta = new Meta({...getInputs(), ...inputs}, new Context(), repo);
 
     const bakeFile = meta.getBakeFile();
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
@@ -4059,10 +4057,10 @@ describe('sepTags', () => {
     ]
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, expTags: string) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
-    const context = github.context();
 
-    const repo = await github.repo(process.env.GITHUB_TOKEN || '');
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const meta = new Meta({...getInputs(), ...inputs}, new Context(), repo);
 
     expect(meta.getTags().join(inputs.sepTags)).toEqual(expTags);
   });
