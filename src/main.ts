@@ -1,11 +1,9 @@
 import * as fs from 'fs';
 import * as core from '@actions/core';
 import * as actionsToolkit from '@docker/actions-toolkit';
-import {Context} from '@actions/github/lib/context';
-import {GitHub} from '@docker/actions-toolkit/lib/github';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
 
-import {getInputs, Inputs} from './context';
+import {getContext, getInputs, Inputs} from './context';
 import {Meta, Version} from './meta';
 
 function setOutput(name: string, value: string) {
@@ -16,13 +14,13 @@ function setOutput(name: string, value: string) {
 actionsToolkit.run(
   // main
   async () => {
-    const inputs: Inputs = await getInputs();
+    const inputs: Inputs = getInputs();
     if (inputs.images.length == 0) {
       throw new Error(`images input required`);
     }
 
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
-    const context: Context = GitHub.context;
+    const context = await getContext(inputs.context);
     const repo = await toolkit.github.repoData();
 
     await core.group(`Context info`, async () => {

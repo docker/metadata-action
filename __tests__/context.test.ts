@@ -1,6 +1,9 @@
-import {beforeEach, describe, expect, test} from '@jest/globals';
-
-import * as context from '../src/context';
+import {Context} from '@actions/github/lib/context';
+import {beforeEach, describe, expect, test, it, jest} from '@jest/globals';
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
+import {ContextSource, getInputs, Inputs} from '../src/context';
 
 describe('getInputs', () => {
   beforeEach(() => {
@@ -20,6 +23,7 @@ describe('getInputs', () => {
         ['images', 'moby/buildkit\nghcr.io/moby/mbuildkit'],
       ]),
       {
+        context: ContextSource.workflow,
         bakeTarget: 'docker-metadata-action',
         flavor: [],
         githubToken: '',
@@ -28,7 +32,7 @@ describe('getInputs', () => {
         sepLabels: '\n',
         sepTags: '\n',
         tags: [],
-      } as context.Inputs
+      } as Inputs
     ],
     [
       1,
@@ -39,6 +43,7 @@ describe('getInputs', () => {
         ['sep-tags', ','],
       ]),
       {
+        context: ContextSource.workflow,
         bakeTarget: 'metadata',
         flavor: [],
         githubToken: '',
@@ -47,17 +52,52 @@ describe('getInputs', () => {
         sepLabels: ',',
         sepTags: ',',
         tags: [],
-      } as context.Inputs
+      } as Inputs
     ]
   ])(
     '[%d] given %p as inputs, returns %p',
-    async (num: number, inputs: Map<string, string>, expected: context.Inputs) => {
+    async (num: number, inputs: Map<string, string>, expected: Inputs) => {
       inputs.forEach((value: string, name: string) => {
         setInput(name, value);
       });
-      expect(await context.getInputs()).toEqual(expected);
+      expect(await getInputs()).toEqual(expected);
     }
   );
+});
+
+describe('getContext', () => {
+  it('get context with workflow', async () => {
+    process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures/event_create_branch.env')));
+
+    jest.resetModules();
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const {getContext} = require('../src/context');
+    const contextResult = await getContext(ContextSource.workflow);
+
+    expect(contextResult.ref).toEqual('refs/heads/dev');
+    expect(contextResult.sha).toEqual('5f3331d7f7044c18ca9f12c77d961c4d7cf3276a');
+  });
+
+  it('get context with git', async () => {
+    jest.resetModules();
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const git = require('@docker/actions-toolkit/lib/git');
+    jest.spyOn(git.Git, 'context').mockImplementation((): Promise<Context> => {
+      return Promise.resolve({
+        ref: 'refs/heads/git-test',
+        sha: 'git-test-sha'
+      } as Context);
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const {getContext} = require('../src/context');
+
+    const contextResult = await getContext(ContextSource.git);
+
+    expect(contextResult.ref).toEqual('refs/heads/git-test');
+    expect(contextResult.sha).toEqual('git-test-sha');
+  });
 });
 
 // See: https://github.com/actions/toolkit/blob/master/packages/core/src/core.ts#L67

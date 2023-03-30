@@ -32,22 +32,6 @@ export class Meta {
   private readonly date: Date;
 
   constructor(inputs: Inputs, context: Context, repo: GitHubRepo) {
-    // Needs to override Git reference with pr ref instead of upstream branch ref
-    // for pull_request_target event
-    // https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target
-    if (/pull_request_target/.test(context.eventName)) {
-      context.ref = `refs/pull/${context.payload.number}/merge`;
-    }
-
-    // DOCKER_METADATA_PR_HEAD_SHA env var can be used to set associated head
-    // SHA instead of commit SHA that triggered the workflow on pull request
-    // event.
-    if (/true/i.test(process.env.DOCKER_METADATA_PR_HEAD_SHA || '')) {
-      if ((/pull_request/.test(context.eventName) || /pull_request_target/.test(context.eventName)) && context.payload?.pull_request?.head?.sha != undefined) {
-        context.sha = context.payload.pull_request.head.sha;
-      }
-    }
-
     this.inputs = inputs;
     this.context = context;
     this.repo = repo;
@@ -373,53 +357,53 @@ export class Meta {
   }
 
   private setGlobalExp(val): string {
-    const ctx = this.context;
+    const context = this.context;
     const currentDate = this.date;
     return handlebars.compile(val)({
       branch: function () {
-        if (!/^refs\/heads\//.test(ctx.ref)) {
+        if (!/^refs\/heads\//.test(context.ref)) {
           return '';
         }
-        return ctx.ref.replace(/^refs\/heads\//g, '');
+        return context.ref.replace(/^refs\/heads\//g, '');
       },
       tag: function () {
-        if (!/^refs\/tags\//.test(ctx.ref)) {
+        if (!/^refs\/tags\//.test(context.ref)) {
           return '';
         }
-        return ctx.ref.replace(/^refs\/tags\//g, '');
+        return context.ref.replace(/^refs\/tags\//g, '');
       },
       sha: function () {
-        return ctx.sha.substring(0, 7);
+        return context.sha.substring(0, 7);
       },
       base_ref: function () {
-        if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
-          return ctx.payload.base_ref.replace(/^refs\/heads\//g, '');
+        if (/^refs\/tags\//.test(context.ref) && context.payload?.base_ref != undefined) {
+          return context.payload.base_ref.replace(/^refs\/heads\//g, '');
         }
         // FIXME: keep this for backward compatibility even if doesn't always seem
         //  to return the expected branch. See the comment below.
-        if (/^refs\/pull\//.test(ctx.ref) && ctx.payload?.pull_request?.base?.ref != undefined) {
-          return ctx.payload.pull_request.base.ref;
+        if (/^refs\/pull\//.test(context.ref) && context.payload?.pull_request?.base?.ref != undefined) {
+          return context.payload.pull_request.base.ref;
         }
         return '';
       },
       is_default_branch: function () {
-        const branch = ctx.ref.replace(/^refs\/heads\//g, '');
+        const branch = context.ref.replace(/^refs\/heads\//g, '');
         // TODO: "base_ref" is available in the push payload but doesn't always seem to
         //  return the expected branch when the push tag event occurs. It's also not
         //  documented in GitHub docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push
         //  more context: https://github.com/docker/metadata-action/pull/192#discussion_r854673012
-        // if (/^refs\/tags\//.test(ctx.ref) && ctx.payload?.base_ref != undefined) {
-        //   branch = ctx.payload.base_ref.replace(/^refs\/heads\//g, '');
+        // if (/^refs\/tags\//.test(context.ref) && context.payload?.base_ref != undefined) {
+        //   branch = context.payload.base_ref.replace(/^refs\/heads\//g, '');
         // }
         if (branch == undefined || branch.length == 0) {
           return 'false';
         }
-        if (ctx.payload?.repository?.default_branch == branch) {
+        if (context.payload?.repository?.default_branch == branch) {
           return 'true';
         }
         // following events always trigger for last commit on default branch
         // https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
-        if (/create/.test(ctx.eventName) || /discussion/.test(ctx.eventName) || /issues/.test(ctx.eventName) || /schedule/.test(ctx.eventName)) {
+        if (/create/.test(context.eventName) || /discussion/.test(context.eventName) || /issues/.test(context.eventName) || /schedule/.test(context.eventName)) {
           return 'true';
         }
         return 'false';
