@@ -1,9 +1,19 @@
-import {Context} from '@actions/github/lib/context';
-import {beforeEach, describe, expect, test, it, jest} from '@jest/globals';
+import {afterEach, beforeEach, describe, expect, test, it, jest} from '@jest/globals';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
-import {ContextSource, getInputs, Inputs} from '../src/context';
+import {Context} from '@actions/github/lib/context';
+import {Git} from '@docker/actions-toolkit/lib/git';
+import {GitHub} from '@docker/actions-toolkit/lib/github';
+
+import {ContextSource, getContext, getInputs, Inputs} from '../src/context';
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  jest.spyOn(GitHub, 'context', 'get').mockImplementation((): Context => {
+    return new Context();
+  });
+});
 
 describe('getInputs', () => {
   beforeEach(() => {
@@ -66,37 +76,34 @@ describe('getInputs', () => {
 });
 
 describe('getContext', () => {
-  it('get context with workflow', async () => {
-    process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures/event_create_branch.env')));
-
+  const originalEnv = process.env;
+  beforeEach(() => {
     jest.resetModules();
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const {getContext} = require('../src/context');
-    const contextResult = await getContext(ContextSource.workflow);
-
-    expect(contextResult.ref).toEqual('refs/heads/dev');
-    expect(contextResult.sha).toEqual('5f3331d7f7044c18ca9f12c77d961c4d7cf3276a');
+    process.env = {
+      ...originalEnv,
+      ...dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures/event_create_branch.env')))
+    };
+  });
+  afterEach(() => {
+    process.env = originalEnv;
   });
 
-  it('get context with git', async () => {
-    jest.resetModules();
+  it('workflow', async () => {
+    const context = await getContext(ContextSource.workflow);
+    expect(context.ref).toEqual('refs/heads/dev');
+    expect(context.sha).toEqual('5f3331d7f7044c18ca9f12c77d961c4d7cf3276a');
+  });
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const git = require('@docker/actions-toolkit/lib/git');
-    jest.spyOn(git.Git, 'context').mockImplementation((): Promise<Context> => {
+  it('git', async () => {
+    jest.spyOn(Git, 'context').mockImplementation((): Promise<Context> => {
       return Promise.resolve({
         ref: 'refs/heads/git-test',
         sha: 'git-test-sha'
       } as Context);
     });
-
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const {getContext} = require('../src/context');
-
-    const contextResult = await getContext(ContextSource.git);
-
-    expect(contextResult.ref).toEqual('refs/heads/git-test');
-    expect(contextResult.sha).toEqual('git-test-sha');
+    const context = await getContext(ContextSource.git);
+    expect(context.ref).toEqual('refs/heads/git-test');
+    expect(context.sha).toEqual('git-test-sha');
   });
 });
 

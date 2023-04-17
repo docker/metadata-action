@@ -5,10 +5,13 @@ import * as dotenv from 'dotenv';
 import {GitHub} from '@docker/actions-toolkit/lib/github';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
 import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
-import {ContextSource, getInputs, Inputs} from '../src/context';
+import {Context} from '@actions/github/lib/context';
+
+import {ContextSource, getContext, getInputs, Inputs} from '../src/context';
 import {Meta, Version} from '../src/meta';
 
 import repoFixture from './fixtures/repo.json';
+
 jest.spyOn(GitHub.prototype, 'repoData').mockImplementation((): Promise<GitHubRepo> => {
   return <Promise<GitHubRepo>>(repoFixture as unknown);
 });
@@ -21,23 +24,15 @@ jest.mock('moment-timezone', () => {
   return () => (jest.requireActual('moment-timezone') as typeof import('moment-timezone'))('2020-01-10T00:30:00.000Z');
 });
 
-/**
- * Get a workflow context based on the current environment variables.
- */
-const getFreshWorkflowContext = async () => {
-  jest.resetModules();
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const {getContext} = require('../src/context');
-  const context = await getContext(ContextSource.workflow);
-  return context;
-};
-
 beforeEach(() => {
   jest.clearAllMocks();
   Object.keys(process.env).forEach(function (key) {
     if (key !== 'GITHUB_TOKEN' && key.startsWith('GITHUB_')) {
       delete process.env[key];
     }
+  });
+  jest.spyOn(GitHub, 'context', 'get').mockImplementation((): Context => {
+    return new Context();
   });
 });
 
@@ -58,8 +53,7 @@ const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exV
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
   const toolkit = new Toolkit();
   const repo = await toolkit.github.repoData();
-  const context = await getFreshWorkflowContext();
-  const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+  const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
 
   const version = meta.version;
   expect(version).toEqual(exVersion);
@@ -2776,8 +2770,7 @@ describe('pr-head-sha', () => {
 
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const context = await getFreshWorkflowContext();
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
 
     const version = meta.version;
     expect(version).toEqual(exVersion);
@@ -3719,8 +3712,7 @@ describe('json', () => {
 
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const context = await getFreshWorkflowContext();
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
 
     const jsonOutput = meta.getJSON();
     expect(jsonOutput).toEqual(exJSON);
@@ -4026,8 +4018,7 @@ describe('bake', () => {
 
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const context = await getFreshWorkflowContext();
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
 
     const bakeFile = meta.getBakeFile();
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
@@ -4069,13 +4060,12 @@ describe('sepTags', () => {
       "user/app:dev,user/app:my,user/app:custom,user/app:tags"
     ]
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, expTags: string) => {
-    
+
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
-    
+
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const context = await getFreshWorkflowContext();
-    const meta = new Meta({...getInputs(), ...inputs}, context, repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
 
     expect(meta.getTags().join(inputs.sepTags)).toEqual(expTags);
   });
