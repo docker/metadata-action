@@ -154,7 +154,7 @@ export class Meta {
 
     let latest = false;
     const sver = semver.parse(vraw, {
-      includePrerelease: true
+      loose: true
     });
     if (semver.prerelease(vraw)) {
       if (Meta.isRawStatement(tag.attrs['pattern'])) {
