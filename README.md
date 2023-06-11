@@ -313,7 +313,7 @@ So it can be used with our [Docker Build Push action](https://github.com/docker/
 - uses: docker/build-push-action@v4
   with:
     build-args: |
-      DOCKER_METADATA_OUTPUT_JSON
+      ${{ env.DOCKER_METADATA_OUTPUT_JSON }}
 ```
 
 ### environment variables
