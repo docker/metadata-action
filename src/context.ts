@@ -19,10 +19,10 @@ export interface Inputs {
 export function getInputs(): Inputs {
   return {
     context: (core.getInput('context') || ContextSource.workflow) as ContextSource,
-    images: Util.getInputList('images', {ignoreComma: true}),
-    tags: Util.getInputList('tags', {ignoreComma: true}),
-    flavor: Util.getInputList('flavor', {ignoreComma: true}),
-    labels: Util.getInputList('labels', {ignoreComma: true}),
+    images: Util.getInputList('images', {ignoreComma: true, comment: '#'}),
+    tags: Util.getInputList('tags', {ignoreComma: true, comment: '#'}),
+    flavor: Util.getInputList('flavor', {ignoreComma: true, comment: '#'}),
+    labels: Util.getInputList('labels', {ignoreComma: true, comment: '#'}),
     sepTags: core.getInput('sep-tags', {trimWhitespace: false}) || `\n`,
     sepLabels: core.getInput('sep-labels', {trimWhitespace: false}) || `\n`,
     bakeTarget: core.getInput('bake-target') || `docker-metadata-action`,
