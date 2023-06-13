@@ -63,7 +63,24 @@ describe('getInputs', () => {
         sepTags: ',',
         tags: [],
       } as Inputs
-    ]
+    ],
+    [
+      2,
+      new Map<string, string>([
+        ['images', 'moby/buildkit\n#comment\nghcr.io/moby/mbuildkit'],
+      ]),
+      {
+        context: ContextSource.workflow,
+        bakeTarget: 'docker-metadata-action',
+        flavor: [],
+        githubToken: '',
+        images: ['moby/buildkit', 'ghcr.io/moby/mbuildkit'],
+        labels: [],
+        sepLabels: '\n',
+        sepTags: '\n',
+        tags: [],
+      } as Inputs
+    ],
   ])(
     '[%d] given %p as inputs, returns %p',
     async (num: number, inputs: Map<string, string>, expected: Inputs) => {
