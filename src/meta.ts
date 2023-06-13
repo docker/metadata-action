@@ -466,7 +466,18 @@ export class Meta {
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
     labels.push(...this.inputs.labels);
-    return labels;
+
+    return Array.from(
+      new Map<string, string>(
+        labels
+          .map(label => label.split('='))
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          .filter(([_key, ...values]) => values.length > 0)
+          .map(([key, ...values]) => [key, values.join('=')] as [string, string])
+      )
+    )
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([key, value]) => `${key}=${value}`);
   }
 
   public getJSON(): unknown {
