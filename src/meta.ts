@@ -453,8 +453,7 @@ export class Meta {
           tags.push(`${imageName}:${Meta.sanitizeTag(latestTag)}`);
         }
       }
-    }
-    else {
+    } else {
       tags.push(this.version.main);
       for (const partial of this.version.partial) {
         tags.push(partial);
