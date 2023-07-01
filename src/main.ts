@@ -48,6 +48,7 @@ actionsToolkit.run(
     }
     setOutput('version', version.main || '');
 
+    
     // Docker tags
     const tags: Array<string> = meta.getTags();
     if (tags.length == 0) {
