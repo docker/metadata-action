@@ -441,14 +441,27 @@ export class Meta {
       return [];
     }
     const tags: Array<string> = [];
-    for (const imageName of this.getImageNames()) {
-      tags.push(`${imageName}:${this.version.main}`);
+    const images = this.getImageNames();
+    if (Array.isArray(images) && images.length) {
+      for (const imageName of images) {
+        tags.push(`${imageName}:${this.version.main}`);
+        for (const partial of this.version.partial) {
+          tags.push(`${imageName}:${partial}`);
+        }
+        if (this.version.latest) {
+          const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
+          tags.push(`${imageName}:${Meta.sanitizeTag(latestTag)}`);
+        }
+      }
+    }
+    else {
+      tags.push(this.version.main);
       for (const partial of this.version.partial) {
-        tags.push(`${imageName}:${partial}`);
+        tags.push(partial);
       }
       if (this.version.latest) {
         const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
-        tags.push(`${imageName}:${Meta.sanitizeTag(latestTag)}`);
+        tags.push(Meta.sanitizeTag(latestTag));
       }
     }
     return tags;

@@ -15,10 +15,6 @@ actionsToolkit.run(
   // main
   async () => {
     const inputs: Inputs = getInputs();
-    if (inputs.images.length == 0) {
-      throw new Error(`images input required`);
-    }
-
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
     const context = await getContext(inputs.context);
     const repo = await toolkit.github.repoData();
