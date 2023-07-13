@@ -8,6 +8,7 @@ import * as core from '@actions/core';
 import {Context} from '@actions/github/lib/context';
 import {Context as ToolkitContext} from '@docker/actions-toolkit/lib/context';
 import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
+import {execSync} from 'child_process';
 
 import {Inputs} from './context';
 import * as icl from './image';
@@ -30,6 +31,7 @@ export class Meta {
   private readonly tags: tcl.Tag[];
   private readonly flavor: fcl.Flavor;
   private readonly date: Date;
+  private readonly commit_date: Date;
 
   constructor(inputs: Inputs, context: Context, repo: GitHubRepo) {
     this.inputs = inputs;
@@ -39,7 +41,14 @@ export class Meta {
     this.tags = tcl.Transform(inputs.tags);
     this.flavor = fcl.Transform(inputs.flavor);
     this.date = new Date();
+    this.commit_date = this.getCommitDate();
     this.version = this.getVersion();
+  }
+
+  private getCommitDate(): Date {
+    const myOutput = execSync('git show -s --format="%ci" HEAD');
+
+    return new Date(myOutput.toString());
   }
 
   private getVersion(): Version {
@@ -359,6 +368,7 @@ export class Meta {
   private setGlobalExp(val): string {
     const context = this.context;
     const currentDate = this.date;
+    const commitDate = this.commit_date;
     return handlebars.compile(val)({
       branch: function () {
         if (!/^refs\/heads\//.test(context.ref)) {
@@ -410,6 +420,20 @@ export class Meta {
       },
       date: function (format, options) {
         const m = moment(currentDate);
+        let tz = 'UTC';
+        Object.keys(options.hash).forEach(key => {
+          switch (key) {
+            case 'tz':
+              tz = options.hash[key];
+              break;
+            default:
+              throw new Error(`Unknown ${key} attribute`);
+          }
+        });
+        return m.tz(tz).format(format);
+      },
+      commit_date: function (format, options) {
+        const m = moment(commitDate);
         let tz = 'UTC';
         Object.keys(options.hash).forEach(key => {
           switch (key) {
