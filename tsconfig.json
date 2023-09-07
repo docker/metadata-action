@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "target": "es6",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "strict": true,
     "newLine": "lf",
     "outDir": "./lib",
