@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/csv-parse": "^1.2.2",
-    "@types/node": "^16.18.23",
+    "@types/node": "^20.5.9",
     "@types/semver": "^7.3.13",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
