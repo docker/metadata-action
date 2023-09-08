@@ -200,6 +200,7 @@ jobs:
           tags: |
             type=sha
             type=raw,value=gexp-branch-{{branch}}
+            type=raw,value=gexp-date-{{commit_date 'YYYYMMDD'}}
             type=raw,value=gexp-date-{{date 'YYYYMMDD'}}
             type=raw,value=gexp-tag-{{tag}}
             type=raw,value=gexp-baseref-{{base_ref}}
