@@ -297,7 +297,7 @@ Following outputs are available
 | `tags`        | String  | Docker tags                                                                                |
 | `labels`      | String  | Docker labels                                                                              |
 | `json`        | String  | JSON output of tags and labels                                                             |
-| `bake-file`   | File    | [Bake file definition](https://docs.docker.com/build/customize/bake/file-definition/) path |
+| `bake-file`   | File    | [Bake file definition](https://docs.docker.com/build/bake/reference/) path |
 
 Alternatively, each output is also exported as an environment variable:
 
