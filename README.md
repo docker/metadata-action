@@ -74,23 +74,23 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: name/app
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -128,11 +128,11 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |
             name/app
@@ -144,13 +144,13 @@ jobs:
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -206,11 +206,11 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |
             name/app
@@ -222,7 +222,7 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@v2
+        uses: docker/bake-action@v3
         with:
           files: |
             ./docker-bake.hcl
@@ -266,7 +266,7 @@ Content of `${{ steps.meta.outputs.bake-file }}` file will look like this with
 
 ### inputs
 
-Following inputs can be used as `step.with` keys
+The following inputs can be used as `step.with` keys:
 
 > `List` type is a newline-delimited string
 > ```yaml
@@ -289,15 +289,15 @@ Following inputs can be used as `step.with` keys
 
 ### outputs
 
-Following outputs are available
+The following outputs are available:
 
-| Name          | Type    | Description                                                                                |
-|---------------|---------|--------------------------------------------------------------------------------------------|
-| `version`     | String  | Docker image version                                                                       |
-| `tags`        | String  | Docker tags                                                                                |
-| `labels`      | String  | Docker labels                                                                              |
-| `json`        | String  | JSON output of tags and labels                                                             |
-| `bake-file`   | File    | [Bake file definition](https://docs.docker.com/build/bake/reference/) path |
+| Name        | Type   | Description                                                                |
+|-------------|--------|----------------------------------------------------------------------------|
+| `version`   | String | Docker image version                                                       |
+| `tags`      | String | Docker tags                                                                |
+| `labels`    | String | Docker labels                                                              |
+| `json`      | String | JSON output of tags and labels                                             |
+| `bake-file` | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path |
 
 Alternatively, each output is also exported as an environment variable:
 
@@ -310,7 +310,7 @@ Alternatively, each output is also exported as an environment variable:
 So it can be used with our [Docker Build Push action](https://github.com/docker/build-push-action/):
 
 ```yaml
-- uses: docker/build-push-action@v4
+- uses: docker/build-push-action@v5
   with:
     build-args: |
       DOCKER_METADATA_OUTPUT_JSON
@@ -851,13 +851,13 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: meta
         with:
           images: name/app
       -
         name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -876,7 +876,7 @@ labels generated are not suitable, you can overwrite them like this:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: name/app
           labels: |
