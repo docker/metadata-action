@@ -1,5 +1,9 @@
 name: ci
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   schedule:
     - cron: '0 10 * * *'
@@ -20,7 +24,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -51,7 +55,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -81,7 +85,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -109,7 +113,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -134,7 +138,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -151,7 +155,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -166,7 +170,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -185,7 +189,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         uses: ./
@@ -206,7 +210,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
@@ -235,7 +239,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: docker_meta
@@ -254,15 +258,15 @@ jobs:
             type=sha
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           driver-opts: network=host
       -
         name: Build and push to local registry
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: ./test
           file: ./test/Dockerfile
@@ -289,7 +293,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: docker_meta
@@ -309,13 +313,13 @@ jobs:
             type=sha
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       -
         name: Build
-        uses: docker/bake-action@v3
+        uses: docker/bake-action@v4
         with:
           files: |
             ./test/docker-bake.hcl
@@ -334,7 +338,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
@@ -356,7 +360,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
@@ -369,7 +373,7 @@ jobs:
             maintainer=CrazyMax
       -
         name: Build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: ./test
           file: ./test/output.Dockerfile

@@ -1,5 +1,9 @@
 name: validate
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -15,7 +19,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Targets matrix
         id: targets
@@ -33,9 +37,9 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Validate
-        uses: docker/bake-action@v3
+        uses: docker/bake-action@v4
         with:
           targets: ${{ matrix.target }}
