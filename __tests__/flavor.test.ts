@@ -37,6 +37,7 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "",
         suffixLatest: false,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -50,6 +51,7 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "",
         suffixLatest: false,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -63,6 +65,7 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "",
         suffixLatest: false,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -83,6 +86,7 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "",
         suffixLatest: false,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -96,6 +100,7 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "-alpine",
         suffixLatest: false,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -111,6 +116,7 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "-alpine",
         suffixLatest: false,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -124,6 +130,7 @@ describe('transform', () => {
         prefixLatest: true,
         suffix: "",
         suffixLatest: false,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -137,6 +144,7 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "-alpine",
         suffixLatest: true,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -151,6 +159,7 @@ describe('transform', () => {
         prefixLatest: true,
         suffix: "-alpine",
         suffixLatest: true,
+        labelPrefix: "",
       } as Flavor,
       false
     ],
@@ -164,6 +173,21 @@ describe('transform', () => {
         prefixLatest: false,
         suffix: "",
         suffixLatest: false,
+        labelPrefix: "",
+      } as Flavor,
+      false
+    ],
+    [
+      [
+        `labelPrefix=manifest:`,
+      ],
+      {
+        latest: "auto",
+        prefix: "",
+        prefixLatest: false,
+        suffix: "",
+        suffixLatest: false,
+        labelPrefix: "manifest:",
       } as Flavor,
       false
     ]

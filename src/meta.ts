@@ -455,7 +455,7 @@ export class Meta {
   }
 
   public getLabels(): Array<string> {
-    const labels: Array<string> = [
+    let labels: Array<string> = [
       `org.opencontainers.image.title=${this.repo.name || ''}`,
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
@@ -466,6 +466,9 @@ export class Meta {
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
     labels.push(...this.inputs.labels);
+    if (this.flavor.labelPrefix.length > 0) {
+      labels = labels.map(label => this.flavor.labelPrefix + label);
+    }
 
     return Array.from(
       new Map<string, string>(

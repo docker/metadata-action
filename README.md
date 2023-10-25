@@ -47,6 +47,7 @@ ___
     * [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
+  * [Labels prefix](#labels-prefix)
   * [Overwrite labels](#overwrite-labels)
 * [Contributing](#contributing)
 
@@ -368,6 +369,7 @@ flavor: |
   latest=auto
   prefix=
   suffix=
+  labelPrefix=
 ```
 
 * `latest=<auto|true|false>`: Handle [latest tag](#latest-tag) (default `auto`)
@@ -375,6 +377,8 @@ flavor: |
   tag and optionally for `latest`
 * `suffix=<string>,onlatest=<true|false>`: A global suffix for each generated
   tag and optionally for `latest`
+* `labelPrefix=<string>`: A global prefix to apply to each label. Can be  
+  useful to [set annotations at manifest or index level](#labels-prefix).
 
 ## `tags` input
 
@@ -865,6 +869,31 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
             BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+```
+
+### Labels prefix
+
+Since Buildx 0.12, it is possible to set annotations to your image through the
+`--annotation` flag. When using the metadata-action you can set the `manifest:`
+or `index:` prefix to each label using the `labelPrefix` attribute in the
+`flavor` input. When used with the [`build-push-action`](https://github.com/docker/build-push-action/)
+and the `annotations` input, it will either set annotations at the manifest or
+index level:
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+          flavor: |
+            labelPrefix=index:
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.labels }}
 ```
 
 ### Overwrite labels

@@ -3463,6 +3463,37 @@ describe('raw', () => {
         "org.opencontainers.image.version=foo"
       ]
     ],
+    [
+      'raw11',
+      'event_push_dev.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=raw,foo`
+        ],
+        flavor: [
+          `labelPrefix=index:`,
+        ]
+      } as Inputs,
+      {
+        main: 'foo',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'user/app:foo'
+      ],
+      [
+        "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "index:org.opencontainers.image.description=This your first repo!",
+        "index:org.opencontainers.image.licenses=MIT",
+        "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "index:org.opencontainers.image.title=Hello-World",
+        "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "index:org.opencontainers.image.version=foo"
+      ]
+    ]
   ])('given %p wth %p event', tagsLabelsTest);
 });
 
@@ -3706,7 +3737,35 @@ describe('json', () => {
           "org.opencontainers.image.version": "v1.1.1"
         }
       }
-    ]
+    ],
+    [
+      'json08',
+      'event_push_dev.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=raw,foo`
+        ],
+        flavor: [
+          "labelPrefix=manifest:",
+        ]
+      } as Inputs,
+      {
+        "tags": [
+          "user/app:foo"
+        ],
+        "labels": {
+          "manifest:org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description": "This your first repo!",
+          "manifest:org.opencontainers.image.licenses": "MIT",
+          "manifest:org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title": "Hello-World",
+          "manifest:org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.version": "foo"
+        }
+      }
+    ],
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
 
@@ -4008,6 +4067,42 @@ describe('bake', () => {
             "args": {
               "DOCKER_META_IMAGES": "org/app",
               "DOCKER_META_VERSION": "v1.1.1",
+            }
+          }
+        }
+      }
+    ],
+    [
+      'bake08',
+      'event_push_dev.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=raw,foo`
+        ],
+        flavor: [
+          "labelPrefix=index:",
+        ]
+      } as Inputs,
+      {
+        "target": {
+          "docker-metadata-action": {
+            "tags": [
+              "user/app:foo"
+            ],
+            "labels": {
+              "index:org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description": "This your first repo!",
+              "index:org.opencontainers.image.licenses": "MIT",
+              "index:org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title": "Hello-World",
+              "index:org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.version": "foo"
+            },
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "foo",
             }
           }
         }

@@ -7,6 +7,7 @@ export interface Flavor {
   prefixLatest: boolean;
   suffix: string;
   suffixLatest: boolean;
+  labelPrefix: string;
 }
 
 export function Transform(inputs: string[]): Flavor {
@@ -15,7 +16,8 @@ export function Transform(inputs: string[]): Flavor {
     prefix: '',
     prefixLatest: false,
     suffix: '',
-    suffixLatest: false
+    suffixLatest: false,
+    labelPrefix: ''
   };
 
   for (const input of inputs) {
@@ -68,6 +70,10 @@ export function Transform(inputs: string[]): Flavor {
           }
           break;
         }
+        case 'labelprefix': {
+          flavor.labelPrefix = value;
+          break;
+        }
         default: {
           throw new Error(`Unknown flavor entry: ${input}`);
         }
@@ -81,6 +87,7 @@ export function Transform(inputs: string[]): Flavor {
   core.info(`prefixLatest=${flavor.prefixLatest}`);
   core.info(`suffix=${flavor.suffix}`);
   core.info(`suffixLatest=${flavor.suffixLatest}`);
+  core.info(`labelPrefix=${flavor.labelPrefix}`);
   core.endGroup();
 
   return flavor;
