@@ -3719,12 +3719,363 @@ describe('json', () => {
   });
 });
 
-describe('bake', () => {
+describe('bakeFile', () => {
   // prettier-ignore
   // eslint-disable-next-line jest/expect-expect
   test.each([
     [
-      'bake01',
+      'bakeFile01',
+      'event_push_dev.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=branch`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        labels: [
+          "invalid"
+        ]
+      } as Inputs,
+      {
+        "target": {
+          "docker-metadata-action": {
+            "tags": [
+              "user/app:dev",
+              "user/app:my",
+              "user/app:custom",
+              "user/app:tags"
+            ],
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "dev",
+            }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "labels": {
+              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "org.opencontainers.image.description": "This your first repo!",
+              "org.opencontainers.image.licenses": "MIT",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.title": "Hello-World",
+              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.version": "dev"
+            }
+          }
+        }
+      }
+    ],
+    [
+      'bakeFile02',
+      'event_push_dev.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=branch`,
+          `type=raw,my`
+        ]
+      } as Inputs,
+      {
+        "target": {
+          "docker-metadata-action": {
+            "tags": [
+              "user/app:dev",
+              "user/app:my",
+            ],
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "dev",
+            }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "labels": {
+              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "org.opencontainers.image.description": "This your first repo!",
+              "org.opencontainers.image.licenses": "MIT",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.title": "Hello-World",
+              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.version": "dev"
+            }
+          }
+        }
+      }
+    ],
+    [
+      'bakeFile03',
+      'event_tag_release1.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=ref,event=tag`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        bakeTarget: "meta"
+      } as Inputs,
+      {
+        "target": {
+          "meta": {
+            "tags": [
+              "user/app:release1",
+              "user/app:my",
+              "user/app:custom",
+              "user/app:tags",
+              "user/app:latest"
+            ],
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "release1",
+            }
+          }
+        }
+      },
+      {
+        "target": {
+          "meta": {
+            "labels": {
+              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "org.opencontainers.image.description": "This your first repo!",
+              "org.opencontainers.image.licenses": "MIT",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.title": "Hello-World",
+              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.version": "release1"
+            }
+          }
+        }
+      }
+    ],
+    [
+      'bakeFile04',
+      'event_tag_20200110-RC2.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=match,pattern=\\d{8}`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ],
+        flavor: [
+          `latest=false`
+        ]
+      } as Inputs,
+      {
+        "target": {
+          "docker-metadata-action": {
+            "tags": [
+              "user/app:20200110",
+              "user/app:my",
+              "user/app:custom",
+              "user/app:tags"
+            ],
+            "args": {
+              "DOCKER_META_IMAGES": "user/app",
+              "DOCKER_META_VERSION": "20200110",
+            }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "labels": {
+              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "org.opencontainers.image.description": "This your first repo!",
+              "org.opencontainers.image.licenses": "MIT",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.title": "Hello-World",
+              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.version": "20200110"
+            }
+          }
+        }
+      }
+    ],
+    [
+      'bakeFile05',
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=semver,pattern={{version}}`,
+          `type=semver,pattern={{major}}.{{minor}}`,
+          `type=semver,pattern={{major}}`,
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ]
+      } as Inputs,
+      {
+        "target": {
+          "docker-metadata-action": {
+            "tags": [
+              "org/app:1.1.1",
+              "org/app:1.1",
+              "org/app:1",
+              "org/app:my",
+              "org/app:custom",
+              "org/app:tags",
+              "org/app:latest",
+              "ghcr.io/user/app:1.1.1",
+              "ghcr.io/user/app:1.1",
+              "ghcr.io/user/app:1",
+              "ghcr.io/user/app:my",
+              "ghcr.io/user/app:custom",
+              "ghcr.io/user/app:tags",
+              "ghcr.io/user/app:latest"
+            ],
+            "args": {
+              "DOCKER_META_IMAGES": "org/app,ghcr.io/user/app",
+              "DOCKER_META_VERSION": "1.1.1",
+            }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "labels": {
+              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "org.opencontainers.image.description": "This your first repo!",
+              "org.opencontainers.image.licenses": "MIT",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.title": "Hello-World",
+              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.version": "1.1.1"
+            }
+          }
+        }
+      }
+    ],
+    [
+      'bakeFile06',
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=raw,my`,
+          `type=raw,custom`,
+          `type=raw,tags`
+        ]
+      } as Inputs,
+      {
+        "target": {
+          "docker-metadata-action": {
+            "tags": [
+              "org/app:my",
+              "org/app:custom",
+              "org/app:tags",
+              "ghcr.io/user/app:my",
+              "ghcr.io/user/app:custom",
+              "ghcr.io/user/app:tags"
+            ],
+            "args": {
+              "DOCKER_META_IMAGES": "org/app,ghcr.io/user/app",
+              "DOCKER_META_VERSION": "my",
+            }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "labels": {
+              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "org.opencontainers.image.description": "This your first repo!",
+              "org.opencontainers.image.licenses": "MIT",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.title": "Hello-World",
+              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.version": "my"
+            }
+          }
+        }
+      }
+    ],
+    [
+      'bakeFile07',
+      'event_tag_v1.1.1.env',
+      {
+        images: ['org/app'],
+        labels: [
+          "maintainer=CrazyMax",
+          "org.opencontainers.image.title=MyCustom=Title",
+          "org.opencontainers.image.description=Another description",
+          "org.opencontainers.image.vendor=MyCompany",
+        ],
+      } as Inputs,
+      {
+        "target": {
+          "docker-metadata-action": {
+            "tags": [
+              "org/app:v1.1.1",
+              "org/app:latest"
+            ],
+            "args": {
+              "DOCKER_META_IMAGES": "org/app",
+              "DOCKER_META_VERSION": "v1.1.1",
+            }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "labels": {
+              "maintainer": "CrazyMax",
+              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+              "org.opencontainers.image.description": "Another description",
+              "org.opencontainers.image.licenses": "MIT",
+              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
+              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.title": "MyCustom=Title",
+              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
+              "org.opencontainers.image.vendor": "MyCompany",
+              "org.opencontainers.image.version": "v1.1.1"
+            }
+          }
+        }
+      }
+    ]
+  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeTags: unknown, exBakeLabels: unknown) => {
+    process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
+
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
+
+    const bakeFileTags = meta.getBakeFile('tags');
+    expect(JSON.parse(fs.readFileSync(bakeFileTags, 'utf8'))).toEqual(exBakeTags);
+
+    const bakeFileLabels = meta.getBakeFile('labels');
+    expect(JSON.parse(fs.readFileSync(bakeFileLabels, 'utf8'))).toEqual(exBakeLabels);
+  });
+});
+
+describe('bakeFileTagsLabels', () => {
+  // prettier-ignore
+  // eslint-disable-next-line jest/expect-expect
+  test.each([
+    [
+      'bakeFileTagsLabels01',
       'event_push_dev.env',
       {
         images: ['user/app'],
@@ -3764,254 +4115,6 @@ describe('bake', () => {
           }
         }
       }
-    ],
-    [
-      'bake02',
-      'event_push_dev.env',
-      {
-        images: ['user/app'],
-        tags: [
-          `type=ref,event=branch`,
-          `type=raw,my`
-        ]
-      } as Inputs,
-      {
-        "target": {
-          "docker-metadata-action": {
-            "tags": [
-              "user/app:dev",
-              "user/app:my",
-            ],
-            "labels": {
-              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.description": "This your first repo!",
-              "org.opencontainers.image.licenses": "MIT",
-              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
-              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.title": "Hello-World",
-              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.version": "dev"
-            },
-            "args": {
-              "DOCKER_META_IMAGES": "user/app",
-              "DOCKER_META_VERSION": "dev",
-            }
-          }
-        }
-      }
-    ],
-    [
-      'bake03',
-      'event_tag_release1.env',
-      {
-        images: ['user/app'],
-        tags: [
-          `type=ref,event=tag`,
-          `type=raw,my`,
-          `type=raw,custom`,
-          `type=raw,tags`
-        ],
-        bakeTarget: "meta"
-      } as Inputs,
-      {
-        "target": {
-          "meta": {
-            "tags": [
-              "user/app:release1",
-              "user/app:my",
-              "user/app:custom",
-              "user/app:tags",
-              "user/app:latest"
-            ],
-            "labels": {
-              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.description": "This your first repo!",
-              "org.opencontainers.image.licenses": "MIT",
-              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
-              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.title": "Hello-World",
-              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.version": "release1"
-            },
-            "args": {
-              "DOCKER_META_IMAGES": "user/app",
-              "DOCKER_META_VERSION": "release1",
-            }
-          }
-        }
-      }
-    ],
-    [
-      'bake04',
-      'event_tag_20200110-RC2.env',
-      {
-        images: ['user/app'],
-        tags: [
-          `type=match,pattern=\\d{8}`,
-          `type=raw,my`,
-          `type=raw,custom`,
-          `type=raw,tags`
-        ],
-        flavor: [
-          `latest=false`
-        ]
-      } as Inputs,
-      {
-        "target": {
-          "docker-metadata-action": {
-            "tags": [
-              "user/app:20200110",
-              "user/app:my",
-              "user/app:custom",
-              "user/app:tags"
-            ],
-            "labels": {
-              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.description": "This your first repo!",
-              "org.opencontainers.image.licenses": "MIT",
-              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
-              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.title": "Hello-World",
-              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.version": "20200110"
-            },
-            "args": {
-              "DOCKER_META_IMAGES": "user/app",
-              "DOCKER_META_VERSION": "20200110",
-            }
-          }
-        }
-      }
-    ],
-    [
-      'bake05',
-      'event_tag_v1.1.1.env',
-      {
-        images: ['org/app', 'ghcr.io/user/app'],
-        tags: [
-          `type=semver,pattern={{version}}`,
-          `type=semver,pattern={{major}}.{{minor}}`,
-          `type=semver,pattern={{major}}`,
-          `type=raw,my`,
-          `type=raw,custom`,
-          `type=raw,tags`
-        ]
-      } as Inputs,
-      {
-        "target": {
-          "docker-metadata-action": {
-            "tags": [
-              "org/app:1.1.1",
-              "org/app:1.1",
-              "org/app:1",
-              "org/app:my",
-              "org/app:custom",
-              "org/app:tags",
-              "org/app:latest",
-              "ghcr.io/user/app:1.1.1",
-              "ghcr.io/user/app:1.1",
-              "ghcr.io/user/app:1",
-              "ghcr.io/user/app:my",
-              "ghcr.io/user/app:custom",
-              "ghcr.io/user/app:tags",
-              "ghcr.io/user/app:latest"
-            ],
-            "labels": {
-              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.description": "This your first repo!",
-              "org.opencontainers.image.licenses": "MIT",
-              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
-              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.title": "Hello-World",
-              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.version": "1.1.1"
-            },
-            "args": {
-              "DOCKER_META_IMAGES": "org/app,ghcr.io/user/app",
-              "DOCKER_META_VERSION": "1.1.1",
-            }
-          }
-        }
-      }
-    ],
-    [
-      'bake06',
-      'event_tag_v1.1.1.env',
-      {
-        images: ['org/app', 'ghcr.io/user/app'],
-        tags: [
-          `type=raw,my`,
-          `type=raw,custom`,
-          `type=raw,tags`
-        ]
-      } as Inputs,
-      {
-        "target": {
-          "docker-metadata-action": {
-            "tags": [
-              "org/app:my",
-              "org/app:custom",
-              "org/app:tags",
-              "ghcr.io/user/app:my",
-              "ghcr.io/user/app:custom",
-              "ghcr.io/user/app:tags"
-            ],
-            "labels": {
-              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.description": "This your first repo!",
-              "org.opencontainers.image.licenses": "MIT",
-              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
-              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.title": "Hello-World",
-              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.version": "my"
-            },
-            "args": {
-              "DOCKER_META_IMAGES": "org/app,ghcr.io/user/app",
-              "DOCKER_META_VERSION": "my",
-            }
-          }
-        }
-      }
-    ],
-    [
-      'bake07',
-      'event_tag_v1.1.1.env',
-      {
-        images: ['org/app'],
-        labels: [
-          "maintainer=CrazyMax",
-          "org.opencontainers.image.title=MyCustom=Title",
-          "org.opencontainers.image.description=Another description",
-          "org.opencontainers.image.vendor=MyCompany",
-        ],
-      } as Inputs,
-      {
-        "target": {
-          "docker-metadata-action": {
-            "tags": [
-              "org/app:v1.1.1",
-              "org/app:latest"
-            ],
-            "labels": {
-              "maintainer": "CrazyMax",
-              "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
-              "org.opencontainers.image.description": "Another description",
-              "org.opencontainers.image.licenses": "MIT",
-              "org.opencontainers.image.revision": "860c1904a1ce19322e91ac35af1ab07466440c37",
-              "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.title": "MyCustom=Title",
-              "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.vendor": "MyCompany",
-              "org.opencontainers.image.version": "v1.1.1"
-            },
-            "args": {
-              "DOCKER_META_IMAGES": "org/app",
-              "DOCKER_META_VERSION": "v1.1.1",
-            }
-          }
-        }
-      }
     ]
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
@@ -4020,7 +4123,7 @@ describe('bake', () => {
     const repo = await toolkit.github.repoData();
     const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
 
-    const bakeFile = meta.getBakeFile();
+    const bakeFile = meta.getBakeFileTagsLabels();
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
   });
 });

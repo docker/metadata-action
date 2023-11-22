@@ -81,11 +81,16 @@ actionsToolkit.run(
       setOutput('json', JSON.stringify(jsonOutput));
     });
 
-    // Bake file definition
-    const bakeFile: string = meta.getBakeFile();
-    await core.group(`Bake file definition`, async () => {
-      core.info(fs.readFileSync(bakeFile, 'utf8'));
-      setOutput('bake-file', bakeFile);
-    });
+    // Bake files
+    for (const kind of ['tags', 'labels']) {
+      const bakeFile: string = meta.getBakeFile(kind);
+      await core.group(`Bake file definition (${kind})`, async () => {
+        core.info(fs.readFileSync(bakeFile, 'utf8'));
+        setOutput(`bake-file-${kind}`, bakeFile);
+      });
+    }
+
+    // Bake file with tags and labels
+    setOutput(`bake-file`, meta.getBakeFileTagsLabels());
   }
 );

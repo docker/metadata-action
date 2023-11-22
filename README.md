@@ -230,8 +230,8 @@ jobs:
           targets: build
 ```
 
-Content of `${{ steps.meta.outputs.bake-file }}` file will look like this with
-`refs/tags/v1.2.3` ref:
+Content of `${{ steps.meta.outputs.bake-file }}` file, combining tags and
+labels, will look like this with `refs/tags/v1.2.3` ref:
 
 ```json
 {
@@ -262,6 +262,22 @@ Content of `${{ steps.meta.outputs.bake-file }}` file will look like this with
 }
 ```
 
+You can also use the `bake-file-tags` and `bake-file-labels` outputs if you
+just want to use tags and/or labels respectively. The following example is
+similar to the previous one:
+
+```yaml
+      -
+        name: Build
+        uses: docker/bake-action@v3
+        with:
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.meta.outputs.bake-file-tags }}
+            ${{ steps.meta.outputs.bake-file-labels }}
+          targets: build
+```
+
 ## Customizing
 
 ### inputs
@@ -276,28 +292,29 @@ The following inputs can be used as `step.with` keys:
 >   org.opencontainers.image.vendor=MyCompany
 > ```
 
-| Name                | Type   | Description                                                                   |
-|---------------------|--------|-------------------------------------------------------------------------------|
-| `context`           | String | Where to get context data. Allowed options are: `workflow` (default), `git`.  |
-| `images`            | List   | List of Docker images to use as base name for tags                            |
-| `tags`              | List   | List of [tags](#tags-input) as key-value pair attributes                      |
-| `flavor`            | List   | [Flavor](#flavor-input) to apply                                              |
-| `labels`            | List   | List of custom labels                                                         |
-| `sep-tags`          | String | Separator to use for tags output (default `\n`)                               |
-| `sep-labels`        | String | Separator to use for labels output (default `\n`)                             |
-| `bake-target`       | String | Bake target name (default `docker-metadata-action`)                           |
+| Name          | Type   | Description                                                                   |
+|---------------|--------|-------------------------------------------------------------------------------|
+| `context`     | String | Where to get context data. Allowed options are: `workflow` (default), `git`.  |
+| `images`      | List   | List of Docker images to use as base name for tags                            |
+| `tags`        | List   | List of [tags](#tags-input) as key-value pair attributes                      |
+| `flavor`      | List   | [Flavor](#flavor-input) to apply                                              |
+| `labels`      | List   | List of custom labels                                                         |
+| `sep-tags`    | String | Separator to use for tags output (default `\n`)                               |
+| `sep-labels`  | String | Separator to use for labels output (default `\n`)                             |
+| `bake-target` | String | Bake target name (default `docker-metadata-action`)                           |
 
 ### outputs
 
 The following outputs are available:
 
-| Name        | Type   | Description                                                                |
-|-------------|--------|----------------------------------------------------------------------------|
-| `version`   | String | Docker image version                                                       |
-| `tags`      | String | Docker tags                                                                |
-| `labels`    | String | Docker labels                                                              |
-| `json`      | String | JSON output of tags and labels                                             |
-| `bake-file` | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path |
+| Name               | Type   | Description                                                                                     |
+|--------------------|--------|-------------------------------------------------------------------------------------------------|
+| `version`          | String | Docker image version                                                                            |
+| `tags`             | String | Docker tags                                                                                     |
+| `labels`           | String | Docker labels                                                                                   |
+| `json`             | String | JSON output of tags and labels                                                                  |
+| `bake-file-tags`   | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with tags            |
+| `bake-file-labels` | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with labels          |
 
 Alternatively, each output is also exported as an environment variable:
 
@@ -305,7 +322,8 @@ Alternatively, each output is also exported as an environment variable:
 * `DOCKER_METADATA_OUTPUT_TAGS`
 * `DOCKER_METADATA_OUTPUT_LABELS`
 * `DOCKER_METADATA_OUTPUT_JSON`
-* `DOCKER_METADATA_OUTPUT_BAKE_FILE`
+* `DOCKER_METADATA_OUTPUT_BAKE_FILE_TAGS`
+* `DOCKER_METADATA_OUTPUT_BAKE_FILE_LABELS`
 
 So it can be used with our [Docker Build Push action](https://github.com/docker/build-push-action/):
 

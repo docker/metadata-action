@@ -494,7 +494,33 @@ export class Meta {
     };
   }
 
-  public getBakeFile(): string {
+  public getBakeFile(kind: string): string {
+    switch (kind) {
+      case 'tags':
+        return this.generateBakeFile(kind, {
+          tags: this.getTags(),
+          args: {
+            DOCKER_META_IMAGES: this.getImageNames().join(','),
+            DOCKER_META_VERSION: this.version.main
+          }
+        });
+      case 'labels':
+        return this.generateBakeFile(kind, {
+          labels: this.getLabels().reduce((res, label) => {
+            const matches = label.match(/([^=]*)=(.*)/);
+            if (!matches) {
+              return res;
+            }
+            res[matches[1]] = matches[2];
+            return res;
+          }, {})
+        });
+      default:
+        throw new Error(`Unknown bake file type: ${kind}`);
+    }
+  }
+
+  public getBakeFileTagsLabels(): string {
     const bakeFile = path.join(ToolkitContext.tmpDir(), 'docker-metadata-action-bake.json');
     fs.writeFileSync(
       bakeFile,
@@ -522,7 +548,12 @@ export class Meta {
         2
       )
     );
+    return bakeFile;
+  }
 
+  private generateBakeFile(name: string, dt): string {
+    const bakeFile = path.join(ToolkitContext.tmpDir(), `docker-metadata-action-bake-${name}.json`);
+    fs.writeFileSync(bakeFile, JSON.stringify({target: {[this.inputs.bakeTarget]: dt}}, null, 2));
     return bakeFile;
   }
 
