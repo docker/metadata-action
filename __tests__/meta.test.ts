@@ -3503,7 +3503,18 @@ describe('json', () => {
           "org.opencontainers.image.title": "Hello-World",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "dev"
-        }
+        },
+        "annotations": [
+          "manifest:foo=",
+          "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description=This your first repo!",
+          "manifest:org.opencontainers.image.licenses=MIT",
+          "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title=Hello-World",
+          "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.version=dev"
+        ]
       }
     ],
     [
@@ -3530,7 +3541,17 @@ describe('json', () => {
           "org.opencontainers.image.title": "Hello-World",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "dev"
-        }
+        },
+        "annotations": [
+          "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description=This your first repo!",
+          "manifest:org.opencontainers.image.licenses=MIT",
+          "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title=Hello-World",
+          "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.version=dev"
+        ]
       }
     ],
     [
@@ -3563,7 +3584,17 @@ describe('json', () => {
           "org.opencontainers.image.title": "Hello-World",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "release1"
-        }
+        },
+        "annotations": [
+          "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description=This your first repo!",
+          "manifest:org.opencontainers.image.licenses=MIT",
+          "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title=Hello-World",
+          "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.version=release1"
+        ]
       }
     ],
     [
@@ -3597,7 +3628,17 @@ describe('json', () => {
           "org.opencontainers.image.title": "Hello-World",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "20200110"
-        }
+        },
+        "annotations": [
+          "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description=This your first repo!",
+          "manifest:org.opencontainers.image.licenses=MIT",
+          "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title=Hello-World",
+          "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.version=20200110"
+        ]
       }
     ],
     [
@@ -3640,7 +3681,17 @@ describe('json', () => {
           "org.opencontainers.image.title": "Hello-World",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "1.1.1"
-        }
+        },
+        "annotations": [
+          "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description=This your first repo!",
+          "manifest:org.opencontainers.image.licenses=MIT",
+          "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title=Hello-World",
+          "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.version=1.1.1"
+        ]
       }
     ],
     [
@@ -3672,7 +3723,17 @@ describe('json', () => {
           "org.opencontainers.image.title": "Hello-World",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.version": "my"
-        }
+        },
+        "annotations": [
+          "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description=This your first repo!",
+          "manifest:org.opencontainers.image.licenses=MIT",
+          "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title=Hello-World",
+          "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.version=my"
+        ]
       }
     ],
     [
@@ -3704,7 +3765,19 @@ describe('json', () => {
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.vendor": "MyCompany",
           "org.opencontainers.image.version": "v1.1.1"
-        }
+        },
+        "annotations": [
+          "manifest:maintainer=CrazyMax",
+          "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+          "manifest:org.opencontainers.image.description=Another description",
+          "manifest:org.opencontainers.image.licenses=MIT",
+          "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+          "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.title=MyCustom=Title",
+          "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+          "manifest:org.opencontainers.image.vendor=MyCompany",
+          "manifest:org.opencontainers.image.version=v1.1.1"
+        ]
       }
     ]
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: unknown) => {
@@ -3714,7 +3787,7 @@ describe('json', () => {
     const repo = await toolkit.github.repoData();
     const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
 
-    const jsonOutput = meta.getJSON();
+    const jsonOutput = meta.getJSON(['manifest']);
     expect(jsonOutput).toEqual(exJSON);
   });
 });
@@ -3769,6 +3842,30 @@ describe('bakeFile', () => {
             }
           }
         }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "annotations": [
+              "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description=This your first repo!",
+              "index:org.opencontainers.image.licenses=MIT",
+              "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title=Hello-World",
+              "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.version=dev",
+              "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
+              "manifest-descriptor:org.opencontainers.image.licenses=MIT",
+              "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.title=Hello-World",
+              "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.version=dev"
+            ]
+          }
+        }
       }
     ],
     [
@@ -3808,6 +3905,30 @@ describe('bakeFile', () => {
               "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "dev"
             }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "annotations": [
+              "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description=This your first repo!",
+              "index:org.opencontainers.image.licenses=MIT",
+              "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title=Hello-World",
+              "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.version=dev",
+              "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
+              "manifest-descriptor:org.opencontainers.image.licenses=MIT",
+              "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.title=Hello-World",
+              "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.version=dev"
+            ]
           }
         }
       }
@@ -3857,6 +3978,30 @@ describe('bakeFile', () => {
             }
           }
         }
+      },
+      {
+        "target": {
+          "meta": {
+            "annotations": [
+              "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description=This your first repo!",
+              "index:org.opencontainers.image.licenses=MIT",
+              "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title=Hello-World",
+              "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.version=release1",
+              "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
+              "manifest-descriptor:org.opencontainers.image.licenses=MIT",
+              "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.title=Hello-World",
+              "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.version=release1"
+            ]
+          }
+        }
       }
     ],
     [
@@ -3903,6 +4048,30 @@ describe('bakeFile', () => {
               "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "20200110"
             }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "annotations": [
+              "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description=This your first repo!",
+              "index:org.opencontainers.image.licenses=MIT",
+              "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title=Hello-World",
+              "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.version=20200110",
+              "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
+              "manifest-descriptor:org.opencontainers.image.licenses=MIT",
+              "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.title=Hello-World",
+              "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.version=20200110"
+            ]
           }
         }
       }
@@ -3962,6 +4131,30 @@ describe('bakeFile', () => {
             }
           }
         }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "annotations": [
+              "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description=This your first repo!",
+              "index:org.opencontainers.image.licenses=MIT",
+              "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title=Hello-World",
+              "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.version=1.1.1",
+              "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
+              "manifest-descriptor:org.opencontainers.image.licenses=MIT",
+              "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.title=Hello-World",
+              "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.version=1.1.1"
+            ]
+          }
+        }
       }
     ],
     [
@@ -4006,6 +4199,30 @@ describe('bakeFile', () => {
               "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.version": "my"
             }
+          }
+        }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "annotations": [
+              "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description=This your first repo!",
+              "index:org.opencontainers.image.licenses=MIT",
+              "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title=Hello-World",
+              "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.version=my",
+              "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
+              "manifest-descriptor:org.opencontainers.image.licenses=MIT",
+              "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.title=Hello-World",
+              "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.version=my"
+            ]
           }
         }
       }
@@ -4053,9 +4270,37 @@ describe('bakeFile', () => {
             }
           }
         }
+      },
+      {
+        "target": {
+          "docker-metadata-action": {
+            "annotations": [
+              "index:maintainer=CrazyMax",
+              "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "index:org.opencontainers.image.description=Another description",
+              "index:org.opencontainers.image.licenses=MIT",
+              "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.title=MyCustom=Title",
+              "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "index:org.opencontainers.image.vendor=MyCompany",
+              "index:org.opencontainers.image.version=v1.1.1",
+              "manifest-descriptor:maintainer=CrazyMax",
+              "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+              "manifest-descriptor:org.opencontainers.image.description=Another description",
+              "manifest-descriptor:org.opencontainers.image.licenses=MIT",
+              "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+              "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.title=MyCustom=Title",
+              "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+              "manifest-descriptor:org.opencontainers.image.vendor=MyCompany",
+              "manifest-descriptor:org.opencontainers.image.version=v1.1.1"
+            ]
+          }
+        }
       }
     ]
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeTags: unknown, exBakeLabels: unknown) => {
+  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeTags: unknown, exBakeLabels: unknown, exBakeAnnotations: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
 
     const toolkit = new Toolkit();
@@ -4067,6 +4312,9 @@ describe('bakeFile', () => {
 
     const bakeFileLabels = meta.getBakeFile('labels');
     expect(JSON.parse(fs.readFileSync(bakeFileLabels, 'utf8'))).toEqual(exBakeLabels);
+
+    const bakeFileAnnotations = meta.getBakeFile('annotations:index,manifest-descriptor');
+    expect(JSON.parse(fs.readFileSync(bakeFileAnnotations, 'utf8'))).toEqual(exBakeAnnotations);
   });
 });
 

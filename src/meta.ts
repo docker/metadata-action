@@ -480,7 +480,11 @@ export class Meta {
       .map(([key, value]) => `${key}=${value}`);
   }
 
-  public getJSON(): unknown {
+  public getJSON(alevels: string[]): unknown {
+    const annotations: Array<string> = [];
+    for (const level of alevels) {
+      annotations.push(...this.getLabels().map(label => `${level}:${label}`));
+    }
     return {
       tags: this.getTags(),
       labels: this.getLabels().reduce((res, label) => {
@@ -490,34 +494,42 @@ export class Meta {
         }
         res[matches[1]] = matches[2];
         return res;
-      }, {})
+      }, {}),
+      annotations: annotations
     };
   }
 
   public getBakeFile(kind: string): string {
-    switch (kind) {
-      case 'tags':
-        return this.generateBakeFile(kind, {
-          tags: this.getTags(),
-          args: {
-            DOCKER_META_IMAGES: this.getImageNames().join(','),
-            DOCKER_META_VERSION: this.version.main
-          }
-        });
-      case 'labels':
-        return this.generateBakeFile(kind, {
-          labels: this.getLabels().reduce((res, label) => {
-            const matches = label.match(/([^=]*)=(.*)/);
-            if (!matches) {
-              return res;
-            }
-            res[matches[1]] = matches[2];
+    if (kind == 'tags') {
+      return this.generateBakeFile(kind, {
+        tags: this.getTags(),
+        args: {
+          DOCKER_META_IMAGES: this.getImageNames().join(','),
+          DOCKER_META_VERSION: this.version.main
+        }
+      });
+    } else if (kind == 'labels') {
+      return this.generateBakeFile(kind, {
+        labels: this.getLabels().reduce((res, label) => {
+          const matches = label.match(/([^=]*)=(.*)/);
+          if (!matches) {
             return res;
-          }, {})
-        });
-      default:
-        throw new Error(`Unknown bake file type: ${kind}`);
+          }
+          res[matches[1]] = matches[2];
+          return res;
+        }, {})
+      });
+    } else if (kind.startsWith('annotations:')) {
+      const name = kind.split(':')[0];
+      const annotations: Array<string> = [];
+      for (const level of kind.split(':')[1].split(',')) {
+        annotations.push(...this.getLabels().map(label => `${level}:${label}`));
+      }
+      return this.generateBakeFile(name, {
+        annotations: annotations
+      });
     }
+    throw new Error(`Unknown bake file type: ${kind}`);
   }
 
   public getBakeFileTagsLabels(): string {
