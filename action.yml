@@ -44,10 +44,14 @@ outputs:
     description: 'Generated Docker tags'
   labels:
     description: 'Generated Docker labels'
-  bake-file:
-    description: 'Bake definiton file'
   json:
     description: 'JSON output of tags and labels'
+  bake-file-tags:
+    description: 'Bake definition file with tags'
+  bake-file-labels:
+    description: 'Bake definition file with labels'
+  bake-file:
+    description: 'Bake definition file with tags and labels'
 
 runs:
   using: 'node20'

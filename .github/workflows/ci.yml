@@ -323,7 +323,8 @@ jobs:
         with:
           files: |
             ./test/docker-bake.hcl
-            ${{ steps.docker_meta.outputs.bake-file }}
+            ${{ steps.docker_meta.outputs.bake-file-tags }}
+            ${{ steps.docker_meta.outputs.bake-file-labels }}
           targets: |
             release
 
