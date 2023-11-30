@@ -74,19 +74,38 @@ actionsToolkit.run(
       setOutput('labels', labels.join(inputs.sepLabels));
     });
 
+    // Annotations
+    const alevels = process.env.DOCKER_METADATA_ANNOTATIONS_LEVELS || 'manifest';
+    if (labels.length > 0) {
+      await core.group(`Annotations`, async () => {
+        const annotations: Array<string> = [];
+        for (const level of alevels.split(',')) {
+          annotations.push(
+            ...labels.map(label => {
+              const v = `${level}:${label}`;
+              core.info(v);
+              return v;
+            })
+          );
+        }
+        setOutput(`annotations`, annotations.join(inputs.sepLabels));
+      });
+    }
+
     // JSON
-    const jsonOutput = meta.getJSON();
+    const jsonOutput = meta.getJSON(alevels.split(','));
     await core.group(`JSON output`, async () => {
       core.info(JSON.stringify(jsonOutput, null, 2));
       setOutput('json', JSON.stringify(jsonOutput));
     });
 
     // Bake files
-    for (const kind of ['tags', 'labels']) {
+    for (const kind of ['tags', 'labels', 'annotations:' + alevels]) {
+      const outputName = kind.split(':')[0];
       const bakeFile: string = meta.getBakeFile(kind);
-      await core.group(`Bake file definition (${kind})`, async () => {
+      await core.group(`Bake file definition (${outputName})`, async () => {
         core.info(fs.readFileSync(bakeFile, 'utf8'));
-        setOutput(`bake-file-${kind}`, bakeFile);
+        setOutput(`bake-file-${outputName}`, bakeFile);
       });
     }
 

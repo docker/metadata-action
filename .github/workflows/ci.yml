@@ -383,3 +383,47 @@ jobs:
             DOCKER_METADATA_OUTPUT_TAGS
             DOCKER_METADATA_OUTPUT_LABELS
             DOCKER_METADATA_OUTPUT_JSON
+
+  bake-annotations:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Docker meta
+        id: docker_meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: v0.12.0-rc1
+      -
+        name: Build
+        uses: docker/bake-action@v4
+        with:
+          files: |
+            ./test/docker-bake.hcl
+            ${{ steps.docker_meta.outputs.bake-file-tags }}
+            ${{ steps.docker_meta.outputs.bake-file-annotations }}
+          targets: |
+            release

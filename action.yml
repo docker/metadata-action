@@ -44,12 +44,16 @@ outputs:
     description: 'Generated Docker tags'
   labels:
     description: 'Generated Docker labels'
+  annotations:
+    description: 'Generated annotations'
   json:
     description: 'JSON output of tags and labels'
   bake-file-tags:
     description: 'Bake definition file with tags'
   bake-file-labels:
     description: 'Bake definition file with labels'
+  bake-file-annotations:
+    description: 'Bake definiton file with annotations'
   bake-file:
     description: 'Bake definition file with tags and labels'
 

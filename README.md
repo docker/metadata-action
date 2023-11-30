@@ -48,6 +48,7 @@ ___
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
   * [Overwrite labels](#overwrite-labels)
+  * [Annotations](#annotations)
 * [Contributing](#contributing)
 
 ## Usage
@@ -307,23 +308,27 @@ The following inputs can be used as `step.with` keys:
 
 The following outputs are available:
 
-| Name               | Type   | Description                                                                                     |
-|--------------------|--------|-------------------------------------------------------------------------------------------------|
-| `version`          | String | Docker image version                                                                            |
-| `tags`             | String | Docker tags                                                                                     |
-| `labels`           | String | Docker labels                                                                                   |
-| `json`             | String | JSON output of tags and labels                                                                  |
-| `bake-file-tags`   | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with tags            |
-| `bake-file-labels` | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with labels          |
+| Name                    | Type   | Description                                                                                                                                                     |
+|-------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `version`               | String | Docker image version                                                                                                                                            |
+| `tags`                  | String | Docker tags                                                                                                                                                     |
+| `labels`                | String | Docker labels                                                                                                                                                   |
+| `annotations`           | String | [Annotations](https://github.com/moby/buildkit/blob/master/docs/annotations.md)                                                                                 |
+| `json`                  | String | JSON output of tags and labels                                                                                                                                  |
+| `bake-file-tags`        | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with tags                                                                            |
+| `bake-file-labels`      | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with labels                                                                          |
+| `bake-file-annotations` | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with [annotations](https://github.com/moby/buildkit/blob/master/docs/annotations.md) |
 
 Alternatively, each output is also exported as an environment variable:
 
 * `DOCKER_METADATA_OUTPUT_VERSION`
 * `DOCKER_METADATA_OUTPUT_TAGS`
 * `DOCKER_METADATA_OUTPUT_LABELS`
+* `DOCKER_METADATA_OUTPUT_ANNOTATIONS`
 * `DOCKER_METADATA_OUTPUT_JSON`
 * `DOCKER_METADATA_OUTPUT_BAKE_FILE_TAGS`
 * `DOCKER_METADATA_OUTPUT_BAKE_FILE_LABELS`
+* `DOCKER_METADATA_OUTPUT_BAKE_FILE_ANNOTATIONS`
 
 So it can be used with our [Docker Build Push action](https://github.com/docker/build-push-action/):
 
@@ -336,9 +341,10 @@ So it can be used with our [Docker Build Push action](https://github.com/docker/
 
 ### environment variables
 
-| Name                          | Type | Description                                                                                                |
-|-------------------------------|------|------------------------------------------------------------------------------------------------------------|
-| `DOCKER_METADATA_PR_HEAD_SHA` | Bool | If `true`, set associated head SHA instead of commit SHA that triggered the workflow on pull request event |
+| Name                                 | Type   | Description                                                                                                |
+|--------------------------------------|--------|------------------------------------------------------------------------------------------------------------|
+| `DOCKER_METADATA_PR_HEAD_SHA`        | Bool   | If `true`, set associated head SHA instead of commit SHA that triggered the workflow on pull request event |
+| `DOCKER_METADATA_ANNOTATIONS_LEVELS` | String | Comma separated list of annotations levels to set for annotations output separated (default `manifest`)    |
 
 ## `context` input
 
@@ -903,6 +909,70 @@ labels generated are not suitable, you can overwrite them like this:
             org.opencontainers.image.description=Another description
             org.opencontainers.image.vendor=MyCompany
 ```
+
+### Annotations
+
+Since Buildx 0.12, it is possible to set annotations to your image through the
+`--annotation` flag.
+
+With the [`build-push-action`](https://github.com/docker/build-push-action/),
+you can set the `annotations` input with the value of the `annotations` output
+of the `metadata-action`:
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+```
+
+The same can be done with the [`bake-action`](https://github.com/docker/bake-action/):
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+      -
+        name: Build
+        uses: docker/bake-action@v3
+        with:
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.meta.outputs.bake-file-tags }}
+            ${{ steps.meta.outputs.bake-file-annotations }}
+          targets: build
+```
+
+If you want to set specific level(s) for your annotations, you can use the
+[`DOCKER_METADATA_ANNOTATIONS_LEVELS` environment variable](#environment-variables)
+with a comma separated list of levels (defaults to `manifest`):
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+```
+
+More information about annotations in the [BuildKit documentation](https://github.com/moby/buildkit/blob/master/docs/annotations.md).
 
 ## Contributing
 
