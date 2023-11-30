@@ -427,3 +427,23 @@ jobs:
             ${{ steps.docker_meta.outputs.bake-file-annotations }}
           targets: |
             release
+
+  no-images:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha
+      -
+        name: Print envs
+        run: env|sort

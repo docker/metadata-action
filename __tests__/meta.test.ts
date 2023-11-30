@@ -733,6 +733,50 @@ describe('push', () => {
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-860c1904a1ce19322e91ac35af1ab07466440c37"
       ]
+    ],
+    [
+      'push21',
+      'event_push_master.env',
+      {
+        images: [] as string[],
+        tags: [
+          `type=raw,value=mytag-{{branch}}`,
+          `type=raw,value=mytag-{{date 'YYYYMMDD'}}`,
+          `type=raw,value=mytag-{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`,
+          `type=raw,value=mytag-tag-{{tag}}`,
+          `type=raw,value=mytag-baseref-{{base_ref}}`,
+          `type=raw,value=mytag-defbranch,enable={{is_default_branch}}`
+        ],
+      } as Inputs,
+      {
+        main: 'mytag-master',
+        partial: [
+          'mytag-20200110',
+          'mytag-20200110-093000',
+          'mytag-tag-',
+          'mytag-baseref-',
+          'mytag-defbranch'
+        ],
+        latest: false
+      } as Version,
+      [
+        'mytag-master',
+        'mytag-20200110',
+        'mytag-20200110-093000',
+        'mytag-tag-',
+        'mytag-baseref-',
+        'mytag-defbranch'
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=mytag-master"
+      ]
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -1780,6 +1824,43 @@ describe('tag', () => {
         "org.opencontainers.image.version=v1.2.3rc2"
       ]
     ],
+    [
+      'tag33',
+      'event_tag_v1.1.1.env',
+      {
+        images: [] as string[],
+        tags: [
+          `type=pep440,pattern={{version}}`,
+          `type=pep440,pattern={{major}}.{{minor}}.{{patch}}`,
+          `type=pep440,pattern={{major}}.{{minor}}`,
+          `type=pep440,pattern={{major}}`
+        ]
+      } as Inputs,
+      {
+        main: '1.1.1',
+        partial: [
+          "1.1",
+          "1"
+        ],
+        latest: true
+      } as Version,
+      [
+        '1.1.1',
+        '1.1',
+        '1',
+        'latest'
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=1.1.1"
+      ]
+    ]
   ])('given %p with %p event', tagsLabelsTest);
 });
 
@@ -2066,6 +2147,35 @@ describe('latest', () => {
         "org.opencontainers.image.version=v1.1.1"
       ]
     ],
+    [
+      'latest10',
+      'event_tag_v2.0.8-beta.67.env',
+      {
+        images: [] as string[],
+        tags: [
+          `type=match,"pattern=\\d.\\d.\\d"`
+        ]
+      } as Inputs,
+      {
+        main: '2.0.8',
+        partial: [],
+        latest: true
+      } as Version,
+      [
+        '2.0.8',
+        'latest',
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=2.0.8"
+      ]
+    ]
   ])('given %p with %p event', tagsLabelsTest);
 });
 

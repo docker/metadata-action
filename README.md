@@ -383,6 +383,8 @@ images: |
 * `name=<string>` image base name
 * `enable=<true|false>` enable this entry (default `true`)
 
+If `images` is empty, tags will be generated without base name.
+
 ## `flavor` input
 
 `flavor` defines a global behavior for [`tags`](#tags-input):
