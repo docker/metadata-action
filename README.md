@@ -954,9 +954,17 @@ The same can be done with the [`bake-action`](https://github.com/docker/bake-act
           targets: build
 ```
 
-If you want to set specific level(s) for your annotations, you can use the
+Note that annotations can be attached at many different levels within a manifest.
+By default, the generated annotations will be attached to image manifests,
+but different registries may expect annotations at different places;
+a common practice is to read annotations at _image indexes_ if present,
+which are often used by multi-arch builds to index platform-specific images.
+If you want to specify level(s) for your annotations, you can use the
 [`DOCKER_METADATA_ANNOTATIONS_LEVELS` environment variable](#environment-variables)
-with a comma separated list of levels (defaults to `manifest`):
+with a comma separated list of all levels the annotations should be attached to (defaults to `manifest`).
+The following configuration demonstrates the ability to attach annotations to both image manifests and image indexes,
+though your registry may only need annotations at the index level. (That is, `index` alone may be enough.)
+Please consult the documentation of your registry.
 
 ```yaml
       -
