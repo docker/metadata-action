@@ -23,11 +23,17 @@ inputs:
   labels:
     description: 'List of custom labels'
     required: false
+  annotations:
+    description: 'List of custom annotations'
+    required: false
   sep-tags:
     description: 'Separator to use for tags output (default \n)'
     required: false
   sep-labels:
     description: 'Separator to use for labels output (default \n)'
+    required: false
+  sep-annotations:
+    description: 'Separator to use for annotations output (default \n)'
     required: false
   bake-target:
     description: 'Bake target name (default docker-metadata-action)'

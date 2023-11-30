@@ -39,8 +39,10 @@ describe('getInputs', () => {
         githubToken: '',
         images: ['moby/buildkit', 'ghcr.io/moby/mbuildkit'],
         labels: [],
+        annotations: [],
         sepLabels: '\n',
         sepTags: '\n',
+        sepAnnotations: '\n',
         tags: [],
       } as Inputs
     ],
@@ -51,6 +53,7 @@ describe('getInputs', () => {
         ['images', 'moby/buildkit'],
         ['sep-labels', ','],
         ['sep-tags', ','],
+        ['sep-annotations', ',']
       ]),
       {
         context: ContextSource.workflow,
@@ -59,8 +62,10 @@ describe('getInputs', () => {
         githubToken: '',
         images: ['moby/buildkit'],
         labels: [],
+        annotations: [],
         sepLabels: ',',
         sepTags: ',',
+        sepAnnotations: ',',
         tags: [],
       } as Inputs
     ],
@@ -76,8 +81,10 @@ describe('getInputs', () => {
         githubToken: '',
         images: ['moby/buildkit', 'ghcr.io/moby/mbuildkit'],
         labels: [],
+        annotations: [],
         sepLabels: '\n',
         sepTags: '\n',
+        sepAnnotations: '\n',
         tags: [],
       } as Inputs
     ],

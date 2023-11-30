@@ -10,8 +10,10 @@ export interface Inputs {
   tags: string[];
   flavor: string[];
   labels: string[];
+  annotations: string[];
   sepTags: string;
   sepLabels: string;
+  sepAnnotations: string;
   bakeTarget: string;
   githubToken: string;
 }
@@ -23,8 +25,10 @@ export function getInputs(): Inputs {
     tags: Util.getInputList('tags', {ignoreComma: true, comment: '#'}),
     flavor: Util.getInputList('flavor', {ignoreComma: true, comment: '#'}),
     labels: Util.getInputList('labels', {ignoreComma: true, comment: '#'}),
+    annotations: Util.getInputList('annotations', {ignoreComma: true, comment: '#'}),
     sepTags: core.getInput('sep-tags', {trimWhitespace: false}) || `\n`,
     sepLabels: core.getInput('sep-labels', {trimWhitespace: false}) || `\n`,
+    sepAnnotations: core.getInput('sep-annotations', {trimWhitespace: false}) || `\n`,
     bakeTarget: core.getInput('bake-target') || `docker-metadata-action`,
     githubToken: core.getInput('github-token')
   };
