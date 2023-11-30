@@ -440,29 +440,29 @@ export class Meta {
     if (!this.version.main) {
       return [];
     }
-    const tags: Array<string> = [];
-    const images = this.getImageNames();
-    if (Array.isArray(images) && images.length) {
-      for (const imageName of images) {
-        tags.push(`${imageName}:${this.version.main}`);
-        for (const partial of this.version.partial) {
-          tags.push(`${imageName}:${partial}`);
-        }
-        if (this.version.latest) {
-          const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
-          tags.push(`${imageName}:${Meta.sanitizeTag(latestTag)}`);
-        }
-      }
-    }
-    else {
-      tags.push(this.version.main);
+
+    const generateTags = (imageName: string, version: string): Array<string> => {
+      const tags: Array<string> = [];
+      const prefix = imageName !== '' ? `${imageName}:` : '';
+      tags.push(`${prefix}${version}`);
       for (const partial of this.version.partial) {
-        tags.push(partial);
+        tags.push(`${prefix}${partial}`);
       }
       if (this.version.latest) {
         const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
-        tags.push(Meta.sanitizeTag(latestTag));
+        tags.push(`${prefix}${Meta.sanitizeTag(latestTag)}`);
       }
+      return tags;
+    };
+
+    const tags: Array<string> = [];
+    const images = this.getImageNames();
+    if (images.length > 0) {
+      for (const imageName of images) {
+        tags.push(...generateTags(imageName, this.version.main));
+      }
+    } else {
+      tags.push(...generateTags('', this.version.main));
     }
     return tags;
   }
