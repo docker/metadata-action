@@ -49,7 +49,7 @@ describe('isRawStatement', () => {
   });
 });
 
-const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>) => {
+const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>, exAnnotations: Array<string> | undefined) => {
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
   const toolkit = new Toolkit();
   const repo = await toolkit.github.repoData();
@@ -63,6 +63,9 @@ const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exV
 
   const labels = meta.getLabels();
   expect(labels).toEqual(exLabels);
+
+  const annotations = meta.getAnnotations();
+  expect(annotations).toEqual(exAnnotations ?? exLabels);
 };
 
 describe('null', () => {
@@ -90,7 +93,8 @@ describe('null', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version="
-      ]
+      ],
+      undefined
     ],
     [
       'null02',
@@ -117,7 +121,8 @@ describe('null', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version="
-      ]
+      ],
+      undefined
     ],
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -149,7 +154,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev"
-      ]
+      ],
+      undefined
     ],
     [
       'push02',
@@ -177,7 +183,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge"
-      ]
+      ],
+      undefined
     ],
     [
       'push03',
@@ -202,7 +209,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=master"
-      ]
+      ],
+      undefined
     ],
     [
       'push04',
@@ -230,7 +238,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge"
-      ]
+      ],
+      undefined
     ],
     [
       'push05',
@@ -256,7 +265,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev"
-      ]
+      ],
+      undefined
     ],
     [
       'push06',
@@ -285,7 +295,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge"
-      ]
+      ],
+      undefined
     ],
     [
       'push07',
@@ -317,7 +328,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev"
-      ]
+      ],
+      undefined
     ],
     [
       'push08',
@@ -349,7 +361,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge"
-      ]
+      ],
+      undefined
     ],
     [
       'push09',
@@ -381,7 +394,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge"
-      ]
+      ],
+      undefined
     ],
     [
       'push10',
@@ -411,7 +425,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-2665741"
-      ]
+      ],
+      undefined
     ],
     [
       'push11',
@@ -441,7 +456,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-983315b"
-      ]
+      ],
+      undefined
     ],
     [
       'push12',
@@ -469,7 +485,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version="
-      ]
+      ],
+      undefined
     ],
     [
       'push13',
@@ -499,7 +516,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=master"
-      ]
+      ],
+      undefined
     ],
     [
       'push14',
@@ -531,7 +549,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.3"
-      ]
+      ],
+      undefined
     ],
     [
       'push15',
@@ -562,7 +581,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.3"
-      ]
+      ],
+      undefined
     ],
     [
       'push16',
@@ -591,7 +611,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=edge"
-      ]
+      ],
+      undefined
     ],
     [
       'push17',
@@ -635,7 +656,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=mytag-master"
-      ]
+      ],
+      undefined
     ],
     [
       'push18',
@@ -667,7 +689,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev"
-      ]
+      ],
+      undefined
     ],
     [
       'push19',
@@ -699,7 +722,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-860c1904a1ce19322e91ac35af1ab07466440c37"
-      ]
+      ],
+      undefined
     ],
     [
       'push20',
@@ -732,7 +756,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-860c1904a1ce19322e91ac35af1ab07466440c37"
-      ]
+      ],
+      undefined
     ],
     [
       'push21',
@@ -776,7 +801,8 @@ describe('push', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=mytag-master"
-      ]
+      ],
+      undefined
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -809,7 +835,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=release1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag02',
@@ -835,7 +862,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110-RC2"
-      ]
+      ],
+      undefined
     ],
     [
       'tag03',
@@ -866,7 +894,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110"
-      ]
+      ],
+      undefined
     ],
     [
       'tag04',
@@ -897,7 +926,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110"
-      ]
+      ],
+      undefined
     ],
     [
       'tag05',
@@ -928,7 +958,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag06',
@@ -959,7 +990,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag07',
@@ -990,7 +1022,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8-beta.67"
-      ]
+      ],
+      undefined
     ],
     [
       'tag08',
@@ -1021,7 +1054,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0"
-      ]
+      ],
+      undefined
     ],
     [
       'tag09',
@@ -1055,7 +1089,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8"
-      ]
+      ],
+      undefined
     ],
     [
       'tag10',
@@ -1081,7 +1116,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version="
-      ]
+      ],
+      undefined
     ],
     [
       'tag11',
@@ -1118,7 +1154,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag12',
@@ -1150,7 +1187,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag13',
@@ -1180,7 +1218,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8-beta.67"
-      ]
+      ],
+      undefined
     ],
     [
       'tag14',
@@ -1214,7 +1253,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sometag"
-      ]
+      ],
+      undefined
     ],
     [
       'tag15',
@@ -1249,7 +1289,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo"
-      ]
+      ],
+      undefined
     ],
     [
       'tag16',
@@ -1282,7 +1323,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo"
-      ]
+      ],
+      undefined
     ],
     [
       'tag17',
@@ -1321,7 +1363,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.0"
-      ]
+      ],
+      undefined
     ],
     [
       'tag18',
@@ -1360,7 +1403,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.0"
-      ]
+      ],
+      undefined
     ],
     [
       'tag19',
@@ -1401,7 +1445,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.0-dev"
-      ]
+      ],
+      undefined
     ],
     [
       'tag20',
@@ -1436,7 +1481,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1-860c190-foo"
-      ]
+      ],
+      undefined
     ],
     [
       'tag21',
@@ -1471,7 +1517,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1-dev"
-      ]
+      ],
+      undefined
     ],
     [
       'tag22',
@@ -1507,7 +1554,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo-1.1.1-dev"
-      ]
+      ],
+      undefined
     ],
     [
       'tag23',
@@ -1538,7 +1586,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag24',
@@ -1568,7 +1617,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2"
-      ]
+      ],
+      undefined
     ],
     [
       'tag25',
@@ -1598,7 +1648,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1b2"
-      ]
+      ],
+      undefined
     ],
     [
       'tag26',
@@ -1628,7 +1679,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.0.dev4"
-      ]
+      ],
+      undefined
     ],
     [
       'tag27',
@@ -1660,7 +1712,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.3rc2"
-      ]
+      ],
+      undefined
     ],
     [
       'tag28',
@@ -1697,7 +1750,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag29',
@@ -1727,7 +1781,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.2.post1"
-      ]
+      ],
+      undefined
     ],
     [
       'tag30',
@@ -1761,7 +1816,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sometag"
-      ]
+      ],
+      undefined
     ],
     [
       'tag31',
@@ -1790,7 +1846,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v2.0.8-beta.67"
-      ]
+      ],
+      undefined
     ],
     [
       'tag32',
@@ -1822,7 +1879,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.2.3rc2"
-      ]
+      ],
+      undefined
     ],
     [
       'tag33',
@@ -1859,7 +1917,8 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -1895,7 +1954,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=release1"
-      ]
+      ],
+      undefined
     ],
     [
       'latest02',
@@ -1924,7 +1984,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110-RC2"
-      ]
+      ],
+      undefined
     ],
     [
       'latest03',
@@ -1953,7 +2014,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110"
-      ]
+      ],
+      undefined
     ],
     [
       'latest04',
@@ -1982,7 +2044,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'latest05',
@@ -2010,7 +2073,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'latest06',
@@ -2041,7 +2105,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8"
-      ]
+      ],
+      undefined
     ],
     [
       'latest07',
@@ -2073,7 +2138,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'latest08',
@@ -2105,7 +2171,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'latest09',
@@ -2123,6 +2190,12 @@ describe('latest', () => {
           `org.opencontainers.image.description=this is a "good" example`,
           "org.opencontainers.image.title=MyCustomTitle",
           "org.opencontainers.image.vendor=MyCompany",
+        ],
+        annotations: [
+          "maintainer=Foo",
+          `org.opencontainers.image.description=this is a "bad" example`,
+          "org.opencontainers.image.title=MyNotTitle",
+          "org.opencontainers.image.vendor=MyNotCompany",
         ]
       } as Inputs,
       {
@@ -2144,6 +2217,18 @@ describe('latest', () => {
         "org.opencontainers.image.title=MyCustomTitle",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.vendor=MyCompany",
+        "org.opencontainers.image.version=v1.1.1"
+      ],
+      [
+        "maintainer=Foo",
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        `org.opencontainers.image.description=this is a "bad" example`,
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=MyNotTitle",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.vendor=MyNotCompany",
         "org.opencontainers.image.version=v1.1.1"
       ]
     ],
@@ -2174,7 +2259,8 @@ describe('latest', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=2.0.8"
-      ]
+      ],
+      undefined
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -2206,7 +2292,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=pr-15"
-      ]
+      ],
+      undefined
     ],
     [
       'pr02',
@@ -2232,7 +2319,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=pr-15"
-      ]
+      ],
+      undefined
     ],
     [
       'pr03',
@@ -2264,7 +2352,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=pr-15"
-      ]
+      ],
+      undefined
     ],
     [
       'pr04',
@@ -2296,7 +2385,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-a9c8c58"
-      ]
+      ],
+      undefined
     ],
     [
       'pr05',
@@ -2329,7 +2419,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=pr-15-bal"
-      ]
+      ],
+      undefined
     ],
     [
       'pr06',
@@ -2362,7 +2453,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=15-bal"
-      ]
+      ],
+      undefined
     ],
     [
       'pr07',
@@ -2394,7 +2486,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-2665741"
-      ]
+      ],
+      undefined
     ],
     [
       'pr08',
@@ -2427,7 +2520,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=15-bal"
-      ]
+      ],
+      undefined
     ],
     [
       'pr09',
@@ -2464,7 +2558,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=pr-15"
-      ]
+      ],
+      undefined
     ],
     [
       'pr10',
@@ -2493,7 +2588,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=mytag-master"
-      ]
+      ],
+      undefined
     ],
     [
       'pr11',
@@ -2522,7 +2618,8 @@ describe('pr', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=mytag-master"
-      ]
+      ],
+      undefined
     ],
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -2872,7 +2969,7 @@ describe('pr-head-sha', () => {
         "org.opencontainers.image.version=mytag-master"
       ]
     ],
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>) => {
+  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabelsAnnotations: Array<string>) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     process.env.DOCKER_METADATA_PR_HEAD_SHA = 'true';
 
@@ -2887,7 +2984,10 @@ describe('pr-head-sha', () => {
     expect(tags).toEqual(exTags);
 
     const labels = meta.getLabels();
-    expect(labels).toEqual(exLabels);
+    expect(labels).toEqual(exLabelsAnnotations);
+
+    const annotations = meta.getAnnotations();
+    expect(annotations).toEqual(exLabelsAnnotations);
   });
 });
 
@@ -2919,7 +3019,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=nightly"
-      ]
+      ],
+      undefined
     ],
     [
       'schedule02',
@@ -2947,7 +3048,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110"
-      ]
+      ],
+      undefined
     ],
     [
       'schedule03',
@@ -2975,7 +3077,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110-003000"
-      ]
+      ],
+      undefined
     ],
     [
       'schedule04',
@@ -3003,7 +3106,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=nightly"
-      ]
+      ],
+      undefined
     ],
     [
       'schedule05',
@@ -3035,7 +3139,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=nightly"
-      ]
+      ],
+      undefined
     ],
     [
       'schedule06',
@@ -3073,7 +3178,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=sha-860c190"
-      ]
+      ],
+      undefined
     ],
     [
       'schedule07',
@@ -3106,7 +3212,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=glo-nightly-bal"
-      ]
+      ],
+      undefined
     ],
     [
       'schedule08',
@@ -3134,7 +3241,8 @@ describe('schedule', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110-093000"
-      ]
+      ],
+      undefined
     ],
   ])('given %p with %p event', tagsLabelsTest);
 });
@@ -3167,7 +3275,8 @@ describe('release', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'release02',
@@ -3201,7 +3310,8 @@ describe('release', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1"
-      ]
+      ],
+      undefined
     ]
   ])('given %s with %p event', tagsLabelsTest);
 });
@@ -3242,7 +3352,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev"
-      ]
+      ],
+      undefined
     ],
     [
       'raw02',
@@ -3272,7 +3383,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=dev"
-      ]
+      ],
+      undefined
     ],
     [
       'raw03',
@@ -3307,7 +3419,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=release1"
-      ]
+      ],
+      undefined
     ],
     [
       'raw04',
@@ -3344,7 +3457,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=20200110"
-      ]
+      ],
+      undefined
     ],
     [
       'raw05',
@@ -3390,7 +3504,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=1.1.1"
-      ]
+      ],
+      undefined
     ],
     [
       'raw06',
@@ -3425,7 +3540,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=my"
-      ]
+      ],
+      undefined
     ],
     [
       'raw07',
@@ -3463,7 +3579,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=my"
-      ]
+      ],
+      undefined
     ],
     [
       'raw08',
@@ -3499,7 +3616,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=my"
-      ]
+      ],
+      undefined
     ],
     [
       'raw09',
@@ -3537,7 +3655,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo-my-bar"
-      ]
+      ],
+      undefined
     ],
     [
       'raw10',
@@ -3571,7 +3690,8 @@ describe('raw', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo"
-      ]
+      ],
+      undefined
     ],
   ])('given %p wth %p event', tagsLabelsTest);
 });
@@ -3615,7 +3735,6 @@ describe('json', () => {
           "org.opencontainers.image.version": "dev"
         },
         "annotations": [
-          "manifest:foo=",
           "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
           "manifest:org.opencontainers.image.description=This your first repo!",
           "manifest:org.opencontainers.image.licenses=MIT",
@@ -3877,15 +3996,13 @@ describe('json', () => {
           "org.opencontainers.image.version": "v1.1.1"
         },
         "annotations": [
-          "manifest:maintainer=CrazyMax",
           "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-          "manifest:org.opencontainers.image.description=Another description",
+          "manifest:org.opencontainers.image.description=This your first repo!",
           "manifest:org.opencontainers.image.licenses=MIT",
           "manifest:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
           "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-          "manifest:org.opencontainers.image.title=MyCustom=Title",
+          "manifest:org.opencontainers.image.title=Hello-World",
           "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-          "manifest:org.opencontainers.image.vendor=MyCompany",
           "manifest:org.opencontainers.image.version=v1.1.1"
         ]
       }
@@ -4385,25 +4502,21 @@ describe('bakeFile', () => {
         "target": {
           "docker-metadata-action": {
             "annotations": [
-              "index:maintainer=CrazyMax",
               "index:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-              "index:org.opencontainers.image.description=Another description",
+              "index:org.opencontainers.image.description=This your first repo!",
               "index:org.opencontainers.image.licenses=MIT",
               "index:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
               "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-              "index:org.opencontainers.image.title=MyCustom=Title",
+              "index:org.opencontainers.image.title=Hello-World",
               "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-              "index:org.opencontainers.image.vendor=MyCompany",
               "index:org.opencontainers.image.version=v1.1.1",
-              "manifest-descriptor:maintainer=CrazyMax",
               "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
-              "manifest-descriptor:org.opencontainers.image.description=Another description",
+              "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
               "manifest-descriptor:org.opencontainers.image.licenses=MIT",
               "manifest-descriptor:org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
               "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
-              "manifest-descriptor:org.opencontainers.image.title=MyCustom=Title",
+              "manifest-descriptor:org.opencontainers.image.title=Hello-World",
               "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-              "manifest-descriptor:org.opencontainers.image.vendor=MyCompany",
               "manifest-descriptor:org.opencontainers.image.version=v1.1.1"
             ]
           }

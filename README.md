@@ -47,7 +47,7 @@ ___
     * [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
-  * [Overwrite labels](#overwrite-labels)
+  * [Overwrite labels and annotations](#overwrite-labels-and-annotations)
   * [Annotations](#annotations)
 * [Contributing](#contributing)
 
@@ -293,16 +293,18 @@ The following inputs can be used as `step.with` keys:
 >   org.opencontainers.image.vendor=MyCompany
 > ```
 
-| Name          | Type   | Description                                                                   |
-|---------------|--------|-------------------------------------------------------------------------------|
-| `context`     | String | Where to get context data. Allowed options are: `workflow` (default), `git`.  |
-| `images`      | List   | List of Docker images to use as base name for tags                            |
-| `tags`        | List   | List of [tags](#tags-input) as key-value pair attributes                      |
-| `flavor`      | List   | [Flavor](#flavor-input) to apply                                              |
-| `labels`      | List   | List of custom labels                                                         |
-| `sep-tags`    | String | Separator to use for tags output (default `\n`)                               |
-| `sep-labels`  | String | Separator to use for labels output (default `\n`)                             |
-| `bake-target` | String | Bake target name (default `docker-metadata-action`)                           |
+| Name              | Type   | Description                                                                  |
+|-------------------|--------|------------------------------------------------------------------------------|
+| `context`         | String | Where to get context data. Allowed options are: `workflow` (default), `git`. |
+| `images`          | List   | List of Docker images to use as base name for tags                           |
+| `tags`            | List   | List of [tags](#tags-input) as key-value pair attributes                     |
+| `flavor`          | List   | [Flavor](#flavor-input) to apply                                             |
+| `labels`          | List   | List of custom labels                                                        |
+| `annotations`     | List   | List of custom anntoations                                                   |
+| `sep-tags`        | String | Separator to use for tags output (default `\n`)                              |
+| `sep-labels`      | String | Separator to use for labels output (default `\n`)                            |
+| `sep-annotations` | String | Separator to use for annotations output (default `\n`)                       |
+| `bake-target`     | String | Bake target name (default `docker-metadata-action`)                          |
 
 ### outputs
 
@@ -893,10 +895,11 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
             REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
 ```
 
-### Overwrite labels
+### Overwrite labels and annotations
 
 If some [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
-labels generated are not suitable, you can overwrite them like this:
+generated are not suitable as labels/annotations, you can overwrite them like
+this:
 
 ```yaml
       -

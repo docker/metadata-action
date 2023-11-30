@@ -165,7 +165,7 @@ jobs:
             name=ghcr.io/name/app,enable=${{ github.event_name == 'pull_request' }}
             name=ghcr.io/name/release,enable=${{ startsWith(github.ref, 'refs/tags/') }}
 
-  labels:
+  custom-labels-annotations:
     runs-on: ubuntu-latest
     steps:
       -
@@ -183,6 +183,11 @@ jobs:
             org.opencontainers.image.title=MyCustomTitle
             org.opencontainers.image.description=this is a "good" example
             org.opencontainers.image.vendor=MyCompany
+          annotations: |
+            maintainer=Foo
+            org.opencontainers.image.title=MyFooTitle
+            org.opencontainers.image.description=this is a "foo" example
+            org.opencontainers.image.vendor=MyFooCompany
 
   global-exps:
     runs-on: ubuntu-latest
@@ -372,6 +377,8 @@ jobs:
             ghcr.io/name/app
           labels: |
             maintainer=CrazyMax
+          annotations: |
+            maintainer=Foo
       -
         name: Build
         uses: docker/build-push-action@v5
@@ -382,6 +389,7 @@ jobs:
             DOCKER_METADATA_OUTPUT_VERSION
             DOCKER_METADATA_OUTPUT_TAGS
             DOCKER_METADATA_OUTPUT_LABELS
+            DOCKER_METADATA_OUTPUT_ANNOTATIONS
             DOCKER_METADATA_OUTPUT_JSON
 
   bake-annotations:

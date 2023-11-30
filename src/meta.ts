@@ -468,7 +468,15 @@ export class Meta {
   }
 
   public getLabels(): Array<string> {
-    const labels: Array<string> = [
+    return this.getOCIAnnotationsWithCustoms(this.inputs.labels);
+  }
+
+  public getAnnotations(): Array<string> {
+    return this.getOCIAnnotationsWithCustoms(this.inputs.annotations);
+  }
+
+  private getOCIAnnotationsWithCustoms(extra: string[]): Array<string> {
+    const res: Array<string> = [
       `org.opencontainers.image.title=${this.repo.name || ''}`,
       `org.opencontainers.image.description=${this.repo.description || ''}`,
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
@@ -478,11 +486,11 @@ export class Meta {
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
-    labels.push(...this.inputs.labels);
+    res.push(...extra);
 
     return Array.from(
       new Map<string, string>(
-        labels
+        res
           .map(label => label.split('='))
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           .filter(([_key, ...values]) => values.length > 0)
@@ -496,7 +504,7 @@ export class Meta {
   public getJSON(alevels: string[]): unknown {
     const annotations: Array<string> = [];
     for (const level of alevels) {
-      annotations.push(...this.getLabels().map(label => `${level}:${label}`));
+      annotations.push(...this.getAnnotations().map(label => `${level}:${label}`));
     }
     return {
       tags: this.getTags(),
@@ -536,7 +544,7 @@ export class Meta {
       const name = kind.split(':')[0];
       const annotations: Array<string> = [];
       for (const level of kind.split(':')[1].split(',')) {
-        annotations.push(...this.getLabels().map(label => `${level}:${label}`));
+        annotations.push(...this.getAnnotations().map(label => `${level}:${label}`));
       }
       return this.generateBakeFile(name, {
         annotations: annotations
