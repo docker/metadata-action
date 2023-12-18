@@ -773,10 +773,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@docker/actions-toolkit@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@docker/actions-toolkit/-/actions-toolkit-0.15.0.tgz#f52d0a2a10c97e02dc7f82dea843cce1ea5917a5"
-  integrity sha512-9QM3iBEdW+ExxETTIPYhYARaSJU8k9Wrp5+WJvvGu8XgClyiKdOywIWK0Kp+ctUH+1rQzc3m/Z/h9ErZ52LIGg==
+"@docker/actions-toolkit@^0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@docker/actions-toolkit/-/actions-toolkit-0.16.0.tgz#a070abd4525bd63f1732fed2b95dafc85cbd01b8"
+  integrity sha512-OIowepg3DhO+HSByAcxevzJXmMOgaquxjNlCOVJMt3qK+1tjEZ+9gJ3U3651KELrJf6RrlxSnY7GPipNFB6Vtw==
   dependencies:
     "@actions/cache" "^3.2.2"
     "@actions/core" "^1.10.1"
@@ -788,7 +788,7 @@
     "@octokit/core" "^5.0.2"
     "@octokit/plugin-rest-endpoint-methods" "^10.2.0"
     async-retry "^1.3.3"
-    csv-parse "^5.5.2"
+    csv-parse "^5.5.3"
     handlebars "^4.7.8"
     jwt-decode "^4.0.0"
     semver "^7.5.4"
@@ -1992,7 +1992,7 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-csv-parse@*, csv-parse@^5.5.2, csv-parse@^5.5.3:
+csv-parse@*, csv-parse@^5.5.3:
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.5.3.tgz#0261050761ee46cd0e46421854bf9bf4de1317bf"
   integrity sha512-v0KW6C0qlZzoGjk6u5tLmVfyZxNgPGXZsWTXshpAgKVGmGXzaVWGdlCFxNx5iuzcXT/oJN1HHM9DZKwtAtYa+A==
