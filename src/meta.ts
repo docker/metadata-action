@@ -522,70 +522,66 @@ export class Meta {
 
   public getBakeFile(kind: string): string {
     if (kind == 'tags') {
-      return this.generateBakeFile(kind, {
-        tags: this.getTags(),
-        args: {
-          DOCKER_META_IMAGES: this.getImageNames().join(','),
-          DOCKER_META_VERSION: this.version.main
-        }
-      });
-    } else if (kind == 'labels') {
-      return this.generateBakeFile(kind, {
-        labels: this.getLabels().reduce((res, label) => {
-          const matches = label.match(/([^=]*)=(.*)/);
-          if (!matches) {
-            return res;
+      return this.generateBakeFile(
+        {
+          tags: this.getTags(),
+          args: {
+            DOCKER_META_IMAGES: this.getImageNames().join(','),
+            DOCKER_META_VERSION: this.version.main
           }
-          res[matches[1]] = matches[2];
-          return res;
-        }, {})
-      });
+        },
+        kind
+      );
+    } else if (kind == 'labels') {
+      return this.generateBakeFile(
+        {
+          labels: this.getLabels().reduce((res, label) => {
+            const matches = label.match(/([^=]*)=(.*)/);
+            if (!matches) {
+              return res;
+            }
+            res[matches[1]] = matches[2];
+            return res;
+          }, {})
+        },
+        kind
+      );
     } else if (kind.startsWith('annotations:')) {
       const name = kind.split(':')[0];
       const annotations: Array<string> = [];
       for (const level of kind.split(':')[1].split(',')) {
         annotations.push(...this.getAnnotations().map(label => `${level}:${label}`));
       }
-      return this.generateBakeFile(name, {
-        annotations: annotations
-      });
+      return this.generateBakeFile(
+        {
+          annotations: annotations
+        },
+        name
+      );
     }
     throw new Error(`Unknown bake file type: ${kind}`);
   }
 
   public getBakeFileTagsLabels(): string {
-    const bakeFile = path.join(ToolkitContext.tmpDir(), 'docker-metadata-action-bake.json');
-    fs.writeFileSync(
-      bakeFile,
-      JSON.stringify(
-        {
-          target: {
-            [this.inputs.bakeTarget]: {
-              tags: this.getTags(),
-              labels: this.getLabels().reduce((res, label) => {
-                const matches = label.match(/([^=]*)=(.*)/);
-                if (!matches) {
-                  return res;
-                }
-                res[matches[1]] = matches[2];
-                return res;
-              }, {}),
-              args: {
-                DOCKER_META_IMAGES: this.getImageNames().join(','),
-                DOCKER_META_VERSION: this.version.main
-              }
-            }
-          }
-        },
-        null,
-        2
-      )
-    );
-    return bakeFile;
+    return this.generateBakeFile({
+      tags: this.getTags(),
+      labels: this.getLabels().reduce((res, label) => {
+        const matches = label.match(/([^=]*)=(.*)/);
+        if (!matches) {
+          return res;
+        }
+        res[matches[1]] = matches[2];
+        return res;
+      }, {}),
+      args: {
+        DOCKER_META_IMAGES: this.getImageNames().join(','),
+        DOCKER_META_VERSION: this.version.main
+      }
+    });
   }
 
-  private generateBakeFile(name: string, dt): string {
-    const bakeFile = path.join(ToolkitContext.tmpDir(), `docker-metadata-action-bake-${name}.json`);
+  private generateBakeFile(dt, suffix?: string): string {
+    const bakeFile = path.join(ToolkitContext.tmpDir(), `docker-metadata-action-bake${suffix ? `-${suffix}` : ''}.json`);
     fs.writeFileSync(bakeFile, JSON.stringify({target: {[this.inputs.bakeTarget]: dt}}, null, 2));
     return bakeFile;
   }
