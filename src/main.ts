@@ -94,22 +94,17 @@ actionsToolkit.run(
       setOutput('json', JSON.stringify(jsonOutput));
     });
 
-    // Specifying local and remote bake files is supported since Buildx 0.12.0.
-    // Set cwd:// prefix for local bake files to avoid ambiguity with remote
-    // https://github.com/docker/buildx/pull/1838
-    const bakeFileCwdPrefix = (await toolkit.buildx.versionSatisfies('>=0.12.0').catch(() => false)) ? 'cwd://' : '';
-
     // Bake files
     for (const kind of ['tags', 'labels', 'annotations:' + annotationsLevels]) {
       const outputName = kind.split(':')[0];
       const bakeFile: string = meta.getBakeFile(kind);
       await core.group(`Bake file definition (${outputName})`, async () => {
         core.info(fs.readFileSync(bakeFile, 'utf8'));
-        setOutput(`bake-file-${outputName}`, `${bakeFileCwdPrefix}${bakeFile}`);
+        setOutput(`bake-file-${outputName}`, bakeFile);
       });
     }
 
     // Bake file with tags and labels
-    setOutput(`bake-file`, `${bakeFileCwdPrefix}${meta.getBakeFileTagsLabels()}`);
+    setOutput(`bake-file`, `${meta.getBakeFileTagsLabels()}`);
   }
 );
