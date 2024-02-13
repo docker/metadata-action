@@ -156,16 +156,28 @@ export class Meta {
     const sver = semver.parse(vraw, {
       loose: true
     });
-    if (semver.prerelease(vraw)) {
-      if (Meta.isRawStatement(tag.attrs['pattern'])) {
-        vraw = this.setValue(handlebars.compile(tag.attrs['pattern'])(sver), tag);
-      } else {
-        vraw = this.setValue(handlebars.compile('{{version}}')(sver), tag);
-      }
-    } else {
-      vraw = this.setValue(handlebars.compile(tag.attrs['pattern'])(sver), tag);
+
+    const hbEnv = handlebars.create();
+
+    hbEnv.registerPartial('prereleaseMetadata', (data: semver.SemVer) => {
+      return data.prerelease.length > 0 ? '-' + data.prerelease.join('.') : '';
+    });
+
+    hbEnv.registerPartial('buildMetadata', (data: semver.SemVer) => {
+      return data.build.length > 0 ? '+' + data.build.join('.') : '';
+    });
+
+    hbEnv.registerPartial('completeVersion', (data: semver.SemVer) => {
+      return [data.major, data.minor, data.patch].join('.') + (data.prerelease.length > 0 ? '-' + data.prerelease.join('.') : '') + (data.build.length > 0 ? '+' + data.build.join('.') : '');
+    });
+
+    if (!semver.prerelease(vraw)) {
       latest = true;
     }
+
+    const hbTemplate = hbEnv.compile(tag.attrs['pattern']);
+
+    vraw = this.setValue(hbTemplate(sver), tag);
 
     return Meta.setVersion(version, vraw, this.flavor.latest == 'auto' ? latest : this.flavor.latest == 'true');
   }
@@ -591,6 +603,6 @@ export class Meta {
   }
 
   private static sanitizeTag(tag: string): string {
-    return tag.replace(/[^a-zA-Z0-9._-]+/g, '-');
+    return tag.replace(/[^a-zA-Z0-9+._-]+/g, '-');
   }
 }

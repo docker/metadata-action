@@ -1201,13 +1201,15 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: '2.0.8-beta.67',
-        partial: [],
+        main: '2.0',
+        partial: ["2"],
         latest: false
       } as Version,
       [
-        'org/app:2.0.8-beta.67',
-        'ghcr.io/user/app:2.0.8-beta.67'
+        'org/app:2.0',
+        'org/app:2',
+        'ghcr.io/user/app:2.0',
+        'ghcr.io/user/app:2'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -1217,7 +1219,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=2.0.8-beta.67"
+        "org.opencontainers.image.version=2.0"
       ],
       undefined
     ],
@@ -1289,6 +1291,66 @@ describe('tag', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=foo"
+      ],
+      undefined
+    ],
+    [
+      'tag15.1',
+      'event_tag_v9.5.7-alpha.2+fork.3.1.8.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=semver,pattern={{> completeVersion}}`
+        ]
+      } as Inputs,
+      {
+        main: '9.5.7-alpha.2+fork.3.1.8',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:9.5.7-alpha.2+fork.3.1.8',
+        'ghcr.io/user/app:9.5.7-alpha.2+fork.3.1.8'
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=9.5.7-alpha.2+fork.3.1.8",
+      ],
+      undefined
+    ],
+    [
+      'tag15.1',
+      'event_tag_v9.5.7-alpha.2+fork.3.1.8.env',
+      {
+        images: ['org/app', 'ghcr.io/user/app'],
+        tags: [
+          `type=semver,pattern={{> buildMetadata}}{{> prereleaseMetadata}}.{{major}}.{{minor}}.{{patch}}`
+        ]
+      } as Inputs,
+      {
+        main: '+fork.3.1.8-alpha.2.9.5.7',
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:+fork.3.1.8-alpha.2.9.5.7',
+        'ghcr.io/user/app:+fork.3.1.8-alpha.2.9.5.7'
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=+fork.3.1.8-alpha.2.9.5.7",
       ],
       undefined
     ],
