@@ -17,6 +17,7 @@ on:
 
 env:
   DOCKER_IMAGE: localhost:5000/name/app
+  BUILDX_VERSION: latest
 
 jobs:
   multi-images:
@@ -25,6 +26,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
       -
         name: Docker meta
         uses: ./
@@ -57,6 +64,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
         name: Docker meta
         uses: ./
         with:
@@ -87,6 +100,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
         name: Docker meta
         uses: ./
         with:
@@ -115,6 +134,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
         name: Docker meta
         uses: ./
         with:
@@ -140,6 +165,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
         name: Docker meta
         uses: ./
         with:
@@ -157,6 +188,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
         name: Docker meta
         uses: ./
         with:
@@ -171,6 +208,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
       -
         name: Docker meta
         uses: ./
@@ -196,6 +239,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
         name: Docker meta
         uses: ./
         with:
@@ -216,6 +265,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
       -
         name: Docker meta
         id: meta
@@ -246,6 +301,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver-opts: network=host
+      -
         name: Docker meta
         id: docker_meta
         uses: ./
@@ -261,14 +322,6 @@ jobs:
             type=semver,pattern=v{{major}}.{{minor}}
             type=semver,pattern=v{{major}}
             type=sha
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: network=host
       -
         name: Build and push to local registry
         uses: docker/build-push-action@v5
@@ -300,6 +353,11 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+      -
         name: Docker meta
         id: docker_meta
         uses: ./
@@ -316,12 +374,6 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
       -
         name: Build
         uses: docker/bake-action@v4
@@ -346,6 +398,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
         name: Docker meta
         id: meta
         uses: ./
@@ -367,6 +425,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
       -
         name: Docker meta
         id: meta
@@ -399,6 +463,11 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+      -
         name: Docker meta
         id: docker_meta
         uses: ./
@@ -418,14 +487,6 @@ jobs:
         env:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
       -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          version: latest
-      -
         name: Build
         uses: docker/bake-action@v4
         with:
@@ -442,6 +503,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
       -
         name: Docker meta
         uses: ./
