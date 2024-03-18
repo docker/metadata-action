@@ -522,3 +522,30 @@ jobs:
       -
         name: Print envs
         run: env|sort
+
+  bake-cwd:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: latest
+      -
+        name: Docker meta
+        id: docker_meta
+        uses: ./
+      -
+        name: Build
+        uses: docker/bake-action@v4
+        with:
+          source: "{{defaultContext}}"
+          files: |
+            ./test/docker-bake.hcl
+            cwd://${{ steps.docker_meta.outputs.bake-file-tags }}
+            cwd://${{ steps.docker_meta.outputs.bake-file-labels }}
+          targets: |
+            release
