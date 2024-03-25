@@ -223,7 +223,7 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@v3
+        uses: docker/bake-action@v4
         with:
           files: |
             ./docker-bake.hcl
@@ -270,12 +270,29 @@ similar to the previous one:
 ```yaml
       -
         name: Build
-        uses: docker/bake-action@v3
+        uses: docker/bake-action@v4
         with:
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file-tags }}
             ${{ steps.meta.outputs.bake-file-labels }}
+          targets: build
+```
+
+If you're building a [remote Bake definition](https://docs.docker.com/build/bake/remote-definition/)
+using a [Git context](https://github.com/docker/bake-action?tab=readme-ov-file#git-context),
+you must specify the location of the metadata-only bake file using a `cwd://`
+prefix:
+
+```yaml
+      -
+        name: Build
+        uses: docker/bake-action@v4
+        with:
+          source: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}"
+          files: |
+            ./docker-bake.hcl
+            cwd://${{ steps.meta.outputs.bake-file }}
           targets: build
 ```
 
@@ -948,7 +965,7 @@ The same can be done with the [`bake-action`](https://github.com/docker/bake-act
           images: name/app
       -
         name: Build
-        uses: docker/bake-action@v3
+        uses: docker/bake-action@v4
         with:
           files: |
             ./docker-bake.hcl
