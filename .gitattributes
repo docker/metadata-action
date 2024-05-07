@@ -1,3 +1,5 @@
+/.yarn/releases/** binary
+/.yarn/plugins/** binary
 /__tests__/fixtures/** -linguist-detectable
 /dist/** linguist-generated=true
 /lib/** linguist-generated=true
