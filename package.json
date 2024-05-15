@@ -35,7 +35,7 @@
     "handlebars": "^4.7.8",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.45",
-    "semver": "^7.6.0"
+    "semver": "^7.6.2"
   },
   "devDependencies": {
     "@types/csv-parse": "^1.2.2",
