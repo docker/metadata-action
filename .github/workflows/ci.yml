@@ -376,7 +376,7 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           files: |
             ./test/docker-bake.hcl
@@ -488,7 +488,7 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
       -
         name: Build
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           files: |
             ./test/docker-bake.hcl
@@ -540,7 +540,7 @@ jobs:
         uses: ./
       -
         name: Build
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           source: "{{defaultContext}}"
           files: |
