@@ -324,7 +324,7 @@ jobs:
             type=sha
       -
         name: Build and push to local registry
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./test
           file: ./test/Dockerfile
@@ -445,7 +445,7 @@ jobs:
             maintainer=Foo
       -
         name: Build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./test
           file: ./test/output.Dockerfile
