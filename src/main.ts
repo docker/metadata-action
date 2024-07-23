@@ -6,11 +6,6 @@ import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
 import {getContext, getInputs, Inputs} from './context';
 import {Meta, Version} from './meta';
 
-function setOutput(name: string, value: string) {
-  core.setOutput(name, value);
-  core.exportVariable(`DOCKER_METADATA_OUTPUT_${name.replace(/\W/g, '_').toUpperCase()}`, value);
-}
-
 actionsToolkit.run(
   // main
   async () => {
@@ -108,3 +103,8 @@ actionsToolkit.run(
     setOutput(`bake-file`, `${meta.getBakeFileTagsLabels()}`);
   }
 );
+
+function setOutput(name: string, value: string) {
+  core.setOutput(name, value);
+  core.exportVariable(`DOCKER_METADATA_OUTPUT_${name.replace(/\W/g, '_').toUpperCase()}`, value);
+}
