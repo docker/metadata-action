@@ -603,7 +603,7 @@ tags: |
 ```yaml
 tags: |
   # minimal
-  type=match,pattern=\d.\d.\d
+  type=match,"pattern=\\d+.\\d+.\\d+"
   # define match group
   type=match,pattern=v(.*),group=1
   # use custom value instead of git tag
@@ -614,13 +614,13 @@ Can create a regular expression for matching Git tag with a pattern and
 capturing group. Will be used on a [push tag event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push)
 but, you can also use a custom value through `value` attribute.
 
-| Git tag                 | Pattern          | Group   | Output                 |
-|-------------------------|------------------|---------|------------------------|
-| `v1.2.3`                | `\d.\d.\d`       | `0`     | `1.2.3`                |
-| `v2.0.8-beta.67`        | `v(.*)`          | `1`     | `2.0.8-beta.67`        |
-| `v2.0.8-beta.67`        | `v(\d.\d)`       | `1`     | `2.0`                  |
-| `20200110-RC2`          | `\d+`            | `0`     | `20200110`             |
-| `p1/v1.2.3`             | `p1/v(\d.\d.\d)` | `1`     | `1.2.3`                |
+| Git tag                 | Pattern                     | Group | Output          |
+|-------------------------|-----------------------------|---------|---------------|
+| `v1.2.3`                | `\\d+\\.\\d+\\.\\d+`        | `0`   | `1.2.3`         |
+| `v2.0.8-beta.67`        | `v(.*)`                     | `1`   | `2.0.8-beta.67` |
+| `v2.0.8-beta.67`        | `v(\\d+\\.\\d+\\.)`         | `1`   | `2.0`           |
+| `20200110-RC2`          | `\d+?`                      | `0`   | `20200110`      |
+| `p1/v1.2.3`             | `p1\/v(\\d+\\.\\d+\\.\\d+)` | `1`   | `1.2.3`         |
 
 Extended attributes and default values:
 
@@ -809,7 +809,7 @@ tags: |
 
 #### `{{branch}}`
 
-Returns the branch name that triggered the workflow run. Will be empty if not 
+Returns the branch name that triggered the workflow run. Will be empty if not
 a branch reference:
 
 | Event          | Ref                    | Output      |
@@ -847,11 +847,11 @@ workflow run. Will be empty for a branch reference:
 | `push`         | `refs/heads/my/branch`        |                    |
 | `push tag`*    | `refs/tags/v1.2.3`            | `master`           |
 
-> *`base_ref` is available in the push payload but doesn't always seem to 
+> *`base_ref` is available in the push payload but doesn't always seem to
 > return the expected branch when the push tag event occurs. It's also
 > [not documented in GitHub docs](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push).
 > We keep it for backward compatibility, but it's **not recommended relying on it**.
-> More context in [#192](https://github.com/docker/metadata-action/pull/192#discussion_r854673012). 
+> More context in [#192](https://github.com/docker/metadata-action/pull/192#discussion_r854673012).
 
 #### `{{is_default_branch}}`
 
