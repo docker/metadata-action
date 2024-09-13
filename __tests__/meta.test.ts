@@ -44,7 +44,7 @@ describe('isRawStatement', () => {
     ['{{ raw }}', true],
     ['{{ raw}}', true],
     ['{{raw}}', true],
-  ])('given %p pattern', async (pattern: string, expected: boolean) => {
+  ])('given %s pattern', async (pattern: string, expected: boolean) => {
     expect(Meta.isRawStatement(pattern)).toEqual(expected);
   });
 });
@@ -124,7 +124,7 @@ describe('null', () => {
       ],
       undefined
     ],
-  ])('given %p with %p event', tagsLabelsTest);
+  ])('given %s with %s event', tagsLabelsTest);
 });
 
 describe('push', () => {
@@ -804,7 +804,7 @@ describe('push', () => {
       ],
       undefined
     ]
-  ])('given %p with %p event', tagsLabelsTest);
+  ])('given %s with %s event', tagsLabelsTest);
 });
 
 describe('tag', () => {
@@ -931,22 +931,22 @@ describe('tag', () => {
     ],
     [
       'tag05',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d.\\d.\\d"`
+          `type=match,"pattern=\\d+\\.\\d+\\.\\d+"`
         ]
       } as Inputs,
       {
-        main: '1.1.1',
+        main: '101.12.13',
         partial: [],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1',
+        'org/app:101.12.13',
         'org/app:latest',
-        'ghcr.io/user/app:1.1.1',
+        'ghcr.io/user/app:101.12.13',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -957,28 +957,28 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ],
     [
       'tag06',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=^v(\\d.\\d.\\d)$",group=1`
+          `type=match,"pattern=^v(\\d+\\.\\d+\\.\\d+)$",group=1`
         ]
       } as Inputs,
       {
-        main: '1.1.1',
+        main: '101.12.13',
         partial: [],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1',
+        'org/app:101.12.13',
         'org/app:latest',
-        'ghcr.io/user/app:1.1.1',
+        'ghcr.io/user/app:101.12.13',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -989,7 +989,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ],
@@ -999,7 +999,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d.\\d.\\d-(alpha|beta).\\d+"`
+          `type=match,"pattern=\\d+\\.\\d+\\.\\d+-(alpha|beta).\\d+"`
         ]
       } as Inputs,
       {
@@ -1031,7 +1031,7 @@ describe('tag', () => {
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
-          `type=match,"pattern=\\d.\\d"`
+          `type=match,"pattern=\\d+\\.\\d+"`
         ]
       } as Inputs,
       {
@@ -1121,7 +1121,7 @@ describe('tag', () => {
     ],
     [
       'tag11',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -1131,18 +1131,18 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: '1.1.1',
-        partial: ['1.1', '1'],
+        main: '101.12.13',
+        partial: ['101.12', '101'],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1',
-        'org/app:1.1',
-        'org/app:1',
+        'org/app:101.12.13',
+        'org/app:101.12',
+        'org/app:101',
         'org/app:latest',
-        'ghcr.io/user/app:1.1.1',
-        'ghcr.io/user/app:1.1',
-        'ghcr.io/user/app:1',
+        'ghcr.io/user/app:101.12.13',
+        'ghcr.io/user/app:101.12',
+        'ghcr.io/user/app:101',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1153,13 +1153,13 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ],
     [
       'tag12',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -1168,14 +1168,14 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: '1.1.1',
+        main: '101.12.13',
         partial: [],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1',
+        'org/app:101.12.13',
         'org/app:latest',
-        'ghcr.io/user/app:1.1.1',
+        'ghcr.io/user/app:101.12.13',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1186,7 +1186,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ],
@@ -1294,7 +1294,7 @@ describe('tag', () => {
     ],
     [
       'tag16',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -1305,14 +1305,14 @@ describe('tag', () => {
       } as Inputs,
       {
         main: 'foo',
-        partial: ['v1.1.1'],
+        partial: ['v101.12.13'],
         latest: false
       } as Version,
       [
         'org/app:foo',
-        'org/app:v1.1.1',
+        'org/app:v101.12.13',
         'ghcr.io/user/app:foo',
-        'ghcr.io/user/app:v1.1.1',
+        'ghcr.io/user/app:v101.12.13',
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -1450,7 +1450,7 @@ describe('tag', () => {
     ],
     [
       'tag20',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -1460,16 +1460,16 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1-860c190-foo',
+        main: 'v101.12.13-860c190-foo',
         partial: [
           'master-foo'
         ],
         latest: false
       } as Version,
       [
-        'org/app:v1.1.1-860c190-foo',
+        'org/app:v101.12.13-860c190-foo',
         'org/app:master-foo',
-        'ghcr.io/user/app:v1.1.1-860c190-foo',
+        'ghcr.io/user/app:v101.12.13-860c190-foo',
         'ghcr.io/user/app:master-foo'
       ],
       [
@@ -1480,13 +1480,13 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1-860c190-foo"
+        "org.opencontainers.image.version=v101.12.13-860c190-foo"
       ],
       undefined
     ],
     [
       'tag21',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -1498,14 +1498,14 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: '1.1.1-dev',
+        main: '101.12.13-dev',
         partial: [],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1-dev',
+        'org/app:101.12.13-dev',
         'org/app:latest-dev',
-        'ghcr.io/user/app:1.1.1-dev',
+        'ghcr.io/user/app:101.12.13-dev',
         'ghcr.io/user/app:latest-dev'
       ],
       [
@@ -1516,13 +1516,13 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1-dev"
+        "org.opencontainers.image.version=101.12.13-dev"
       ],
       undefined
     ],
     [
       'tag22',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -1535,14 +1535,14 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: 'foo-1.1.1-dev',
+        main: 'foo-101.12.13-dev',
         partial: [],
         latest: true
       } as Version,
       [
-        'org/app:foo-1.1.1-dev',
+        'org/app:foo-101.12.13-dev',
         'org/app:foo-latest-dev',
-        'ghcr.io/user/app:foo-1.1.1-dev',
+        'ghcr.io/user/app:foo-101.12.13-dev',
         'ghcr.io/user/app:foo-latest-dev'
       ],
       [
@@ -1553,13 +1553,13 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=foo-1.1.1-dev"
+        "org.opencontainers.image.version=foo-101.12.13-dev"
       ],
       undefined
     ],
     [
       'tag23',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app'],
         tags: [
@@ -1568,13 +1568,13 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1',
-        partial: ['1.1'],
+        main: 'v101.12.13',
+        partial: ['101.12'],
         latest: true
       } as Version,
       [
-        'org/app:v1.1.1',
-        'org/app:1.1',
+        'org/app:v101.12.13',
+        'org/app:101.12',
         'org/app:latest'
       ],
       [
@@ -1585,7 +1585,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ],
       undefined
     ],
@@ -1717,7 +1717,7 @@ describe('tag', () => {
     ],
     [
       'tag28',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app'],
         tags: [
@@ -1728,17 +1728,17 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: '1.1.1',
+        main: '101.12.13',
         partial: [
-          "1.1",
-          "1"
+          "101.12",
+          "101"
         ],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1',
-        'org/app:1.1',
-        'org/app:1',
+        'org/app:101.12.13',
+        'org/app:101.12',
+        'org/app:101',
         'org/app:latest'
       ],
       [
@@ -1749,7 +1749,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ],
@@ -1884,7 +1884,7 @@ describe('tag', () => {
     ],
     [
       'tag33',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: [] as string[],
         tags: [
@@ -1895,17 +1895,17 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: '1.1.1',
+        main: '101.12.13',
         partial: [
-          "1.1",
-          "1"
+          "101.12",
+          "101"
         ],
         latest: true
       } as Version,
       [
-        '1.1.1',
-        '1.1',
-        '1',
+        '101.12.13',
+        '101.12',
+        '101',
         'latest'
       ],
       [
@@ -1916,11 +1916,11 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ]
-  ])('given %p with %p event', tagsLabelsTest);
+  ])('given %s with %s event', tagsLabelsTest);
 });
 
 describe('latest', () => {
@@ -2019,20 +2019,20 @@ describe('latest', () => {
     ],
     [
       'latest04',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['user/app'],
         tags: [
-          `type=match,"pattern=\\d.\\d.\\d"`
+          `type=match,"pattern=\\d+\\.\\d+\\.\\d+"`
         ]
       } as Inputs,
       {
-        main: '1.1.1',
+        main: '101.12.13',
         partial: [],
         latest: true
       } as Version,
       [
-        'user/app:1.1.1',
+        'user/app:101.12.13',
         'user/app:latest'
       ],
       [
@@ -2043,25 +2043,25 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ],
     [
       'latest05',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
       } as Inputs,
       {
-        main: 'v1.1.1',
+        main: 'v101.12.13',
         partial: [],
         latest: true
       } as Version,
       [
-        'org/app:v1.1.1',
+        'org/app:v101.12.13',
         'org/app:latest',
-        'ghcr.io/user/app:v1.1.1',
+        'ghcr.io/user/app:v101.12.13',
         'ghcr.io/user/app:latest',
       ],
       [
@@ -2072,7 +2072,7 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ],
       undefined
     ],
@@ -2110,7 +2110,7 @@ describe('latest', () => {
     ],
     [
       'latest07',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -2121,13 +2121,13 @@ describe('latest', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1',
+        main: 'v101.12.13',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:v1.1.1',
-        'ghcr.io/user/app:v1.1.1',
+        'org/app:v101.12.13',
+        'ghcr.io/user/app:v101.12.13',
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -2137,13 +2137,13 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ],
       undefined
     ],
     [
       'latest08',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/MyUSER/MyApp'],
         tags: [
@@ -2154,13 +2154,13 @@ describe('latest', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1',
+        main: 'v101.12.13',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:v1.1.1',
-        'ghcr.io/myuser/myapp:v1.1.1',
+        'org/app:v101.12.13',
+        'ghcr.io/myuser/myapp:v101.12.13',
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -2170,13 +2170,13 @@ describe('latest', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ],
       undefined
     ],
     [
       'latest09',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/MyUSER/MyApp'],
         tags: [
@@ -2199,13 +2199,13 @@ describe('latest', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1',
+        main: 'v101.12.13',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:v1.1.1',
-        'ghcr.io/myuser/myapp:v1.1.1',
+        'org/app:v101.12.13',
+        'ghcr.io/myuser/myapp:v101.12.13',
       ],
       [
         "maintainer=CrazyMax",
@@ -2217,7 +2217,7 @@ describe('latest', () => {
         "org.opencontainers.image.title=MyCustomTitle",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.vendor=MyCompany",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ],
       [
         "maintainer=Foo",
@@ -2229,7 +2229,7 @@ describe('latest', () => {
         "org.opencontainers.image.title=MyNotTitle",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.vendor=MyNotCompany",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ]
     ],
     [
@@ -2262,7 +2262,7 @@ describe('latest', () => {
       ],
       undefined
     ]
-  ])('given %p with %p event', tagsLabelsTest);
+  ])('given %s with %s event', tagsLabelsTest);
 });
 
 describe('pr', () => {
@@ -2621,7 +2621,7 @@ describe('pr', () => {
       ],
       undefined
     ],
-  ])('given %p with %p event', tagsLabelsTest);
+  ])('given %s with %s event', tagsLabelsTest);
 });
 
 describe('pr-head-sha', () => {
@@ -2969,7 +2969,7 @@ describe('pr-head-sha', () => {
         "org.opencontainers.image.version=mytag-master"
       ]
     ],
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabelsAnnotations: Array<string>) => {
+  ])('given %s with %s event', async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabelsAnnotations: Array<string>) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     process.env.DOCKER_METADATA_PR_HEAD_SHA = 'true';
 
@@ -3244,7 +3244,7 @@ describe('schedule', () => {
       ],
       undefined
     ],
-  ])('given %p with %p event', tagsLabelsTest);
+  ])('given %s with %s event', tagsLabelsTest);
 });
 
 describe('release', () => {
@@ -3258,12 +3258,12 @@ describe('release', () => {
         images: ['user/app'],
       } as Inputs,
       {
-        main: 'v1.1.1',
+        main: 'v101.12.13',
         partial: [],
         latest: true
       } as Version,
       [
-        'user/app:v1.1.1',
+        'user/app:v101.12.13',
         'user/app:latest',
       ],
       [
@@ -3274,7 +3274,7 @@ describe('release', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ],
       undefined
     ],
@@ -3290,14 +3290,14 @@ describe('release', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1',
+        main: 'v101.12.13',
         partial: [
           'baseref-'
         ],
         latest: true
       } as Version,
       [
-        'user/app:v1.1.1',
+        'user/app:v101.12.13',
         'user/app:baseref-',
         'user/app:latest'
       ],
@@ -3309,7 +3309,7 @@ describe('release', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1"
+        "org.opencontainers.image.version=v101.12.13"
       ],
       undefined
     ]
@@ -3462,7 +3462,7 @@ describe('raw', () => {
     ],
     [
       'raw05',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -3475,21 +3475,21 @@ describe('raw', () => {
         ]
       } as Inputs,
       {
-        main: '1.1.1',
-        partial: ['1.1', '1', 'my', 'custom', 'tags'],
+        main: '101.12.13',
+        partial: ['101.12', '101', 'my', 'custom', 'tags'],
         latest: true
       } as Version,
       [
-        'org/app:1.1.1',
-        'org/app:1.1',
-        'org/app:1',
+        'org/app:101.12.13',
+        'org/app:101.12',
+        'org/app:101',
         'org/app:my',
         'org/app:custom',
         'org/app:tags',
         'org/app:latest',
-        'ghcr.io/user/app:1.1.1',
-        'ghcr.io/user/app:1.1',
-        'ghcr.io/user/app:1',
+        'ghcr.io/user/app:101.12.13',
+        'ghcr.io/user/app:101.12',
+        'ghcr.io/user/app:101',
         'ghcr.io/user/app:my',
         'ghcr.io/user/app:custom',
         'ghcr.io/user/app:tags',
@@ -3503,13 +3503,13 @@ describe('raw', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=1.1.1"
+        "org.opencontainers.image.version=101.12.13"
       ],
       undefined
     ],
     [
       'raw06',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -3693,7 +3693,7 @@ describe('raw', () => {
       ],
       undefined
     ],
-  ])('given %p wth %p event', tagsLabelsTest);
+  ])('given %s wth %s event', tagsLabelsTest);
 });
 
 describe('json', () => {
@@ -3872,7 +3872,7 @@ describe('json', () => {
     ],
     [
       'json05',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -3886,16 +3886,16 @@ describe('json', () => {
       } as Inputs,
       {
         "tags": [
-          "org/app:1.1.1",
-          "org/app:1.1",
-          "org/app:1",
+          "org/app:101.12.13",
+          "org/app:101.12",
+          "org/app:101",
           "org/app:my",
           "org/app:custom",
           "org/app:tags",
           "org/app:latest",
-          "ghcr.io/user/app:1.1.1",
-          "ghcr.io/user/app:1.1",
-          "ghcr.io/user/app:1",
+          "ghcr.io/user/app:101.12.13",
+          "ghcr.io/user/app:101.12",
+          "ghcr.io/user/app:101",
           "ghcr.io/user/app:my",
           "ghcr.io/user/app:custom",
           "ghcr.io/user/app:tags",
@@ -3909,7 +3909,7 @@ describe('json', () => {
           "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.title": "Hello-World",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-          "org.opencontainers.image.version": "1.1.1"
+          "org.opencontainers.image.version": "101.12.13"
         },
         "annotations": [
           "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -3919,13 +3919,13 @@ describe('json', () => {
           "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
           "manifest:org.opencontainers.image.title=Hello-World",
           "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-          "manifest:org.opencontainers.image.version=1.1.1"
+          "manifest:org.opencontainers.image.version=101.12.13"
         ]
       }
     ],
     [
       'json06',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -3967,7 +3967,7 @@ describe('json', () => {
     ],
     [
       'json07',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app'],
         labels: [
@@ -3980,7 +3980,7 @@ describe('json', () => {
       } as Inputs,
       {
         "tags": [
-          "org/app:v1.1.1",
+          "org/app:v101.12.13",
           "org/app:latest"
         ],
         "labels": {
@@ -3993,7 +3993,7 @@ describe('json', () => {
           "org.opencontainers.image.title": "MyCustom=Title",
           "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
           "org.opencontainers.image.vendor": "MyCompany",
-          "org.opencontainers.image.version": "v1.1.1"
+          "org.opencontainers.image.version": "v101.12.13"
         },
         "annotations": [
           "manifest:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -4003,11 +4003,11 @@ describe('json', () => {
           "manifest:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
           "manifest:org.opencontainers.image.title=Hello-World",
           "manifest:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-          "manifest:org.opencontainers.image.version=v1.1.1"
+          "manifest:org.opencontainers.image.version=v101.12.13"
         ]
       }
     ]
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exJSON: unknown) => {
+  ])('given %s with %s event', async (name: string, envFile: string, inputs: Inputs, exJSON: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
 
     const toolkit = new Toolkit();
@@ -4305,7 +4305,7 @@ describe('bakeFile', () => {
     ],
     [
       'bakeFile05',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -4321,16 +4321,16 @@ describe('bakeFile', () => {
         "target": {
           "docker-metadata-action": {
             "tags": [
-              "org/app:1.1.1",
-              "org/app:1.1",
-              "org/app:1",
+              "org/app:101.12.13",
+              "org/app:101.12",
+              "org/app:101",
               "org/app:my",
               "org/app:custom",
               "org/app:tags",
               "org/app:latest",
-              "ghcr.io/user/app:1.1.1",
-              "ghcr.io/user/app:1.1",
-              "ghcr.io/user/app:1",
+              "ghcr.io/user/app:101.12.13",
+              "ghcr.io/user/app:101.12",
+              "ghcr.io/user/app:101",
               "ghcr.io/user/app:my",
               "ghcr.io/user/app:custom",
               "ghcr.io/user/app:tags",
@@ -4338,7 +4338,7 @@ describe('bakeFile', () => {
             ],
             "args": {
               "DOCKER_META_IMAGES": "org/app,ghcr.io/user/app",
-              "DOCKER_META_VERSION": "1.1.1",
+              "DOCKER_META_VERSION": "101.12.13",
             }
           }
         }
@@ -4354,7 +4354,7 @@ describe('bakeFile', () => {
               "org.opencontainers.image.source": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.title": "Hello-World",
               "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
-              "org.opencontainers.image.version": "1.1.1"
+              "org.opencontainers.image.version": "101.12.13"
             }
           }
         }
@@ -4370,7 +4370,7 @@ describe('bakeFile', () => {
               "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
               "index:org.opencontainers.image.title=Hello-World",
               "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-              "index:org.opencontainers.image.version=1.1.1",
+              "index:org.opencontainers.image.version=101.12.13",
               "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
               "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
               "manifest-descriptor:org.opencontainers.image.licenses=MIT",
@@ -4378,7 +4378,7 @@ describe('bakeFile', () => {
               "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
               "manifest-descriptor:org.opencontainers.image.title=Hello-World",
               "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-              "manifest-descriptor:org.opencontainers.image.version=1.1.1"
+              "manifest-descriptor:org.opencontainers.image.version=101.12.13"
             ]
           }
         }
@@ -4386,7 +4386,7 @@ describe('bakeFile', () => {
     ],
     [
       'bakeFile06',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app', 'ghcr.io/user/app'],
         tags: [
@@ -4456,7 +4456,7 @@ describe('bakeFile', () => {
     ],
     [
       'bakeFile07',
-      'event_tag_v1.1.1.env',
+      'event_tag_v101.12.13.env',
       {
         images: ['org/app'],
         labels: [
@@ -4470,12 +4470,12 @@ describe('bakeFile', () => {
         "target": {
           "docker-metadata-action": {
             "tags": [
-              "org/app:v1.1.1",
+              "org/app:v101.12.13",
               "org/app:latest"
             ],
             "args": {
               "DOCKER_META_IMAGES": "org/app",
-              "DOCKER_META_VERSION": "v1.1.1",
+              "DOCKER_META_VERSION": "v101.12.13",
             }
           }
         }
@@ -4493,7 +4493,7 @@ describe('bakeFile', () => {
               "org.opencontainers.image.title": "MyCustom=Title",
               "org.opencontainers.image.url": "https://github.com/octocat/Hello-World",
               "org.opencontainers.image.vendor": "MyCompany",
-              "org.opencontainers.image.version": "v1.1.1"
+              "org.opencontainers.image.version": "v101.12.13"
             }
           }
         }
@@ -4509,7 +4509,7 @@ describe('bakeFile', () => {
               "index:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
               "index:org.opencontainers.image.title=Hello-World",
               "index:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-              "index:org.opencontainers.image.version=v1.1.1",
+              "index:org.opencontainers.image.version=v101.12.13",
               "manifest-descriptor:org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
               "manifest-descriptor:org.opencontainers.image.description=This your first repo!",
               "manifest-descriptor:org.opencontainers.image.licenses=MIT",
@@ -4517,13 +4517,13 @@ describe('bakeFile', () => {
               "manifest-descriptor:org.opencontainers.image.source=https://github.com/octocat/Hello-World",
               "manifest-descriptor:org.opencontainers.image.title=Hello-World",
               "manifest-descriptor:org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-              "manifest-descriptor:org.opencontainers.image.version=v1.1.1"
+              "manifest-descriptor:org.opencontainers.image.version=v101.12.13"
             ]
           }
         }
       }
     ]
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeTags: unknown, exBakeLabels: unknown, exBakeAnnotations: unknown) => {
+  ])('given %s with %s event', async (name: string, envFile: string, inputs: Inputs, exBakeTags: unknown, exBakeLabels: unknown, exBakeAnnotations: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
 
     const toolkit = new Toolkit();
@@ -4587,7 +4587,7 @@ describe('bakeFileTagsLabels', () => {
         }
       }
     ]
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: unknown) => {
+  ])('given %s with %s event', async (name: string, envFile: string, inputs: Inputs, exBakeDefinition: unknown) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
 
     const toolkit = new Toolkit();
@@ -4633,7 +4633,7 @@ describe('sepTags', () => {
       } as Inputs,
       "user/app:dev,user/app:my,user/app:custom,user/app:tags"
     ]
-  ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, expTags: string) => {
+  ])('given %s with %s event', async (name: string, envFile: string, inputs: Inputs, expTags: string) => {
 
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
 
