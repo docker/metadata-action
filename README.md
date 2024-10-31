@@ -722,7 +722,8 @@ tags: |
   type=sha,format=long
 ```
 
-Output Git short commit (or long if specified) as Docker tag like `sha-ad132f5`.
+Output Git short commit (or long if specified) as Docker tag like
+`sha-860c1904a1ce`.
 
 Extended attributes and default values:
 

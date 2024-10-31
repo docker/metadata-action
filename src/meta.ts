@@ -307,7 +307,7 @@ export class Meta {
 
     let val = this.context.sha;
     if (tag.attrs['format'] === tcl.ShaFormat.Short) {
-      val = this.context.sha.substring(0, 7);
+      val = this.context.sha.substring(0, 12);
     }
 
     const vraw = this.setValue(val, tag);
@@ -373,7 +373,7 @@ export class Meta {
         return context.ref.replace(/^refs\/tags\//g, '');
       },
       sha: function () {
-        return context.sha.substring(0, 7);
+        return context.sha.substring(0, 12);
       },
       base_ref: function () {
         if (/^refs\/tags\//.test(context.ref) && context.payload?.base_ref != undefined) {
