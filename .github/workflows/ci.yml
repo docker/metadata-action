@@ -549,3 +549,33 @@ jobs:
             cwd://${{ steps.docker_meta.outputs.bake-file-labels }}
           targets: |
             release
+
+  sha-short:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        short-length:
+          - ''
+          - 16
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.BUILDX_VERSION }}
+          driver: docker
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          tags: |
+            type=sha
+        env:
+          DOCKER_METADATA_SHORT_SHA_LENGTH: ${{ matrix.short-length }}

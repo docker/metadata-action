@@ -360,10 +360,11 @@ So it can be used with our [Docker Build Push action](https://github.com/docker/
 
 ### environment variables
 
-| Name                                 | Type   | Description                                                                                                |
-|--------------------------------------|--------|------------------------------------------------------------------------------------------------------------|
-| `DOCKER_METADATA_PR_HEAD_SHA`        | Bool   | If `true`, set associated head SHA instead of commit SHA that triggered the workflow on pull request event |
-| `DOCKER_METADATA_ANNOTATIONS_LEVELS` | String | Comma separated list of annotations levels to set for annotations output separated (default `manifest`)    |
+| Name                                 | Type   | Description                                                                                                                                   |
+|--------------------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| `DOCKER_METADATA_PR_HEAD_SHA`        | Bool   | If `true`, set associated head SHA instead of commit SHA that triggered the workflow on pull request event                                    |
+| `DOCKER_METADATA_SHORT_SHA_LENGTH`   | Number | Specifies the length of the [short commit SHA](#typesha) to ensure uniqueness. Default is `12`, but can be increased for larger repositories. |
+| `DOCKER_METADATA_ANNOTATIONS_LEVELS` | String | Comma separated list of annotations levels to set for annotations output separated (default `manifest`)                                       |
 
 ## `context` input
 
@@ -722,7 +723,26 @@ tags: |
   type=sha,format=long
 ```
 
-Output Git short commit (or long if specified) as Docker tag like `sha-ad132f5`.
+Output Git short commit (or long if specified) as Docker tag like
+`sha-860c1904a1ce`.
+
+By default, the length of the short commit SHA is `12` characters. You can
+increase this length for larger repositories by setting the
+[`DOCKER_METADATA_SHORT_SHA_LENGTH` environment variable](#environment-variables):
+
+```yaml
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            name/app
+          tags: |
+            type=sha
+        env:
+          DOCKER_METADATA_SHORT_SHA_LENGTH: 16
+```
 
 Extended attributes and default values:
 
