@@ -14,6 +14,8 @@ import * as icl from './image';
 import * as tcl from './tag';
 import * as fcl from './flavor';
 
+const defaultShortShaLength = 12;
+
 export interface Version {
   main: string | undefined;
   partial: string[];
@@ -307,7 +309,7 @@ export class Meta {
 
     let val = this.context.sha;
     if (tag.attrs['format'] === tcl.ShaFormat.Short) {
-      val = this.context.sha.substring(0, 12);
+      val = Meta.shortSha(this.context.sha);
     }
 
     const vraw = this.setValue(val, tag);
@@ -373,7 +375,7 @@ export class Meta {
         return context.ref.replace(/^refs\/tags\//g, '');
       },
       sha: function () {
-        return context.sha.substring(0, 12);
+        return Meta.shortSha(context.sha);
       },
       base_ref: function () {
         if (/^refs\/tags\//.test(context.ref) && context.payload?.base_ref != undefined) {
@@ -592,5 +594,19 @@ export class Meta {
 
   private static sanitizeTag(tag: string): string {
     return tag.replace(/[^a-zA-Z0-9._-]+/g, '-');
+  }
+
+  private static shortSha(sha: string): string {
+    let shortShaLength = defaultShortShaLength;
+    if (process.env.DOCKER_METADATA_SHORT_SHA_LENGTH) {
+      if (isNaN(Number(process.env.DOCKER_METADATA_SHORT_SHA_LENGTH))) {
+        throw new Error(`DOCKER_METADATA_SHORT_SHA_LENGTH is not a valid number: ${process.env.DOCKER_METADATA_SHORT_SHA_LENGTH}`);
+      }
+      shortShaLength = Number(process.env.DOCKER_METADATA_SHORT_SHA_LENGTH);
+    }
+    if (shortShaLength >= sha.length) {
+      return sha;
+    }
+    return sha.substring(0, shortShaLength);
   }
 }
