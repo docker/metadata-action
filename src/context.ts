@@ -1,8 +1,13 @@
 import * as core from '@actions/core';
-import {Context} from '@actions/github/lib/context';
+import {Context as GithubContext} from '@actions/github/lib/context';
 import {Util} from '@docker/actions-toolkit/lib/util';
 import {Git} from '@docker/actions-toolkit/lib/git';
 import {GitHub} from '@docker/actions-toolkit/lib/github';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
+
+export interface Context extends GithubContext {
+  commitDate: Date;
+}
 
 export interface Inputs {
   context: ContextSource;
@@ -39,10 +44,10 @@ export enum ContextSource {
   git = 'git'
 }
 
-export async function getContext(source: ContextSource): Promise<Context> {
+export async function getContext(source: ContextSource, toolkit: Toolkit): Promise<Context> {
   switch (source) {
     case ContextSource.workflow:
-      return getContextFromWorkflow();
+      return await getContextFromWorkflow(toolkit);
     case ContextSource.git:
       return await getContextFromGit();
     default:
@@ -50,7 +55,7 @@ export async function getContext(source: ContextSource): Promise<Context> {
   }
 }
 
-function getContextFromWorkflow(): Context {
+async function getContextFromWorkflow(toolkit: Toolkit): Promise<Context> {
   const context = GitHub.context;
 
   // Needs to override Git reference with pr ref instead of upstream branch ref
@@ -69,9 +74,56 @@ function getContextFromWorkflow(): Context {
     }
   }
 
-  return context;
+  return {
+    commitDate: await getCommitDateFromWorkflow(context.sha, toolkit),
+    ...context
+  } as Context;
 }
 
 async function getContextFromGit(): Promise<Context> {
-  return await Git.context();
+  const ctx = await Git.context();
+
+  return {
+    commitDate: await Git.commitDate(ctx.sha),
+    ...ctx
+  } as Context;
+}
+
+async function getCommitDateFromWorkflow(sha: string, toolkit: Toolkit): Promise<Date> {
+  const event = GitHub.context.payload as unknown as {
+    // branch push
+    commits?: Array<{
+      timestamp: string;
+      // commit sha
+      id: string;
+    }>;
+    // tags
+    head_commit?: {
+      timestamp: string;
+      // commit sha
+      id: string;
+    };
+  };
+
+  if (event.commits) {
+    const commitDate = event.commits.find(x => x.id === sha)?.timestamp;
+    if (commitDate) {
+      return new Date(commitDate);
+    }
+  }
+
+  if (event.head_commit) {
+    if (event.head_commit.id === sha) {
+      return new Date(event.head_commit.timestamp);
+    }
+  }
+
+  // fallback to github api for commit date
+  const commit = await toolkit.github.octokit.request('GET /repos/{owner}/{repo}/commits/{commit_sha}', {
+    commit_sha: sha,
+    owner: GitHub.context.repo.owner,
+    repo: GitHub.context.repo.repo
+  });
+
+  return new Date(commit.data.committer.date);
 }

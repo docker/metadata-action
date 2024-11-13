@@ -31,8 +31,16 @@ beforeEach(() => {
       delete process.env[key];
     }
   });
+
   jest.spyOn(GitHub, 'context', 'get').mockImplementation((): Context => {
-    return new Context();
+    //@ts-expect-error partial info
+    return {
+      ...new Context(),
+      repo: {
+        owner: 'docker',
+        repo: 'repo'
+      }
+    };
   });
 });
 
@@ -53,7 +61,7 @@ const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exV
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
   const toolkit = new Toolkit();
   const repo = await toolkit.github.repoData();
-  const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
+  const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow, toolkit), repo);
 
   const version = meta.version;
   expect(version).toEqual(exVersion);
@@ -622,6 +630,7 @@ describe('push', () => {
         tags: [
           `type=raw,value=mytag-{{branch}}`,
           `type=raw,value=mytag-{{date 'YYYYMMDD'}}`,
+          `type=raw,value=mytag-cd-{{commit_date 'YYYYMMDD'}}`,
           `type=raw,value=mytag-{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`,
           `type=raw,value=mytag-tag-{{tag}}`,
           `type=raw,value=mytag-baseref-{{base_ref}}`,
@@ -632,6 +641,7 @@ describe('push', () => {
         main: 'mytag-master',
         partial: [
           'mytag-20200110',
+          "mytag-cd-20200110",
           'mytag-20200110-093000',
           'mytag-tag-',
           'mytag-baseref-',
@@ -642,6 +652,7 @@ describe('push', () => {
       [
         'user/app:mytag-master',
         'user/app:mytag-20200110',
+        'user/app:mytag-cd-20200110',
         'user/app:mytag-20200110-093000',
         'user/app:mytag-tag-',
         'user/app:mytag-baseref-',
@@ -768,6 +779,7 @@ describe('push', () => {
           `type=raw,value=mytag-{{branch}}`,
           `type=raw,value=mytag-{{date 'YYYYMMDD'}}`,
           `type=raw,value=mytag-{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`,
+          `type=raw,value=mytag-src-{{commit_date 'YYYYMMDD'}}`,
           `type=raw,value=mytag-tag-{{tag}}`,
           `type=raw,value=mytag-baseref-{{base_ref}}`,
           `type=raw,value=mytag-defbranch,enable={{is_default_branch}}`
@@ -778,6 +790,7 @@ describe('push', () => {
         partial: [
           'mytag-20200110',
           'mytag-20200110-093000',
+          'mytag-src-20200110',
           'mytag-tag-',
           'mytag-baseref-',
           'mytag-defbranch'
@@ -788,6 +801,7 @@ describe('push', () => {
         'mytag-master',
         'mytag-20200110',
         'mytag-20200110-093000',
+        'mytag-src-20200110',
         'mytag-tag-',
         'mytag-baseref-',
         'mytag-defbranch'
@@ -2621,6 +2635,35 @@ describe('pr', () => {
       ],
       undefined
     ],
+    [
+      'pr12',
+      'event_pull_request.env',
+      {
+        images: ['org/app'],
+        tags: [
+          `type=raw,value={{commit_date YYYY-MM-DD-HHmmSS}}`,
+        ]
+      } as Inputs,
+      {
+        main: "2020-01-10T00-30-00Z",
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        'org/app:2020-01-10T00-30-00Z'
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=a9c8c5828b91be19d9728548b24759e352367ef1",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=2020-01-10T00-30-00Z"
+      ],
+      undefined
+    ],
   ])('given %p with %p event', tagsLabelsTest);
 });
 
@@ -2969,13 +3012,41 @@ describe('pr-head-sha', () => {
         "org.opencontainers.image.version=mytag-master"
       ]
     ],
+    [
+      'pr12',
+      'event_pull_request.env',
+      {
+        images: ['org/app'],
+        tags: [
+          `type=raw,value=src-{{commit_date YYYY-MM-DD}}`,
+        ]
+      } as Inputs,
+      {
+        main: "src-2020-01-10T00-30-00Z",
+        partial: [],
+        latest: false
+      } as Version,
+      [
+        "org/app:src-2020-01-10T00-30-00Z",
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=3370e228f2209994d57af4427fe64e71bb79ac96",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=src-2020-01-10T00-30-00Z",
+      ]
+    ],
   ])('given %p with %p event', async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabelsAnnotations: Array<string>) => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
     process.env.DOCKER_METADATA_PR_HEAD_SHA = 'true';
 
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow, toolkit), repo);
 
     const version = meta.version;
     expect(version).toEqual(exVersion);
@@ -3028,16 +3099,20 @@ describe('schedule', () => {
       {
         images: ['user/app'],
         tags: [
-          `type=schedule,pattern={{date 'YYYYMMDD'}}`
+          `type=schedule,pattern={{date 'YYYYMMDD'}}`,
+          `type=schedule,pattern=source-date-{{commit_date 'YYYY-MM-DD'}}`
         ]
       } as Inputs,
       {
         main: '20200110',
-        partial: [],
+        partial: [
+          "source-date-2020-01-10",
+        ],
         latest: false
       } as Version,
       [
-        'user/app:20200110'
+        'user/app:20200110',
+        'user/app:source-date-2020-01-10'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -3221,16 +3296,20 @@ describe('schedule', () => {
       {
         images: ['user/app'],
         tags: [
-          `type=schedule,pattern={{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`
+          `type=schedule,pattern={{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`,
+          `type=schedule,pattern=src-{{commit_date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}`,
         ]
       } as Inputs,
       {
         main: '20200110-093000',
-        partial: [],
+        partial: [
+          "src-20200110-093000",
+        ],
         latest: false
       } as Version,
       [
-        'user/app:20200110-093000'
+        'user/app:20200110-093000',
+        'user/app:src-20200110-093000'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -3310,6 +3389,39 @@ describe('release', () => {
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.version=v1.1.1"
+      ],
+      undefined
+    ],
+    [
+      'release03',
+      'event_release_created.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=raw,value=src-{{commit_date 'YYYYMMDD-HHmmss'}}`,
+          `type=raw,value={{date 'YYYYMMDD-HHmmss'}}`,
+        ]
+      } as Inputs,
+      {
+      "main": "src-20200110-003000",
+        partial: [
+        "20200110-003000",
+        ],
+"latest": false,
+      } as Version,
+      [
+        "user/app:src-20200110-003000",
+        "user/app:20200110-003000",
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+      "org.opencontainers.image.version=src-20200110-003000",
       ],
       undefined
     ]
@@ -4012,7 +4124,7 @@ describe('json', () => {
 
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow,toolkit), repo);
 
     const jsonOutput = meta.getJSON(['manifest']);
     expect(jsonOutput).toEqual(exJSON);
@@ -4528,7 +4640,7 @@ describe('bakeFile', () => {
 
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow,toolkit), repo);
 
     const bakeFileTags = meta.getBakeFile('tags');
     expect(JSON.parse(fs.readFileSync(bakeFileTags, 'utf8'))).toEqual(exBakeTags);
@@ -4592,7 +4704,7 @@ describe('bakeFileTagsLabels', () => {
 
     const toolkit = new Toolkit();
     const repo = await toolkit.github.repoData();
-    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow,toolkit), repo);
 
     const bakeFile = meta.getBakeFileTagsLabels();
     expect(JSON.parse(fs.readFileSync(bakeFile, 'utf8'))).toEqual(exBakeDefinition);
@@ -4638,8 +4750,10 @@ describe('sepTags', () => {
     process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
 
     const toolkit = new Toolkit();
+
     const repo = await toolkit.github.repoData();
-    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow), repo);
+
+    const meta = new Meta({...getInputs(), ...inputs}, await getContext(ContextSource.workflow, toolkit), repo);
 
     expect(meta.getTags().join(inputs.sepTags)).toEqual(expTags);
   });
