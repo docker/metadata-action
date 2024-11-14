@@ -20,6 +20,24 @@ env:
   BUILDX_VERSION: latest
 
 jobs:
+  context:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        context:
+          - workflow
+          - git
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Docker meta
+        uses: ./
+        with:
+          context: ${{ matrix.context }}
+
   multi-images:
     runs-on: ubuntu-latest
     steps:
@@ -341,10 +359,6 @@ jobs:
         name: Check manifest
         run: |
           docker buildx imagetools inspect ${{ env.DOCKER_IMAGE }}:${{ steps.docker_meta.outputs.version }}
-      -
-        name: Dump context
-        if: always()
-        uses: crazy-max/ghaction-dump-context@v2
 
   bake:
     runs-on: ubuntu-latest
@@ -579,3 +593,13 @@ jobs:
             type=sha
         env:
           DOCKER_METADATA_SHORT_SHA_LENGTH: ${{ matrix.short-length }}
+
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Dump context
+        uses: crazy-max/ghaction-dump-context@v2
