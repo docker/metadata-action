@@ -11,7 +11,7 @@ actionsToolkit.run(
   async () => {
     const inputs: Inputs = getInputs();
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
-    const context = await getContext(inputs.context);
+    const context = await getContext(inputs.context, toolkit);
     const repo = await toolkit.github.repoData();
 
     await core.group(`Context info`, async () => {
@@ -23,6 +23,7 @@ actionsToolkit.run(
       core.info(`actor: ${context.actor}`);
       core.info(`runNumber: ${context.runNumber}`);
       core.info(`runId: ${context.runId}`);
+      core.info(`commitDate: ${context.commitDate}`);
     });
 
     if (core.isDebug()) {

@@ -889,6 +889,19 @@ Default `tz` is UTC.
 | `{{date 'dddd, MMMM Do YYYY, h:mm:ss a'}}`   | `Friday, January 10th 2020, 3:25:50 pm` |
 | `{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}` | `20200110-093000`                       |
 
+#### `{{commit_date '<format>' tz='<timezone>'}}`
+
+Returns the date when current git commit is committed.
+rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/).
+
+Default `tz` is UTC.
+
+| Expression                                   | Output example                          |
+|----------------------------------------------|-----------------------------------------|
+| `{{commit_date 'YYYYMMDD'}}`                        | `20200110`                              |
+| `{{commit_date 'dddd, MMMM Do YYYY, h:mm:ss a'}}`   | `Friday, January 10th 2020, 3:25:50 pm` |
+| `{{commit_date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}` | `20200110-093000`                       |
+
 ### Major version zero
 
 Major version zero (`0.y.z`) is for initial development and **may** change at

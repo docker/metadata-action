@@ -5,11 +5,10 @@ import moment from 'moment-timezone';
 import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
 import * as core from '@actions/core';
-import {Context} from '@actions/github/lib/context';
 import {Context as ToolkitContext} from '@docker/actions-toolkit/lib/context';
 import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
 
-import {Inputs} from './context';
+import {Inputs, Context} from './context';
 import * as icl from './image';
 import * as tcl from './tag';
 import * as fcl from './flavor';
@@ -115,10 +114,25 @@ export class Meta {
     }
 
     const currentDate = this.date;
+    const commitDate = this.context.commitDate;
     const vraw = this.setValue(
       handlebars.compile(tag.attrs['pattern'])({
         date: function (format, options) {
           const m = moment(currentDate);
+          let tz = 'UTC';
+          Object.keys(options.hash).forEach(key => {
+            switch (key) {
+              case 'tz':
+                tz = options.hash[key];
+                break;
+              default:
+                throw new Error(`Unknown ${key} attribute`);
+            }
+          });
+          return m.tz(tz).format(format);
+        },
+        commit_date: function (format, options) {
+          const m = moment(commitDate);
           let tz = 'UTC';
           Object.keys(options.hash).forEach(key => {
             switch (key) {
@@ -361,6 +375,7 @@ export class Meta {
   private setGlobalExp(val): string {
     const context = this.context;
     const currentDate = this.date;
+    const commitDate = this.context.commitDate;
     return handlebars.compile(val)({
       branch: function () {
         if (!/^refs\/heads\//.test(context.ref)) {
@@ -387,6 +402,20 @@ export class Meta {
           return context.payload.pull_request.base.ref;
         }
         return '';
+      },
+      commit_date: function (format, options) {
+        const m = moment(commitDate);
+        let tz = 'UTC';
+        Object.keys(options.hash).forEach(key => {
+          switch (key) {
+            case 'tz':
+              tz = options.hash[key];
+              break;
+            default:
+              throw new Error(`Unknown ${key} attribute`);
+          }
+        });
+        return m.tz(tz).format(format);
       },
       is_default_branch: function () {
         const branch = context.ref.replace(/^refs\/heads\//g, '');
