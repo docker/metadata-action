@@ -119,11 +119,18 @@ async function getCommitDateFromWorkflow(sha: string, toolkit: Toolkit): Promise
   }
 
   // fallback to github api for commit date
-  const commit = await toolkit.github.octokit.request('GET /repos/{owner}/{repo}/commits/{commit_sha}', {
-    commit_sha: sha,
-    owner: GitHub.context.repo.owner,
-    repo: GitHub.context.repo.repo
-  });
-
-  return new Date(commit.data.committer.date);
+  try {
+    const commit = await toolkit.github.octokit.rest.repos.getCommit({
+      owner: GitHub.context.repo.owner,
+      repo: GitHub.context.repo.repo,
+      ref: sha
+    });
+    if (commit.data.commit.committer?.date) {
+      return new Date(commit.data.commit.committer.date);
+    }
+    throw new Error('Committer date not found');
+  } catch (error) {
+    core.debug(`Failed to get commit date from GitHub API: ${error.message}`);
+    return new Date();
+  }
 }
