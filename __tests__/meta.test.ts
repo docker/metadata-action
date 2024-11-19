@@ -2,10 +2,11 @@ import {beforeEach, describe, expect, jest, test} from '@jest/globals';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
+
+import {Context} from '@actions/github/lib/context';
 import {GitHub} from '@docker/actions-toolkit/lib/github';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
 import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
-import {Context} from '@actions/github/lib/context';
 
 import {ContextSource, getContext, getInputs, Inputs} from '../src/context';
 import {Meta, Version} from '../src/meta';

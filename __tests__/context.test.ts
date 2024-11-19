@@ -5,9 +5,9 @@ import * as path from 'path';
 import {Context} from '@actions/github/lib/context';
 import {Git} from '@docker/actions-toolkit/lib/git';
 import {GitHub} from '@docker/actions-toolkit/lib/github';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
 
 import {ContextSource, getContext, getInputs, Inputs} from '../src/context';
-import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
 
 const toolkit = new Toolkit({githubToken: 'fake-github-token'});
 
