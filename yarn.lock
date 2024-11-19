@@ -1099,9 +1099,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docker/actions-toolkit@npm:^0.44.0":
-  version: 0.44.0
-  resolution: "@docker/actions-toolkit@npm:0.44.0"
+"@docker/actions-toolkit@npm:^0.45.0":
+  version: 0.45.0
+  resolution: "@docker/actions-toolkit@npm:0.45.0"
   dependencies:
     "@actions/artifact": ^2.1.11
     "@actions/cache": ^3.3.0
@@ -1124,7 +1124,7 @@ __metadata:
     semver: ^7.6.3
     tar-stream: ^3.1.7
     tmp: ^0.2.3
-  checksum: 2accc7a46825121ff8359520958f92f7b5f1d7bc08517aa0ce7c953b44492db8ff29c062511f3488c51b9e414cf9d46047d83e352aebf80636e306344773668f
+  checksum: 64037efd5227a5c131c7b92887d2014f163d3552cd08ce77c5a11d31115b6a8a67b4f22433b3f17356868f88c6b666503dd96970847ac8827f99182f3a394788
   languageName: node
   linkType: hard
 
@@ -3215,7 +3215,7 @@ __metadata:
   dependencies:
     "@actions/core": ^1.11.1
     "@actions/github": ^6.0.0
-    "@docker/actions-toolkit": ^0.44.0
+    "@docker/actions-toolkit": ^0.45.0
     "@renovate/pep440": ^1.0.0
     "@types/csv-parse": ^1.2.2
     "@types/node": ^20.12.12
