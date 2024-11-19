@@ -121,8 +121,8 @@ async function getCommitDateFromWorkflow(sha: string, toolkit: Toolkit): Promise
   core.debug(`fetch commit ${sha} metadata from ${GitHub.context.repo.owner}/${GitHub.context.repo.repo}`);
 
   // fallback to github api for commit date
-  const commit = await toolkit.github.octokit.request('GET /repos/{owner}/{repo}/commits/{commit_sha}', {
-    commit_sha: sha,
+  const commit = await toolkit.github.octokit.request('GET /repos/{owner}/{repo}/commits/{ref}', {
+    ref: sha,
     owner: GitHub.context.repo.owner,
     repo: GitHub.context.repo.repo
   });
