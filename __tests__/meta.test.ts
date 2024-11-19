@@ -319,14 +319,14 @@ describe('push', () => {
       } as Inputs,
       {
         main: 'dev',
-        partial: ['sha-860c1904a1ce'],
+        partial: ['sha-860c190'],
         latest: false
       } as Version,
       [
         'org/app:dev',
-        'org/app:sha-860c1904a1ce',
+        'org/app:sha-860c190',
         'ghcr.io/user/app:dev',
-        'ghcr.io/user/app:sha-860c1904a1ce'
+        'ghcr.io/user/app:sha-860c190'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -352,14 +352,14 @@ describe('push', () => {
       } as Inputs,
       {
         main: 'edge',
-        partial: ['sha-266574110acf'],
+        partial: ['sha-2665741'],
         latest: false
       } as Version,
       [
         'org/app:edge',
-        'org/app:sha-266574110acf',
+        'org/app:sha-2665741',
         'ghcr.io/user/app:edge',
-        'ghcr.io/user/app:sha-266574110acf'
+        'ghcr.io/user/app:sha-2665741'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -385,14 +385,14 @@ describe('push', () => {
       } as Inputs,
       {
         main: 'edge',
-        partial: ['sha-860c1904a1ce'],
+        partial: ['sha-860c190'],
         latest: false
       } as Version,
       [
         'org/app:edge',
-        'org/app:sha-860c1904a1ce',
+        'org/app:sha-860c190',
         'ghcr.io/user/app:edge',
-        'ghcr.io/user/app:sha-860c1904a1ce'
+        'ghcr.io/user/app:sha-860c190'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -417,13 +417,13 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'sha-266574110acf',
+        main: 'sha-2665741',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:sha-266574110acf',
-        'ghcr.io/user/app:sha-266574110acf'
+        'org/app:sha-2665741',
+        'ghcr.io/user/app:sha-2665741'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -433,7 +433,7 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-266574110acf"
+        "org.opencontainers.image.version=sha-2665741"
       ],
       undefined
     ],
@@ -448,13 +448,13 @@ describe('push', () => {
         ],
       } as Inputs,
       {
-        main: 'sha-983315b5e8d4',
+        main: 'sha-983315b',
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:sha-983315b5e8d4',
-        'ghcr.io/user/app:sha-983315b5e8d4'
+        'org/app:sha-983315b',
+        'ghcr.io/user/app:sha-983315b'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -464,7 +464,7 @@ describe('push', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-983315b5e8d4"
+        "org.opencontainers.image.version=sha-983315b"
       ],
       undefined
     ],
@@ -1356,17 +1356,17 @@ describe('tag', () => {
       } as Inputs,
       {
         main: '1.0.0',
-        partial: ['1.0', 'sha-860c1904a1ce'],
+        partial: ['1.0', 'sha-860c190'],
         latest: true
       } as Version,
       [
         'org/app:1.0.0',
         'org/app:1.0',
-        'org/app:sha-860c1904a1ce',
+        'org/app:sha-860c190',
         'org/app:latest',
         'ghcr.io/user/app:1.0.0',
         'ghcr.io/user/app:1.0',
-        'ghcr.io/user/app:sha-860c1904a1ce',
+        'ghcr.io/user/app:sha-860c190',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1396,17 +1396,17 @@ describe('tag', () => {
       } as Inputs,
       {
         main: '1.0.0',
-        partial: ['1.0', 'sha-860c1904a1ce'],
+        partial: ['1.0', 'sha-860c190'],
         latest: true
       } as Version,
       [
         'org/app:1.0.0',
         'org/app:1.0',
-        'org/app:sha-860c1904a1ce',
+        'org/app:sha-860c190',
         'org/app:latest',
         'ghcr.io/user/app:1.0.0',
         'ghcr.io/user/app:1.0',
-        'ghcr.io/user/app:sha-860c1904a1ce',
+        'ghcr.io/user/app:sha-860c190',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1438,17 +1438,17 @@ describe('tag', () => {
       } as Inputs,
       {
         main: '1.0.0-dev',
-        partial: ['1.0', 'sha-860c1904a1ce-dev'],
+        partial: ['1.0', 'sha-860c190-dev'],
         latest: true
       } as Version,
       [
         'org/app:1.0.0-dev',
         'org/app:1.0',
-        'org/app:sha-860c1904a1ce-dev',
+        'org/app:sha-860c190-dev',
         'org/app:latest',
         'ghcr.io/user/app:1.0.0-dev',
         'ghcr.io/user/app:1.0',
-        'ghcr.io/user/app:sha-860c1904a1ce-dev',
+        'ghcr.io/user/app:sha-860c190-dev',
         'ghcr.io/user/app:latest'
       ],
       [
@@ -1475,16 +1475,16 @@ describe('tag', () => {
         ]
       } as Inputs,
       {
-        main: 'v1.1.1-860c1904a1ce-foo',
+        main: 'v1.1.1-860c190-foo',
         partial: [
           'master-foo'
         ],
         latest: false
       } as Version,
       [
-        'org/app:v1.1.1-860c1904a1ce-foo',
+        'org/app:v1.1.1-860c190-foo',
         'org/app:master-foo',
-        'ghcr.io/user/app:v1.1.1-860c1904a1ce-foo',
+        'ghcr.io/user/app:v1.1.1-860c190-foo',
         'ghcr.io/user/app:master-foo'
       ],
       [
@@ -1495,7 +1495,7 @@ describe('tag', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=v1.1.1-860c1904a1ce-foo"
+        "org.opencontainers.image.version=v1.1.1-860c190-foo"
       ],
       undefined
     ],
@@ -2349,14 +2349,14 @@ describe('pr', () => {
       } as Inputs,
       {
         main: 'pr-15',
-        partial: ['sha-a9c8c5828b91'],
+        partial: ['sha-a9c8c58'],
         latest: false
       } as Version,
       [
         'org/app:pr-15',
-        'org/app:sha-a9c8c5828b91',
+        'org/app:sha-a9c8c58',
         'ghcr.io/user/app:pr-15',
-        'ghcr.io/user/app:sha-a9c8c5828b91'
+        'ghcr.io/user/app:sha-a9c8c58'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -2381,14 +2381,14 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-a9c8c5828b91',
+        main: 'sha-a9c8c58',
         partial: ['pr-15'],
         latest: false
       } as Version,
       [
-        'org/app:sha-a9c8c5828b91',
+        'org/app:sha-a9c8c58',
         'org/app:pr-15',
-        'ghcr.io/user/app:sha-a9c8c5828b91',
+        'ghcr.io/user/app:sha-a9c8c58',
         'ghcr.io/user/app:pr-15'
       ],
       [
@@ -2399,7 +2399,7 @@ describe('pr', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-a9c8c5828b91"
+        "org.opencontainers.image.version=sha-a9c8c58"
       ],
       undefined
     ],
@@ -2482,14 +2482,14 @@ describe('pr', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-266574110acf',
+        main: 'sha-2665741',
         partial: ['pr-15'],
         latest: false
       } as Version,
       [
-        'org/app:sha-266574110acf',
+        'org/app:sha-2665741',
         'org/app:pr-15',
-        'ghcr.io/user/app:sha-266574110acf',
+        'ghcr.io/user/app:sha-2665741',
         'ghcr.io/user/app:pr-15'
       ],
       [
@@ -2500,7 +2500,7 @@ describe('pr', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-266574110acf"
+        "org.opencontainers.image.version=sha-2665741"
       ],
       undefined
     ],
@@ -2554,14 +2554,14 @@ describe('pr', () => {
       {
         main: 'pr-15',
         partial: [
-          'sha-266574110acf',
+          'sha-2665741',
           'sha-266574110acf203503badf966df2ea24b5d732d7'
         ],
         latest: false
       } as Version,
       [
         'org/app:pr-15',
-        'org/app:sha-266574110acf',
+        'org/app:sha-2665741',
         'org/app:sha-266574110acf203503badf966df2ea24b5d732d7'
       ],
       [
@@ -2735,14 +2735,14 @@ describe('pr-head-sha', () => {
       } as Inputs,
       {
         main: 'pr-15',
-        partial: ['sha-3370e228f220'],
+        partial: ['sha-3370e22'],
         latest: false
       } as Version,
       [
         'org/app:pr-15',
-        'org/app:sha-3370e228f220',
+        'org/app:sha-3370e22',
         'ghcr.io/user/app:pr-15',
-        'ghcr.io/user/app:sha-3370e228f220'
+        'ghcr.io/user/app:sha-3370e22'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -2766,14 +2766,14 @@ describe('pr-head-sha', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-3370e228f220',
+        main: 'sha-3370e22',
         partial: ['pr-15'],
         latest: false
       } as Version,
       [
-        'org/app:sha-3370e228f220',
+        'org/app:sha-3370e22',
         'org/app:pr-15',
-        'ghcr.io/user/app:sha-3370e228f220',
+        'ghcr.io/user/app:sha-3370e22',
         'ghcr.io/user/app:pr-15'
       ],
       [
@@ -2784,7 +2784,7 @@ describe('pr-head-sha', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-3370e228f220"
+        "org.opencontainers.image.version=sha-3370e22"
       ]
     ],
     [
@@ -2864,14 +2864,14 @@ describe('pr-head-sha', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-3370e228f220',
+        main: 'sha-3370e22',
         partial: ['pr-15'],
         latest: false
       } as Version,
       [
-        'org/app:sha-3370e228f220',
+        'org/app:sha-3370e22',
         'org/app:pr-15',
-        'ghcr.io/user/app:sha-3370e228f220',
+        'ghcr.io/user/app:sha-3370e22',
         'ghcr.io/user/app:pr-15'
       ],
       [
@@ -2882,7 +2882,7 @@ describe('pr-head-sha', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-3370e228f220"
+        "org.opencontainers.image.version=sha-3370e22"
       ]
     ],
     [
@@ -2934,14 +2934,14 @@ describe('pr-head-sha', () => {
       {
         main: 'pr-15',
         partial: [
-          'sha-3370e228f220',
+          'sha-3370e22',
           'sha-3370e228f2209994d57af4427fe64e71bb79ac96'
         ],
         latest: false
       } as Version,
       [
         'org/app:pr-15',
-        'org/app:sha-3370e228f220',
+        'org/app:sha-3370e22',
         'org/app:sha-3370e228f2209994d57af4427fe64e71bb79ac96'
       ],
       [
@@ -3197,14 +3197,14 @@ describe('schedule', () => {
       } as Inputs,
       {
         main: 'nightly',
-        partial: ['sha-860c1904a1ce'],
+        partial: ['sha-860c190'],
         latest: false
       } as Version,
       [
         'org/app:nightly',
-        'org/app:sha-860c1904a1ce',
+        'org/app:sha-860c190',
         'ghcr.io/user/app:nightly',
-        'ghcr.io/user/app:sha-860c1904a1ce'
+        'ghcr.io/user/app:sha-860c190'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -3230,7 +3230,7 @@ describe('schedule', () => {
         ]
       } as Inputs,
       {
-        main: 'sha-860c1904a1ce',
+        main: 'sha-860c190',
         partial: [
           'nightly',
           'defbranch'
@@ -3238,10 +3238,10 @@ describe('schedule', () => {
         latest: false
       } as Version,
       [
-        'org/app:sha-860c1904a1ce',
+        'org/app:sha-860c190',
         'org/app:nightly',
         'org/app:defbranch',
-        'ghcr.io/user/app:sha-860c1904a1ce',
+        'ghcr.io/user/app:sha-860c190',
         'ghcr.io/user/app:nightly',
         'ghcr.io/user/app:defbranch'
       ],
@@ -3253,7 +3253,7 @@ describe('schedule', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=sha-860c1904a1ce"
+        "org.opencontainers.image.version=sha-860c190"
       ],
       undefined
     ],
