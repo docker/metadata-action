@@ -45,6 +45,7 @@ ___
     * [`{{base_ref}}`](#base_ref)
     * [`{{is_default_branch}}`](#is_default_branch)
     * [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
+    * [`{{commit_date '<format>' tz='<timezone>'}}`](#commit_date-format-tztimezone)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
   * [Overwrite labels and annotations](#overwrite-labels-and-annotations)
@@ -891,13 +892,14 @@ Default `tz` is UTC.
 
 #### `{{commit_date '<format>' tz='<timezone>'}}`
 
-Returns the date when current git commit is committed.
-rendered by its [moment format](https://momentjs.com/docs/#/displaying/format/).
+Returns the date when the current git commit is committed, rendered by its
+[moment format](https://momentjs.com/docs/#/displaying/format/). It falls back
+to the current date if the commit date is not available.
 
 Default `tz` is UTC.
 
-| Expression                                   | Output example                          |
-|----------------------------------------------|-----------------------------------------|
+| Expression                                          | Output example                          |
+|-----------------------------------------------------|-----------------------------------------|
 | `{{commit_date 'YYYYMMDD'}}`                        | `20200110`                              |
 | `{{commit_date 'dddd, MMMM Do YYYY, h:mm:ss a'}}`   | `Friday, January 10th 2020, 3:25:50 pm` |
 | `{{commit_date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}` | `20200110-093000`                       |
