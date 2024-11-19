@@ -13,7 +13,7 @@ import * as icl from './image';
 import * as tcl from './tag';
 import * as fcl from './flavor';
 
-const defaultShortShaLength = 12;
+const defaultShortShaLength = 7;
 
 export interface Version {
   main: string | undefined;
