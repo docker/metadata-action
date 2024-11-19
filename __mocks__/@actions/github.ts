@@ -205,5 +205,5 @@ export const context = {
 };
 
 export const getOctokit = jest.fn(() => ({
-  request: () => Promise.resolve({data: {committer: {date: '2024-11-13T13:42:28Z'}}})
+  request: () => Promise.resolve({data: {commit: {committer: {date: '2024-11-13T13:42:28Z'}}}})
 }));
