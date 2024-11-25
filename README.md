@@ -224,7 +224,7 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           files: |
             ./docker-bake.hcl
@@ -271,7 +271,7 @@ similar to the previous one:
 ```yaml
       -
         name: Build
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           files: |
             ./docker-bake.hcl
@@ -288,7 +288,7 @@ prefix:
 ```yaml
       -
         name: Build
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           source: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}"
           files: |
@@ -1000,7 +1000,7 @@ The same can be done with the [`bake-action`](https://github.com/docker/bake-act
           images: name/app
       -
         name: Build
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           files: |
             ./docker-bake.hcl
