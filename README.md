@@ -818,7 +818,8 @@ Each tags `type` attribute has a default priority:
 ### Global expressions
 
 The following [Handlebars' template](https://handlebarsjs.com/guide/) expressions
-for `prefix`, `suffix`, `value` and `enable` attributes are available:
+for `prefix`, `suffix`, `value` and `enable` attributes of `tags` input are
+available:
 
 ```yaml
 tags: |
@@ -826,6 +827,13 @@ tags: |
   type=sha,prefix={{branch}}-
   # dynamically set the branch name and sha as a custom tag
   type=raw,value=mytag-{{branch}}-{{sha}}
+```
+
+They can also be applied to `labels` and `annotations` inputs:
+
+```yaml
+labels: |
+  org.opencontainers.image.created={{commit_date 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'}}
 ```
 
 #### `{{branch}}`

@@ -269,6 +269,8 @@ jobs:
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/name/app
+          labels: |
+            org.opencontainers.image.created={{commit_date 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'}}
           tags: |
             type=sha
             type=raw,value=gexp-branch-{{branch}}

@@ -785,6 +785,9 @@ describe('push', () => {
           `type=raw,value=mytag-baseref-{{base_ref}}`,
           `type=raw,value=mytag-defbranch,enable={{is_default_branch}}`
         ],
+        labels: [
+          "org.opencontainers.image.created={{commit_date 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'}}"
+        ]
       } as Inputs,
       {
         main: 'mytag-master',
