@@ -1099,9 +1099,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docker/actions-toolkit@npm:^0.44.0":
-  version: 0.44.0
-  resolution: "@docker/actions-toolkit@npm:0.44.0"
+"@docker/actions-toolkit@npm:^0.48.0":
+  version: 0.48.0
+  resolution: "@docker/actions-toolkit@npm:0.48.0"
   dependencies:
     "@actions/artifact": ^2.1.11
     "@actions/cache": ^3.3.0
@@ -1115,7 +1115,7 @@ __metadata:
     "@octokit/core": ^5.1.0
     "@octokit/plugin-rest-endpoint-methods": ^10.4.0
     async-retry: ^1.3.3
-    csv-parse: ^5.5.6
+    csv-parse: ^5.6.0
     gunzip-maybe: ^1.4.2
     handlebars: ^4.7.8
     he: ^1.2.0
@@ -1124,7 +1124,7 @@ __metadata:
     semver: ^7.6.3
     tar-stream: ^3.1.7
     tmp: ^0.2.3
-  checksum: 2accc7a46825121ff8359520958f92f7b5f1d7bc08517aa0ce7c953b44492db8ff29c062511f3488c51b9e414cf9d46047d83e352aebf80636e306344773668f
+  checksum: 273eefbb19fd9e098d889cdaa2fbe0ff5a9b0d12d2f941dc4b6914240ee78d2d63db4fa0c39850585e9db1d69d2553ec9d3b935627d0fe1d8ab2ad2f3a84c0a5
   languageName: node
   linkType: hard
 
@@ -3115,6 +3115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csv-parse@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "csv-parse@npm:5.6.0"
+  checksum: 173e176bdaf212bab37d0f6d39a06d039d24a1c0ee40b9f1023ebf8b36095934807deeb493c0fb58592b39b0682ccd0be5c9e8d2b137c08807e7031595ea7a51
+  languageName: node
+  linkType: hard
+
 "debug@npm:4, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
@@ -3215,7 +3222,7 @@ __metadata:
   dependencies:
     "@actions/core": ^1.11.1
     "@actions/github": ^6.0.0
-    "@docker/actions-toolkit": ^0.44.0
+    "@docker/actions-toolkit": ^0.48.0
     "@renovate/pep440": ^1.0.0
     "@types/csv-parse": ^1.2.2
     "@types/node": ^20.12.12
