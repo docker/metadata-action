@@ -372,7 +372,7 @@ export class Meta {
     return val;
   }
 
-  private setGlobalExp(val): string {
+  private setGlobalExp(val: string): string {
     const context = this.context;
     const currentDate = this.date;
     const commitDate = this.context.commitDate;
@@ -517,7 +517,9 @@ export class Meta {
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
-    res.push(...extra);
+    extra.forEach(label => {
+      res.push(this.setGlobalExp(label));
+    });
 
     return Array.from(
       new Map<string, string>(
