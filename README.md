@@ -318,7 +318,7 @@ The following inputs can be used as `step.with` keys:
 | `tags`            | List   | List of [tags](#tags-input) as key-value pair attributes                     |
 | `flavor`          | List   | [Flavor](#flavor-input) to apply                                             |
 | `labels`          | List   | List of custom labels                                                        |
-| `annotations`     | List   | List of custom anntoations                                                   |
+| `annotations`     | List   | List of custom annotations                                                   |
 | `sep-tags`        | String | Separator to use for tags output (default `\n`)                              |
 | `sep-labels`      | String | Separator to use for labels output (default `\n`)                            |
 | `sep-annotations` | String | Separator to use for annotations output (default `\n`)                       |
