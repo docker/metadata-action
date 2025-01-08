@@ -92,7 +92,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -152,7 +152,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -207,9 +207,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout
-        uses: actions/checkout@v4
-      -
         name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -224,11 +221,11 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.meta.outputs.bake-file }}
+            cwd://${{ steps.meta.outputs.bake-file }}
           targets: build
 ```
 
@@ -271,29 +268,12 @@ similar to the previous one:
 ```yaml
       -
         name: Build
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.meta.outputs.bake-file-tags }}
-            ${{ steps.meta.outputs.bake-file-labels }}
-          targets: build
-```
-
-If you're building a [remote Bake definition](https://docs.docker.com/build/bake/remote-definition/)
-using a [Git context](https://github.com/docker/bake-action?tab=readme-ov-file#git-context),
-you must specify the location of the metadata-only bake file using a `cwd://`
-prefix:
-
-```yaml
-      -
-        name: Build
-        uses: docker/bake-action@v5
-        with:
-          source: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}"
-          files: |
-            ./docker-bake.hcl
-            cwd://${{ steps.meta.outputs.bake-file }}
+            cwd://${{ steps.meta.outputs.bake-file-tags }}
+            cwd://${{ steps.meta.outputs.bake-file-labels }}
           targets: build
 ```
 
@@ -353,7 +333,7 @@ Alternatively, each output is also exported as an environment variable:
 So it can be used with our [Docker Build Push action](https://github.com/docker/build-push-action/):
 
 ```yaml
-- uses: docker/build-push-action@v5
+- uses: docker/build-push-action@v6
   with:
     build-args: |
       DOCKER_METADATA_OUTPUT_JSON
@@ -945,7 +925,7 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
           images: name/app
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -992,7 +972,7 @@ of the `metadata-action`:
           images: name/app
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           tags: ${{ steps.meta.outputs.tags }}
           annotations: ${{ steps.meta.outputs.annotations }}
@@ -1008,12 +988,12 @@ The same can be done with the [`bake-action`](https://github.com/docker/bake-act
           images: name/app
       -
         name: Build
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.meta.outputs.bake-file-tags }}
-            ${{ steps.meta.outputs.bake-file-annotations }}
+            cwd://${{ steps.meta.outputs.bake-file-tags }}
+            cwd://${{ steps.meta.outputs.bake-file-annotations }}
           targets: build
 ```
 
@@ -1039,7 +1019,7 @@ Please consult the documentation of your registry.
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           tags: ${{ steps.meta.outputs.tags }}
           annotations: ${{ steps.meta.outputs.annotations }}

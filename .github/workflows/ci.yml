@@ -392,12 +392,12 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
           files: |
             ./test/docker-bake.hcl
-            ${{ steps.docker_meta.outputs.bake-file-tags }}
-            ${{ steps.docker_meta.outputs.bake-file-labels }}
+            cwd://${{ steps.docker_meta.outputs.bake-file-tags }}
+            cwd://${{ steps.docker_meta.outputs.bake-file-labels }}
           targets: |
             release
 
@@ -504,12 +504,12 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
       -
         name: Build
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
           files: |
             ./test/docker-bake.hcl
-            ${{ steps.docker_meta.outputs.bake-file-tags }}
-            ${{ steps.docker_meta.outputs.bake-file-annotations }}
+            cwd://${{ steps.docker_meta.outputs.bake-file-tags }}
+            cwd://${{ steps.docker_meta.outputs.bake-file-annotations }}
           targets: |
             release
 
@@ -539,7 +539,7 @@ jobs:
         name: Print envs
         run: env|sort
 
-  bake-cwd:
+  bake-path-context:
     runs-on: ubuntu-latest
     steps:
       -
@@ -556,13 +556,13 @@ jobs:
         uses: ./
       -
         name: Build
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
-          source: "{{defaultContext}}"
+          source: .
           files: |
             ./test/docker-bake.hcl
-            cwd://${{ steps.docker_meta.outputs.bake-file-tags }}
-            cwd://${{ steps.docker_meta.outputs.bake-file-labels }}
+            ${{ steps.docker_meta.outputs.bake-file-tags }}
+            ${{ steps.docker_meta.outputs.bake-file-labels }}
           targets: |
             release
 
