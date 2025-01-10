@@ -59,7 +59,7 @@ outputs:
   bake-file-labels:
     description: 'Bake definition file with labels'
   bake-file-annotations:
-    description: 'Bake definiton file with annotations'
+    description: 'Bake definition file with annotations'
   bake-file:
     description: 'Bake definition file with tags and labels'
 
