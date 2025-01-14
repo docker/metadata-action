@@ -20,6 +20,7 @@ export interface Inputs {
   sepLabels: string;
   sepAnnotations: string;
   bakeTarget: string;
+  outputEnv: boolean;
   githubToken: string;
 }
 
@@ -35,6 +36,7 @@ export function getInputs(): Inputs {
     sepLabels: core.getInput('sep-labels', {trimWhitespace: false}) || `\n`,
     sepAnnotations: core.getInput('sep-annotations', {trimWhitespace: false}) || `\n`,
     bakeTarget: core.getInput('bake-target') || `docker-metadata-action`,
+    outputEnv: (core.getInput('output-env') || 'true') === 'true',
     githubToken: core.getInput('github-token')
   };
 }

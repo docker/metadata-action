@@ -303,6 +303,7 @@ The following inputs can be used as `step.with` keys:
 | `sep-labels`      | String | Separator to use for labels output (default `\n`)                            |
 | `sep-annotations` | String | Separator to use for annotations output (default `\n`)                       |
 | `bake-target`     | String | Bake target name (default `docker-metadata-action`)                          |
+| `output-env`      | Bool   | If `true`, sets each output as an environmental variable (default `true`)    |
 
 ### outputs
 
@@ -319,7 +320,7 @@ The following outputs are available:
 | `bake-file-labels`      | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with labels                                                                          |
 | `bake-file-annotations` | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with [annotations](https://github.com/moby/buildkit/blob/master/docs/annotations.md) |
 
-Alternatively, each output is also exported as an environment variable:
+Alternatively, each output is also exported as an environment variable when `output-env` is `true`:
 
 * `DOCKER_METADATA_OUTPUT_VERSION`
 * `DOCKER_METADATA_OUTPUT_TAGS`

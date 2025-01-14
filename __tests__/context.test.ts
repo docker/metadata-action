@@ -47,6 +47,7 @@ describe('getInputs', () => {
         sepTags: '\n',
         sepAnnotations: '\n',
         tags: [],
+        outputEnv: true,
       } as Inputs
     ],
     [
@@ -70,6 +71,7 @@ describe('getInputs', () => {
         sepTags: ',',
         sepAnnotations: ',',
         tags: [],
+        outputEnv: true,
       } as Inputs
     ],
     [
@@ -89,6 +91,7 @@ describe('getInputs', () => {
         sepTags: '\n',
         sepAnnotations: '\n',
         tags: [],
+        outputEnv: true,
       } as Inputs
     ],
   ])(
