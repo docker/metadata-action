@@ -474,6 +474,8 @@ jobs:
 
   no-output-env:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_METADATA_SET_OUTPUT_ENV: false
     steps:
       -
         name: Checkout
@@ -490,7 +492,6 @@ jobs:
             maintainer=CrazyMax
           annotations: |
             maintainer=Foo
-          output-env: false
       -
         name: No output environment variables set
         shell: bash

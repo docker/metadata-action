@@ -13,7 +13,8 @@ actionsToolkit.run(
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
     const context = await getContext(inputs.context, toolkit);
     const repo = await toolkit.github.repoData();
-    const setOutput = inputs.outputEnv ? setOutputAndEnv : core.setOutput;
+    const outputEnv = (process.env.DOCKER_METADATA_SET_OUTPUT_ENV || 'true') === 'true'
+    const setOutput = outputEnv ? setOutputAndEnv : core.setOutput;
 
     await core.group(`Context info`, async () => {
       core.info(`eventName: ${context.eventName}`);

@@ -38,10 +38,6 @@ inputs:
   bake-target:
     description: 'Bake target name (default docker-metadata-action)'
     required: false
-  output-env:
-    description:
-    default: 'true'
-    required: true
   github-token:
     description: 'GitHub Token as provided by secrets'
     default: ${{ github.token }}
