@@ -13,6 +13,8 @@ actionsToolkit.run(
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
     const context = await getContext(inputs.context, toolkit);
     const repo = await toolkit.github.repoData();
+    const outputEnv = (process.env.DOCKER_METADATA_SET_OUTPUT_ENV || 'true') === 'true';
+    const setOutput = outputEnv ? setOutputAndEnv : core.setOutput;
 
     await core.group(`Context info`, async () => {
       core.info(`eventName: ${context.eventName}`);
@@ -105,7 +107,7 @@ actionsToolkit.run(
   }
 );
 
-function setOutput(name: string, value: string) {
+function setOutputAndEnv(name: string, value: string) {
   core.setOutput(name, value);
   core.exportVariable(`DOCKER_METADATA_OUTPUT_${name.replace(/\W/g, '_').toUpperCase()}`, value);
 }
