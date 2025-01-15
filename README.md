@@ -319,7 +319,7 @@ The following outputs are available:
 | `bake-file-labels`      | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with labels                                                                          |
 | `bake-file-annotations` | File   | [Bake file definition](https://docs.docker.com/build/bake/reference/) path with [annotations](https://github.com/moby/buildkit/blob/master/docs/annotations.md) |
 
-Alternatively, each output is also exported as an environment variable:
+Alternatively, each output is also exported as an environment variable when `DOCKER_METADATA_SET_OUTPUT_ENV` is `true`:
 
 * `DOCKER_METADATA_OUTPUT_VERSION`
 * `DOCKER_METADATA_OUTPUT_TAGS`
@@ -346,6 +346,7 @@ So it can be used with our [Docker Build Push action](https://github.com/docker/
 | `DOCKER_METADATA_PR_HEAD_SHA`        | Bool   | If `true`, set associated head SHA instead of commit SHA that triggered the workflow on pull request event                                   |
 | `DOCKER_METADATA_SHORT_SHA_LENGTH`   | Number | Specifies the length of the [short commit SHA](#typesha) to ensure uniqueness. Default is `7`, but can be increased for larger repositories. |
 | `DOCKER_METADATA_ANNOTATIONS_LEVELS` | String | Comma separated list of annotations levels to set for annotations output separated (default `manifest`)                                      |
+| `DOCKER_METADATA_SET_OUTPUT_ENV`     | Bool   | If `true`, sets each output as an environmental variable (default `true`)                                                                    |
 
 ## `context` input
 
