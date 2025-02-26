@@ -472,6 +472,32 @@ jobs:
             DOCKER_METADATA_OUTPUT_ANNOTATIONS
             DOCKER_METADATA_OUTPUT_JSON
 
+  no-output-env:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_METADATA_SET_OUTPUT_ENV: false
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Docker meta
+        id: meta
+        uses: ./
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+            ghcr.io/name/app
+          labels: |
+            maintainer=CrazyMax
+          annotations: |
+            maintainer=Foo
+      -
+        name: No output environment variables set
+        shell: bash
+        run: |
+          [[ "$(printenv | grep "^DOCKER_METADATA_OUTPUT_" | wc -l)" -eq 0 ]] || exit 1
+
   bake-annotations:
     runs-on: ubuntu-latest
     steps:

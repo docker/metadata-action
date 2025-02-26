@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as core from '@actions/core';
 import * as actionsToolkit from '@docker/actions-toolkit';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
+import {Util} from '@docker/actions-toolkit/lib/util';
 
 import {getContext, getInputs, Inputs} from './context';
 import {Meta, Version} from './meta';
@@ -13,6 +14,7 @@ actionsToolkit.run(
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
     const context = await getContext(inputs.context, toolkit);
     const repo = await toolkit.github.repoData();
+    const setOutput = outputEnvEnabled() ? setOutputAndEnv : core.setOutput;
 
     await core.group(`Context info`, async () => {
       core.info(`eventName: ${context.eventName}`);
@@ -105,7 +107,14 @@ actionsToolkit.run(
   }
 );
 
-function setOutput(name: string, value: string) {
+function setOutputAndEnv(name: string, value: string) {
   core.setOutput(name, value);
   core.exportVariable(`DOCKER_METADATA_OUTPUT_${name.replace(/\W/g, '_').toUpperCase()}`, value);
+}
+
+function outputEnvEnabled(): boolean {
+  if (process.env.DOCKER_METADATA_SET_OUTPUT_ENV) {
+    return Util.parseBool(process.env.DOCKER_METADATA_SET_OUTPUT_ENV);
+  }
+  return true;
 }
