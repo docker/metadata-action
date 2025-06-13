@@ -12,9 +12,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actions/artifact@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "@actions/artifact@npm:2.2.2"
+"@actions/artifact@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "@actions/artifact@npm:2.3.2"
   dependencies:
     "@actions/core": ^1.10.0
     "@actions/github": ^5.1.1
@@ -28,13 +28,13 @@ __metadata:
     archiver: ^7.0.1
     jwt-decode: ^3.1.2
     unzip-stream: ^0.3.1
-  checksum: 1501b3d0ceb671f370786ccf70014de9586c5a78c95d235248fc16c73bf928f8de2aa932a679258f6d9bc2f2e570648d830551af9f063298f05d19f3330b33bc
+  checksum: 78ee41b43800accb2f3527e1733217c43d53693e7f96ce2470b16890fb84f5c2ebaaa6048ccdb6cfe188b54c02779ec99623c6932558e757f6829cfde203cf2c
   languageName: node
   linkType: hard
 
-"@actions/cache@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "@actions/cache@npm:4.0.2"
+"@actions/cache@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "@actions/cache@npm:4.0.3"
   dependencies:
     "@actions/core": ^1.11.1
     "@actions/exec": ^1.0.1
@@ -46,7 +46,7 @@ __metadata:
     "@azure/storage-blob": ^12.13.0
     "@protobuf-ts/plugin": ^2.9.4
     semver: ^6.3.1
-  checksum: 208f11238a26194f331b329bb99d50a87c1a3ccef1dbae181e5c142b3faf41715203e0c5cbc491519d3d97540a68fbd418c25fb6e16caabf76248c40867c02b4
+  checksum: ee9c2a21a70bd3f35c63f302af478e23f135c26deb77ea2e4eed29c62766a4b201fc7435651c0d56fa504c02d203107e3bdfda1dba18a3ee09338e1dfc3f2fe8
   languageName: node
   linkType: hard
 
@@ -88,18 +88,6 @@ __metadata:
     "@octokit/plugin-paginate-rest": ^2.17.0
     "@octokit/plugin-rest-endpoint-methods": ^5.13.0
   checksum: 2210bd7f8e1e8b407b7df74a259523dc4c63f4ad3a6bfcc0d7867b6e9c3499bd3e25d7de7a9a1bbd0de3be441a8832d5c0b5c0cff3036cd477378c0ec5502434
-  languageName: node
-  linkType: hard
-
-"@actions/github@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@actions/github@npm:6.0.0"
-  dependencies:
-    "@actions/http-client": ^2.2.0
-    "@octokit/core": ^5.0.1
-    "@octokit/plugin-paginate-rest": ^9.0.0
-    "@octokit/plugin-rest-endpoint-methods": ^10.0.0
-  checksum: 81831a78377175d8825fc0b94247ff366c0e87ad1dfa48df9b30b8659506f216dcf1e2d3124fcd318839b92c24ba20165e238b3cc11a34db89c69c40825e9ccf
   languageName: node
   linkType: hard
 
@@ -1113,15 +1101,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docker/actions-toolkit@npm:^0.56.0":
-  version: 0.56.0
-  resolution: "@docker/actions-toolkit@npm:0.56.0"
+"@docker/actions-toolkit@npm:^0.62.1":
+  version: 0.62.1
+  resolution: "@docker/actions-toolkit@npm:0.62.1"
   dependencies:
-    "@actions/artifact": ^2.2.2
-    "@actions/cache": ^4.0.2
+    "@actions/artifact": ^2.3.2
+    "@actions/cache": ^4.0.3
     "@actions/core": ^1.11.1
     "@actions/exec": ^1.1.1
-    "@actions/github": ^6.0.0
+    "@actions/github": ^6.0.1
     "@actions/http-client": ^2.2.3
     "@actions/io": ^1.1.3
     "@actions/tool-cache": ^2.0.2
@@ -1135,10 +1123,10 @@ __metadata:
     he: ^1.2.0
     js-yaml: ^4.1.0
     jwt-decode: ^4.0.0
-    semver: ^7.7.1
+    semver: ^7.7.2
     tar-stream: ^3.1.7
     tmp: ^0.2.3
-  checksum: 0f1b569f8bb206399f8c26e566c78e30e4a311bbd64486016e7fa1d35fbbb4c94d4f55afa6b711afa4b41c5835b40b038f48c3d1bfdfdc6f7c6680973e922d9e
+  checksum: 72dfef5073c7b638a73b53ccd48ec9dc3fa0e0c1b1b0aaf711fc872ef4ef0a882909271c01913f335efc5f868e4062e6e7720b92d6c3a605ecb6cc30d3001f9d
   languageName: node
   linkType: hard
 
@@ -1798,17 +1786,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/plugin-paginate-rest@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "@octokit/plugin-paginate-rest@npm:9.0.0"
-  dependencies:
-    "@octokit/types": ^12.0.0
-  peerDependencies:
-    "@octokit/core": ">=5"
-  checksum: 4a8543f3e45c4916f94edc57d66106ee60da9fd4edccd7c3a2ddd00da1fc4eb2e1b2bcb3d6cb981a050edf883100c5004d0b81497568d4ac9138310a2188a458
-  languageName: node
-  linkType: hard
-
 "@octokit/plugin-paginate-rest@npm:^9.2.2":
   version: 9.2.2
   resolution: "@octokit/plugin-paginate-rest@npm:9.2.2"
@@ -1829,7 +1806,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/plugin-rest-endpoint-methods@npm:^10.0.0, @octokit/plugin-rest-endpoint-methods@npm:^10.4.0":
+"@octokit/plugin-rest-endpoint-methods@npm:^10.4.0":
   version: 10.4.0
   resolution: "@octokit/plugin-rest-endpoint-methods@npm:10.4.0"
   dependencies:
@@ -3272,7 +3249,7 @@ __metadata:
   dependencies:
     "@actions/core": ^1.11.1
     "@actions/github": ^6.0.1
-    "@docker/actions-toolkit": ^0.56.0
+    "@docker/actions-toolkit": ^0.62.1
     "@renovate/pep440": ^1.0.0
     "@types/csv-parse": ^1.2.2
     "@types/node": ^20.12.12
@@ -6000,15 +5977,6 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 40f6a95101e8d854357a644da1b8dd9d93ce786d5c6a77227bc69dbb17bea83d0d1d1d7c4cd5920a6df909f48e8bd8a5909869535007f90278289f2451d0292d
-  languageName: node
-  linkType: hard
-
-"semver@npm:^7.7.1":
-  version: 7.7.1
-  resolution: "semver@npm:7.7.1"
-  bin:
-    semver: bin/semver.js
-  checksum: 586b825d36874007c9382d9e1ad8f93888d8670040add24a28e06a910aeebd673a2eb9e3bf169c6679d9245e66efb9057e0852e70d9daa6c27372aab1dda7104
   languageName: node
   linkType: hard
 
