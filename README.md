@@ -633,6 +633,8 @@ tags: |
   type=edge,enable=true,priority=700,prefix=,suffix=,branch=$repo.default_branch
 ```
 
+The `branch` attribute is matched using strict equality, e.g. it doesn't support regular expression nor glob pattern when matching.
+
 ### `type=ref`
 
 ```yaml
