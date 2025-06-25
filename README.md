@@ -283,6 +283,7 @@ similar to the previous one:
 
 The following inputs can be used as `step.with` keys:
 
+> [!NOTE]
 > `List` type is a newline-delimited string
 > ```yaml
 > labels: |
@@ -508,18 +509,20 @@ with the following expressions:
 * `minor` ; minor version identifier
 * `patch` ; patch version identifier
 
-| Git tag            | Pattern                                                  | Output               |
-|--------------------|----------------------------------------------------------|----------------------|
-| `v1.2.3`           | `{{raw}}`                                                | `v1.2.3`             |
-| `v1.2.3`           | `{{version}}`                                            | `1.2.3`              |
-| `v1.2.3`           | `{{major}}.{{minor}}`                                    | `1.2`                |
-| `v1.2.3`           | `v{{major}}`                                             | `v1`                 |
-| `v1.2.3`           | `{{minor}}`                                              | `2`                  |
-| `v1.2.3`           | `{{patch}}`                                              | `3`                  |
-| `v2.0.8-beta.67`   | `{{raw}}`                                                | `v2.0.8-beta.67`     |
-| `v2.0.8-beta.67`   | `{{version}}`                                            | `2.0.8-beta.67`      |
-| `v2.0.8-beta.67`   | `{{major}}.{{minor}}`                                    | `2.0.8-beta.67`*     |
+| Git tag            | Pattern               | Output               |
+|--------------------|-----------------------|----------------------|
+| `v1.2.3`           | `{{raw}}`             | `v1.2.3`             |
+| `v1.2.3`           | `{{version}}`         | `1.2.3`              |
+| `v1.2.3`           | `{{major}}.{{minor}}` | `1.2`                |
+| `v1.2.3`           | `v{{major}}`          | `v1`                 |
+| `v1.2.3`           | `{{minor}}`           | `2`                  |
+| `v1.2.3`           | `{{patch}}`           | `3`                  |
+| `v2.0.8-beta.67`   | `{{raw}}`             | `v2.0.8-beta.67`     |
+| `v2.0.8-beta.67`   | `{{version}}`         | `2.0.8-beta.67`      |
+| `v2.0.8-beta.67`   | `{{major}}`           | `2.0.8-beta.67`*     |
+| `v2.0.8-beta.67`   | `{{major}}.{{minor}}` | `2.0.8-beta.67`*     |
 
+> [!IMPORTANT]
 > *Pre-release (rc, beta, alpha) will only extend `{{version}}` (or `{{raw}}`
 > if specified) as tag because they are updated frequently, and contain many
 > breaking changes that are (by the author's design) not yet fit for public
@@ -569,6 +572,7 @@ with the following expressions:
 | `1.2.3beta2`       | `{{major}}.{{minor}}`                                    | `1.2.3b2`*           |
 | `1.0dev4`          | `{{major}}.{{minor}}`                                    | `1.0.dev4`*          |
 
+> [!IMPORTANT]
 > *dev/pre/post release will only extend `{{version}}` (or `{{raw}}` if
 > specified) as tag because they are updated frequently, and contain many
 > breaking changes that are (by the author's design) not yet fit for public
@@ -858,6 +862,7 @@ workflow run. Will be empty for a branch reference:
 | `push`         | `refs/heads/my/branch`        |                    |
 | `push tag`*    | `refs/tags/v1.2.3`            | `master`           |
 
+> [!IMPORTANT]
 > *`base_ref` is available in the push payload but doesn't always seem to 
 > return the expected branch when the push tag event occurs. It's also
 > [not documented in GitHub docs](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push).
