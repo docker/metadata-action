@@ -3149,6 +3149,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csv-parse@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "csv-parse@npm:6.0.0"
+  checksum: 9a4136634aa23209a8b369d3f81f644da542414b2b2dd514065579aef845581dfceb5c7598d7443b77474178d354913d5f03a7e2253f4a2bacfd032fba0892d6
+  languageName: node
+  linkType: hard
+
 "debug@npm:4, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
@@ -3257,7 +3264,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^7.9.0
     "@typescript-eslint/parser": ^7.9.0
     "@vercel/ncc": ^0.38.1
-    csv-parse: ^5.6.0
+    csv-parse: ^6.0.0
     dotenv: ^16.4.5
     eslint: ^8.57.0
     eslint-config-prettier: ^9.1.0
