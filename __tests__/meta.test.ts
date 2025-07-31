@@ -1971,6 +1971,69 @@ describe('tag', () => {
         "org.opencontainers.image.version=1.1.1"
       ],
       undefined
+    ],
+    [
+      'tag34',
+      'event_tag_p1-v1.0.0.env',
+      {
+        images: ['org/app'],
+        tags: [
+          `type=semver,pattern={{version}},"match=v(\\d.\\d.\\d)$"`,
+        ]
+      } as Inputs,
+      {
+        main: '1.0.0',
+        partial: [],
+        latest: true
+      } as Version,
+      [
+        'org/app:1.0.0',
+        'org/app:latest'
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=1.0.0"
+      ],
+      undefined
+    ],
+    [
+      'push35',
+      'event_push_master.env',
+      {
+        images: ['user/app'],
+        tags: [
+          `type=semver,pattern={{version}},value=p1/v1.2.3,"match=v(\\d.\\d.\\d)$"`,
+          `type=pep440,pattern={{version}},value=p1/v1.2.3,"match=v(\\d.\\d.\\d)$"`,
+          `type=edge`
+        ],
+      } as Inputs,
+      {
+        main: '1.2.3',
+        partial: ['edge'],
+        latest: true
+      } as Version,
+      [
+        'user/app:1.2.3',
+        'user/app:edge',
+        'user/app:latest'
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=266574110acf203503badf966df2ea24b5d732d7",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=1.2.3"
+      ],
+      undefined
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });

@@ -137,6 +137,9 @@ export function Parse(s: string): Tag {
       if (!Object.prototype.hasOwnProperty.call(tag.attrs, 'value')) {
         tag.attrs['value'] = '';
       }
+      if (!Object.prototype.hasOwnProperty.call(tag.attrs, 'match')) {
+        tag.attrs['match'] = '';
+      }
       break;
     }
     case Type.Match: {
