@@ -44,6 +44,7 @@ ___
     * [`{{sha}}`](#sha)
     * [`{{base_ref}}`](#base_ref)
     * [`{{is_default_branch}}`](#is_default_branch)
+    * [`{{is_not_default_branch}}`](#is_not_default_branch)
     * [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
     * [`{{commit_date '<format>' tz='<timezone>'}}`](#commit_date-format-tztimezone)
   * [Major version zero](#major-version-zero)
@@ -872,6 +873,11 @@ workflow run. Will be empty for a branch reference:
 #### `{{is_default_branch}}`
 
 Returns `true` if the branch that triggered the workflow run is the default
+one, otherwise `false`.
+
+#### `{{is_not_default_branch}}`
+
+Returns `true` if the branch that triggered the workflow run is not the default
 one, otherwise `false`.
 
 #### `{{date '<format>' tz='<timezone>'}}`
