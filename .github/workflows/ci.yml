@@ -278,6 +278,7 @@ jobs:
             type=raw,value=gexp-tag-{{tag}}
             type=raw,value=gexp-baseref-{{base_ref}}
             type=raw,value=gexp-defbranch,enable={{is_default_branch}}
+            type=raw,value=gexp-notdefbranch,enable={{is_not_default_branch}}
 
   json:
     runs-on: ubuntu-latest

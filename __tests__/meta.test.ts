@@ -821,6 +821,40 @@ describe('push', () => {
         "org.opencontainers.image.version=mytag-master"
       ],
       undefined
+    ],
+    [
+      'push22',
+      'event_push_dev.env',
+      {
+        images: ['org/app'],
+        tags: [
+          `type=edge,branch=master`,
+          `type=sha,format=long`,
+          `type=raw,value=notdefbranch,enable={{is_not_default_branch}}`
+        ],
+      } as Inputs,
+      {
+        main: 'notdefbranch',
+        partial: [
+          'sha-860c1904a1ce19322e91ac35af1ab07466440c37'
+        ],
+        latest: false
+      } as Version,
+      [
+        "org/app:notdefbranch",
+        "org/app:sha-860c1904a1ce19322e91ac35af1ab07466440c37"
+      ],
+      [
+        "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
+        "org.opencontainers.image.description=This your first repo!",
+        "org.opencontainers.image.licenses=MIT",
+        "org.opencontainers.image.revision=860c1904a1ce19322e91ac35af1ab07466440c37",
+        "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.title=Hello-World",
+        "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
+        "org.opencontainers.image.version=notdefbranch"
+      ],
+      undefined
     ]
   ])('given %p with %p event', tagsLabelsTest);
 });

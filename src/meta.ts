@@ -439,6 +439,9 @@ export class Meta {
         }
         return 'false';
       },
+      is_not_default_branch: function () {
+        return this.is_default_branch() === 'false' ? 'true' : 'false';
+      },
       date: function (format, options) {
         const m = moment(currentDate);
         let tz = 'UTC';
