@@ -32,7 +32,8 @@ describe('transform', () => {
             "priority": DefaultPriorities[Type.Semver],
             "enable": "true",
             "pattern": "{{version}}",
-            "value": ""
+            "value": "",
+            "match": ""
           }
         },
         {
@@ -147,7 +148,8 @@ describe('parse', () => {
           "priority": DefaultPriorities[Type.Semver],
           "enable": "true",
           "pattern": "{{version}}",
-          "value": ""
+          "value": "",
+          "match": ""
         }
       } as Tag,
       false
@@ -160,7 +162,8 @@ describe('parse', () => {
           "priority": "1",
           "enable": "true",
           "pattern": "{{version}}",
-          "value": ""
+          "value": "",
+          "match": ""
         }
       } as Tag,
       false
@@ -173,7 +176,22 @@ describe('parse', () => {
           "priority": "1",
           "enable": "true",
           "pattern": "{{version}}",
-          "value": "v1.0.0"
+          "value": "v1.0.0",
+          "match": ""
+        }
+      } as Tag,
+      false
+    ],
+    [
+      `type=semver,priority=1,enable=true,pattern={{version}},value=p1/v1.0.0,"match=v(\\d.\\d.\\d)$"`,
+      {
+        type: Type.Semver,
+        attrs: {
+          "priority": "1",
+          "enable": "true",
+          "pattern": "{{version}}",
+          "value": "p1/v1.0.0",
+          "match": "v(\\d.\\d.\\d)$"
         }
       } as Tag,
       false

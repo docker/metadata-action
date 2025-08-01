@@ -161,8 +161,20 @@ export class Meta {
     if (tag.attrs['value'].length > 0) {
       vraw = this.setGlobalExp(tag.attrs['value']);
     } else {
-      vraw = this.context.ref.replace(/^refs\/tags\//g, '').replace(/\//g, '-');
+      vraw = this.context.ref.replace(/^refs\/tags\//g, '');
     }
+
+    if (tag.attrs['match'].length > 0) {
+      const tmatch = vraw.match(tag.attrs['match']);
+      if (!tmatch) {
+        core.warning(`${tag.attrs['match']} does not match ${vraw}.`);
+      } else {
+        vraw = this.setValue(tmatch[1], tag);
+      }
+    }
+
+    vraw = vraw.replace(/\//g, '-');
+
     if (!semver.valid(vraw)) {
       core.warning(`${vraw} is not a valid semver. More info: https://semver.org/`);
       return version;

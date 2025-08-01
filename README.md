@@ -495,6 +495,8 @@ tags: |
   type=semver,pattern={{version}}
   # use custom value instead of git tag
   type=semver,pattern={{version}},value=v1.0.0
+  # use custom value and match part of it
+  type=semver,pattern={{version}},value=p1/v1.0.0,match=v(\d.\d.\d)$
 ```
 
 Will be used on a [push tag event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push)
@@ -510,18 +512,19 @@ with the following expressions:
 * `minor` ; minor version identifier
 * `patch` ; patch version identifier
 
-| Git tag            | Pattern               | Output               |
-|--------------------|-----------------------|----------------------|
-| `v1.2.3`           | `{{raw}}`             | `v1.2.3`             |
-| `v1.2.3`           | `{{version}}`         | `1.2.3`              |
-| `v1.2.3`           | `{{major}}.{{minor}}` | `1.2`                |
-| `v1.2.3`           | `v{{major}}`          | `v1`                 |
-| `v1.2.3`           | `{{minor}}`           | `2`                  |
-| `v1.2.3`           | `{{patch}}`           | `3`                  |
-| `v2.0.8-beta.67`   | `{{raw}}`             | `v2.0.8-beta.67`     |
-| `v2.0.8-beta.67`   | `{{version}}`         | `2.0.8-beta.67`      |
-| `v2.0.8-beta.67`   | `{{major}}`           | `2.0.8-beta.67`*     |
-| `v2.0.8-beta.67`   | `{{major}}.{{minor}}` | `2.0.8-beta.67`*     |
+| Git tag          | Pattern               | Match          | Output           |
+|------------------|-----------------------|----------------|------------------|
+| `v1.2.3`         | `{{raw}}`             |                | `v1.2.3`         |
+| `v1.2.3`         | `{{version}}`         |                | `1.2.3`          |
+| `v1.2.3`         | `{{major}}.{{minor}}` |                | `1.2`            |
+| `v1.2.3`         | `v{{major}}`          |                | `v1`             |
+| `v1.2.3`         | `{{minor}}`           |                | `2`              |
+| `v1.2.3`         | `{{patch}}`           |                | `3`              |
+| `p1/v1.2.3`      | `{{version}}`         | `v(\d.\d.\d)$` | `1.2.3`          |
+| `v2.0.8-beta.67` | `{{raw}}`             |                | `v2.0.8-beta.67` |
+| `v2.0.8-beta.67` | `{{version}}`         |                | `2.0.8-beta.67`  |
+| `v2.0.8-beta.67` | `{{major}}`           |                | `2.0.8-beta.67`* |
+| `v2.0.8-beta.67` | `{{major}}.{{minor}}` |                | `2.0.8-beta.67`* |
 
 > [!IMPORTANT]
 > *Pre-release (rc, beta, alpha) will only extend `{{version}}` (or `{{raw}}`
@@ -533,7 +536,7 @@ Extended attributes and default values:
 
 ```yaml
 tags: |
-  type=semver,enable=true,priority=900,prefix=,suffix=,pattern=,value=
+  type=semver,enable=true,priority=900,prefix=,suffix=,pattern=,value=,match=
 ```
 
 ### `type=pep440`
@@ -544,6 +547,8 @@ tags: |
   type=pep440,pattern={{version}}
   # use custom value instead of git tag
   type=pep440,pattern={{version}},value=1.0.0
+  # use custom value and match part of it
+  type=pep440,pattern={{version}},value=p1/v1.0.0,match=v(\d.\d.\d)$
 ```
 
 Will be used on a [push tag event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push)
@@ -559,19 +564,20 @@ with the following expressions:
 * `minor` ; minor version identifier
 * `patch` ; patch version identifier
 
-| Git tag            | Pattern                                                  | Output               |
-|--------------------|----------------------------------------------------------|----------------------|
-| `1.2.3`            | `{{raw}}`                                                | `1.2.3`              |
-| `1.2.3`            | `{{version}}`                                            | `1.2.3`              |
-| `v1.2.3`           | `{{version}}`                                            | `1.2.3`              |
-| `1.2.3`            | `{{major}}.{{minor}}`                                    | `1.2`                |
-| `1.2.3`            | `v{{major}}`                                             | `v1`                 |
-| `v1.2.3rc2`        | `{{raw}}`                                                | `v1.2.3rc2`          |
-| `1.2.3rc2`         | `{{version}}`                                            | `1.2.3rc2`           |
-| `1.2.3rc2`         | `{{major}}.{{minor}}`                                    | `1.2.3rc2`*          |
-| `1.2.3post1`       | `{{major}}.{{minor}}`                                    | `1.2.3.post1`*       |
-| `1.2.3beta2`       | `{{major}}.{{minor}}`                                    | `1.2.3b2`*           |
-| `1.0dev4`          | `{{major}}.{{minor}}`                                    | `1.0.dev4`*          |
+| Git tag      | Pattern               | Match          | Output         |
+|--------------|-----------------------|----------------|----------------|
+| `1.2.3`      | `{{raw}}`             |                | `1.2.3`        |
+| `1.2.3`      | `{{version}}`         |                | `1.2.3`        |
+| `v1.2.3`     | `{{version}}`         |                | `1.2.3`        |
+| `1.2.3`      | `{{major}}.{{minor}}` |                | `1.2`          |
+| `1.2.3`      | `v{{major}}`          |                | `v1`           |
+| `v1.2.3rc2`  | `{{raw}}`             |                | `v1.2.3rc2`    |
+| `1.2.3rc2`   | `{{version}}`         |                | `1.2.3rc2`     |
+| `p1/v1.2.3`  | `{{version}}`         | `v(\d.\d.\d)$` | `1.2.3`        |
+| `1.2.3rc2`   | `{{major}}.{{minor}}` |                | `1.2.3rc2`*    |
+| `1.2.3post1` | `{{major}}.{{minor}}` |                | `1.2.3.post1`* |
+| `1.2.3beta2` | `{{major}}.{{minor}}` |                | `1.2.3b2`*     |
+| `1.0dev4`    | `{{major}}.{{minor}}` |                | `1.0.dev4`*    |
 
 > [!IMPORTANT]
 > *dev/pre/post release will only extend `{{version}}` (or `{{raw}}` if
