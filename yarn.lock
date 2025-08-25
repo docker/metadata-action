@@ -961,12 +961,11 @@ __metadata:
   linkType: hard
 
 "@babel/runtime-corejs3@npm:^7.12.1":
-  version: 7.14.7
-  resolution: "@babel/runtime-corejs3@npm:7.14.7"
+  version: 7.28.2
+  resolution: "@babel/runtime-corejs3@npm:7.28.2"
   dependencies:
-    core-js-pure: ^3.15.0
-    regenerator-runtime: ^0.13.4
-  checksum: 9e49fc27e4de9fd5a97069aeeb0746cf0e42afe2068fa717a8abec740782a58d6bb1dc635c37a7bd47c40f3945fabad6308a44915520e15c7651f34b24b89d6f
+    core-js-pure: ^3.43.0
+  checksum: b1353bc30b1c5c79004a23a8e197197ed37575dfe92ba12b47bb643f55961d6f6a23206a318d52f42c40e316f99784c884e71deb9e6d12c5629163e0cc3e6828
   languageName: node
   linkType: hard
 
@@ -3077,10 +3076,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-pure@npm:^3.15.0":
-  version: 3.15.2
-  resolution: "core-js-pure@npm:3.15.2"
-  checksum: b3f33de3d3ea8885784e0c817b4a84a9df0efa15d0504153e3e0243610c7cae5b9ef4c69c96ad238914217aae7ca5458d02239985a1d8613d003f32eab85f8e4
+"core-js-pure@npm:^3.43.0":
+  version: 3.45.0
+  resolution: "core-js-pure@npm:3.45.0"
+  checksum: 2a53eff76a3ba609ba57a82cca08f8832cc4e68fbca08b449361c4fcf319534d1e83ca534305212d113c311d38c37c30a6ac473f295df43836db405a0404cfd8
   languageName: node
   linkType: hard
 
@@ -5942,13 +5941,6 @@ __metadata:
   dependencies:
     minimatch: ^5.1.0
   checksum: 1dc0f7440ff5d9378b593abe9d42f34ebaf387516615e98ab410cf3a68f840abbf9ff1032d15e0a0dbffa78f9e2c46d4fafdbaac1ca435af2efe3264e3f21874
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.13.4":
-  version: 0.13.7
-  resolution: "regenerator-runtime@npm:0.13.7"
-  checksum: 52b66e6669152c0b1bccd95c8e11aabbfe67bb97bdf00e223bdf723b0f0052d4da5c02001d4c4bef576bdc5bcdc38a20496d1b5363b65c950c8434ed5071d9e0
   languageName: node
   linkType: hard
 
