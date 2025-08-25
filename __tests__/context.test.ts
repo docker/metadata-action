@@ -91,6 +91,44 @@ describe('getInputs', () => {
         tags: [],
       } as Inputs
     ],
+    [
+      3,
+      new Map<string, string>([
+        ['tags', 'type=match,pattern=mkdocs-(.*),group=1'],
+      ]),
+      {
+        context: ContextSource.workflow,
+        bakeTarget: 'docker-metadata-action',
+        flavor: [],
+        githubToken: '',
+        images: [],
+        labels: [],
+        annotations: [],
+        sepLabels: '\n',
+        sepTags: '\n',
+        sepAnnotations: '\n',
+        tags: ['type=match,pattern=mkdocs-(.*),group=1'],
+      } as Inputs
+    ],
+    [
+      4,
+      new Map<string, string>([
+        ['tags', 'type=match,pattern=mkdocs#(.*),group=1'],
+      ]),
+      {
+        context: ContextSource.workflow,
+        bakeTarget: 'docker-metadata-action',
+        flavor: [],
+        githubToken: '',
+        images: [],
+        labels: [],
+        annotations: [],
+        sepLabels: '\n',
+        sepTags: '\n',
+        sepAnnotations: '\n',
+        tags: ['type=match,pattern=mkdocs#(.*),group=1'],
+      } as Inputs
+    ],
   ])(
     '[%d] given %p as inputs, returns %p',
     async (num: number, inputs: Map<string, string>, expected: Inputs) => {
