@@ -3936,6 +3936,12 @@ describe('json', () => {
           "user/app:custom",
           "user/app:tags"
         ],
+        "tag-names": [
+          "dev",
+          "my",
+          "custom",
+          "tags"
+        ],
         "labels": {
           "foo": "",
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
@@ -3973,6 +3979,10 @@ describe('json', () => {
         "tags": [
           "user/app:dev",
           "user/app:my",
+        ],
+        "tag-names": [
+          "dev",
+          "my",
         ],
         "labels": {
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
@@ -4017,6 +4027,13 @@ describe('json', () => {
           "user/app:tags",
           "user/app:latest"
         ],
+        "tag-names": [
+          "release1",
+          "my",
+          "custom",
+          "tags",
+          "latest"
+        ],
         "labels": {
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
           "org.opencontainers.image.description": "This your first repo!",
@@ -4060,6 +4077,12 @@ describe('json', () => {
           "user/app:my",
           "user/app:custom",
           "user/app:tags"
+        ],
+        "tag-names": [
+          "20200110",
+          "my",
+          "custom",
+          "tags"
         ],
         "labels": {
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
@@ -4114,6 +4137,15 @@ describe('json', () => {
           "ghcr.io/user/app:tags",
           "ghcr.io/user/app:latest"
         ],
+        "tag-names": [
+          "1.1.1",
+          "1.1",
+          "1",
+          "my",
+          "custom",
+          "tags",
+          "latest",
+        ],
         "labels": {
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
           "org.opencontainers.image.description": "This your first repo!",
@@ -4156,6 +4188,11 @@ describe('json', () => {
           "ghcr.io/user/app:custom",
           "ghcr.io/user/app:tags"
         ],
+        "tag-names": [
+          "my",
+          "custom",
+          "tags",
+        ],
         "labels": {
           "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
           "org.opencontainers.image.description": "This your first repo!",
@@ -4195,6 +4232,10 @@ describe('json', () => {
         "tags": [
           "org/app:v1.1.1",
           "org/app:latest"
+        ],
+        "tag-names": [
+          "v1.1.1",
+          "latest"
         ],
         "labels": {
           "maintainer": "CrazyMax",

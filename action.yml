@@ -48,6 +48,8 @@ outputs:
     description: 'Generated Docker image version'
   tags:
     description: 'Generated Docker tags'
+  tag-names:
+    description: 'Generated Docker tag names without image base name'
   labels:
     description: 'Generated Docker labels'
   annotations:

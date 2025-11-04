@@ -494,33 +494,37 @@ export class Meta {
     return images;
   }
 
-  public getTags(): Array<string> {
+  public getTags(namesOnly?: boolean): Array<string> {
     if (!this.version.main) {
       return [];
     }
-
-    const generateTags = (imageName: string, version: string): Array<string> => {
-      const tags: Array<string> = [];
-      const prefix = imageName !== '' ? `${imageName}:` : '';
-      tags.push(`${prefix}${version}`);
-      for (const partial of this.version.partial) {
-        tags.push(`${prefix}${partial}`);
-      }
-      if (this.version.latest) {
-        const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
-        tags.push(`${prefix}${Meta.sanitizeTag(latestTag)}`);
-      }
-      return tags;
-    };
+    if (namesOnly) {
+      return this.generateTags(this.version.main);
+    }
 
     const tags: Array<string> = [];
     const images = this.getImageNames();
     if (images.length > 0) {
       for (const imageName of images) {
-        tags.push(...generateTags(imageName, this.version.main));
+        tags.push(...this.generateTags(this.version.main, imageName));
       }
     } else {
-      tags.push(...generateTags('', this.version.main));
+      tags.push(...this.generateTags(this.version.main));
+    }
+
+    return tags;
+  }
+
+  private generateTags(version: string, imageName?: string): Array<string> {
+    const tags: Array<string> = [];
+    const prefix = imageName ? `${imageName}:` : '';
+    tags.push(`${prefix}${version}`);
+    for (const partial of this.version.partial) {
+      tags.push(`${prefix}${partial}`);
+    }
+    if (this.version.latest) {
+      const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
+      tags.push(`${prefix}${Meta.sanitizeTag(latestTag)}`);
     }
     return tags;
   }
@@ -568,6 +572,7 @@ export class Meta {
     }
     return {
       tags: this.getTags(),
+      'tag-names': this.getTags(true),
       labels: this.getLabels().reduce((res, label) => {
         const matches = label.match(/([^=]*)=(.*)/);
         if (!matches) {
