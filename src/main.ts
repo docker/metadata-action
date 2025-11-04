@@ -47,7 +47,7 @@ actionsToolkit.run(
     setOutput('version', version.main || '');
 
     // Docker tags
-    const tags: Array<string> = meta.getTags();
+    const tags = meta.getTags();
     if (tags.length == 0) {
       core.warning('No Docker tag has been generated. Check tags input.');
     } else {
@@ -58,6 +58,7 @@ actionsToolkit.run(
       });
     }
     setOutput('tags', tags.join(inputs.sepTags));
+    setOutput('tag-names', meta.getTags(true).join(inputs.sepTags));
 
     // Docker labels
     const labels: Array<string> = meta.getLabels();
