@@ -38,7 +38,6 @@
     "semver": "^7.7.2"
   },
   "devDependencies": {
-    "@types/csv-parse": "^1.2.2",
     "@types/node": "^20.12.12",
     "@types/semver": "^7.7.0",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
