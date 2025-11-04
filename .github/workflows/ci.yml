@@ -431,7 +431,7 @@ jobs:
           sep-tags: ${{ matrix.sep }}
       -
         name: Tags
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             console.log(`${{ steps.meta.outputs.tags }}`);
