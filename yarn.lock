@@ -2129,15 +2129,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/csv-parse@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@types/csv-parse@npm:1.2.2"
-  dependencies:
-    csv-parse: "*"
-  checksum: 7ff192eadcc1b301903b8ba5077b9cb114367e2cc779d6a130444d709cb1786c4882560a5558c0f977d50cef79ad467169b9534491b8409595ec10ffa6a562c5
-  languageName: node
-  linkType: hard
-
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.6
   resolution: "@types/graceful-fs@npm:4.1.6"
@@ -3145,17 +3136,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:*":
-  version: 5.5.5
-  resolution: "csv-parse@npm:5.5.5"
-  checksum: 9e76b3dc3dbbf0a9b1c3529843e3891f0da23d094bdb0540a3d8f4083d00110dd545399f9cf510498def6c1fc7012cc6bc00046d281f16d705add64099467973
-  languageName: node
-  linkType: hard
-
 "csv-parse@npm:^5.6.0":
   version: 5.6.0
   resolution: "csv-parse@npm:5.6.0"
   checksum: 173e176bdaf212bab37d0f6d39a06d039d24a1c0ee40b9f1023ebf8b36095934807deeb493c0fb58592b39b0682ccd0be5c9e8d2b137c08807e7031595ea7a51
+  languageName: node
+  linkType: hard
+
+"csv-parse@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "csv-parse@npm:6.1.0"
+  checksum: af1c24f8632ef8fa75259c6d452fe26b660555cd37ac255a26ad82f8b7ffc1a137258458d499e13a45d0d3cde3f9fce69e68e5deb1c73cbb7cf954d3e05111d3
   languageName: node
   linkType: hard
 
@@ -3261,13 +3252,12 @@ __metadata:
     "@actions/github": ^6.0.1
     "@docker/actions-toolkit": ^0.62.1
     "@renovate/pep440": ^1.0.0
-    "@types/csv-parse": ^1.2.2
     "@types/node": ^20.12.12
     "@types/semver": ^7.7.0
     "@typescript-eslint/eslint-plugin": ^7.9.0
     "@typescript-eslint/parser": ^7.9.0
     "@vercel/ncc": ^0.38.1
-    csv-parse: ^5.6.0
+    csv-parse: ^6.1.0
     dotenv: ^16.4.5
     eslint: ^8.57.0
     eslint-config-prettier: ^9.1.0
