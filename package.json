@@ -1,6 +1,7 @@
 {
   "name": "docker-metadata-action",
-  "description": "GitHub Action to extract metadata (tags, labels) for Docker",
+  "version": "0.1.1",
+  "description": "GitHub Action to extract metadata (tags, labels) for Docker without GitHub API dependencies",
   "main": "src/main.ts",
   "scripts": {
     "build": "ncc build --source-map --minify --license licenses.txt",
@@ -10,11 +11,20 @@
     "eslint:fix": "eslint --fix .",
     "prettier": "prettier --check \"./**/*.ts\"",
     "prettier:fix": "prettier --write \"./**/*.ts\"",
-    "test": "jest"
+    "test": "jest",
+    "release": "standard-version --release-as patch && git push --follow-tags origin HEAD",
+    "release:patch": "standard-version --release-as patch && git push --follow-tags origin HEAD",
+    "release:minor": "standard-version --release-as minor && git push --follow-tags origin HEAD",
+    "release:major": "standard-version --release-as major && git push --follow-tags origin HEAD",
+    "release:pre-alpha": "standard-version --prerelease alpha && git push --follow-tags origin HEAD",
+    "release:pre-beta": "standard-version --prerelease beta && git push --follow-tags origin HEAD",
+    "release:pre-rc": "standard-version --prerelease rc && git push --follow-tags origin HEAD",
+    "release:pre-dev": "standard-version --prerelease patch --prereleaseId dev && git push --follow-tags origin HEAD",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/docker/metadata-action.git"
+    "url": "git+https://github.com/LiquidLogicLabs/docker-metadata-action.git"
   },
   "keywords": [
     "actions",
@@ -28,16 +38,16 @@
   "packageManager": "yarn@4.9.2",
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.1",
-    "@docker/actions-toolkit": "^0.67.0",
     "@renovate/pep440": "^1.0.0",
     "csv-parse": "^6.1.0",
     "handlebars": "^4.7.8",
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.0",
-    "semver": "^7.7.3"
+    "semver": "^7.7.3",
+    "simple-git": "^3.28.0"
   },
   "devDependencies": {
+    "@types/csv-parse": "^1.2.5",
     "@types/node": "^20.19.9",
     "@types/semver": "^7.7.1",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
@@ -50,8 +60,17 @@
     "eslint-plugin-prettier": "^5.5.4",
     "jest": "^29.7.0",
     "prettier": "^3.6.2",
+    "standard-version": "^9.5.0",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
+  },
+  "standard-version": {
+    "scripts": {
+      "precommit": "git add CHANGELOG.md package.json"
+    },
+    "skip": {
+      "tag": false
+    }
   }
 }

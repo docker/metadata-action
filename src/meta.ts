@@ -1,14 +1,14 @@
 import * as handlebars from 'handlebars';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as os from 'os';
 import moment from 'moment-timezone';
 import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
 import * as core from '@actions/core';
-import {Context as ToolkitContext} from '@docker/actions-toolkit/lib/context';
-import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
 
 import {Inputs, Context} from './context';
+import {Repo} from './git';
 import * as icl from './image';
 import * as tcl from './tag';
 import * as fcl from './flavor';
@@ -26,13 +26,13 @@ export class Meta {
 
   private readonly inputs: Inputs;
   private readonly context: Context;
-  private readonly repo: GitHubRepo;
+  private readonly repo: Repo;
   private readonly images: icl.Image[];
   private readonly tags: tcl.Tag[];
   private readonly flavor: fcl.Flavor;
   private readonly date: Date;
 
-  constructor(inputs: Inputs, context: Context, repo: GitHubRepo) {
+  constructor(inputs: Inputs, context: Context, repo: Repo) {
     this.inputs = inputs;
     this.context = context;
     this.repo = repo;
@@ -109,10 +109,11 @@ export class Meta {
   }
 
   private procSchedule(version: Version, tag: tcl.Tag): Version {
+    // Only process schedule tags when the event is actually a schedule event
     if (!/schedule/.test(this.context.eventName)) {
       return version;
     }
-
+    
     const currentDate = this.date;
     const commitDate = this.context.commitDate;
     const vraw = this.setValue(
@@ -400,6 +401,7 @@ export class Meta {
     const context = this.context;
     const currentDate = this.date;
     const commitDate = this.context.commitDate;
+    const repo = this.repo;
     return handlebars.compile(val)({
       branch: function () {
         if (!/^refs\/heads\//.test(context.ref)) {
@@ -417,14 +419,7 @@ export class Meta {
         return Meta.shortSha(context.sha);
       },
       base_ref: function () {
-        if (/^refs\/tags\//.test(context.ref) && context.payload?.base_ref != undefined) {
-          return context.payload.base_ref.replace(/^refs\/heads\//g, '');
-        }
-        // FIXME: keep this for backward compatibility even if doesn't always seem
-        //  to return the expected branch. See the comment below.
-        if (/^refs\/pull\//.test(context.ref) && context.payload?.pull_request?.base?.ref != undefined) {
-          return context.payload.pull_request.base.ref;
-        }
+        // In git-only mode, we don't have access to pull request base refs
         return '';
       },
       commit_date: function (format, options) {
@@ -443,25 +438,11 @@ export class Meta {
       },
       is_default_branch: function () {
         const branch = context.ref.replace(/^refs\/heads\//g, '');
-        // TODO: "base_ref" is available in the push payload but doesn't always seem to
-        //  return the expected branch when the push tag event occurs. It's also not
-        //  documented in GitHub docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push
-        //  more context: https://github.com/docker/metadata-action/pull/192#discussion_r854673012
-        // if (/^refs\/tags\//.test(context.ref) && context.payload?.base_ref != undefined) {
-        //   branch = context.payload.base_ref.replace(/^refs\/heads\//g, '');
-        // }
         if (branch == undefined || branch.length == 0) {
           return 'false';
         }
-        if (context.payload?.repository?.default_branch == branch) {
-          return 'true';
-        }
-        // following events always trigger for last commit on default branch
-        // https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
-        if (/create/.test(context.eventName) || /discussion/.test(context.eventName) || /issues/.test(context.eventName) || /schedule/.test(context.eventName)) {
-          return 'true';
-        }
-        return 'false';
+        // In git-only mode, we use the repo default_branch directly
+        return branch === repo.default_branch ? 'true' : 'false';
       },
       is_not_default_branch: function () {
         return this.is_default_branch() === 'false' ? 'true' : 'false';
@@ -494,37 +475,37 @@ export class Meta {
     return images;
   }
 
-  public getTags(namesOnly?: boolean): Array<string> {
+  public getTags(namesOnly = false): Array<string> {
     if (!this.version.main) {
       return [];
     }
+
+    const generateTags = (imageName?: string): Array<string> => {
+      const prefix = imageName ? `${imageName}:` : '';
+      const tags: Array<string> = [];
+      tags.push(`${prefix}${this.version.main}`);
+      for (const partial of this.version.partial) {
+        tags.push(`${prefix}${partial}`);
+      }
+      if (this.version.latest) {
+        const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
+        tags.push(`${prefix}${Meta.sanitizeTag(latestTag)}`);
+      }
+      return tags;
+    };
+
     if (namesOnly) {
-      return this.generateTags(this.version.main);
+      return generateTags();
     }
 
     const tags: Array<string> = [];
     const images = this.getImageNames();
     if (images.length > 0) {
       for (const imageName of images) {
-        tags.push(...this.generateTags(this.version.main, imageName));
+        tags.push(...generateTags(imageName));
       }
     } else {
-      tags.push(...this.generateTags(this.version.main));
-    }
-
-    return tags;
-  }
-
-  private generateTags(version: string, imageName?: string): Array<string> {
-    const tags: Array<string> = [];
-    const prefix = imageName ? `${imageName}:` : '';
-    tags.push(`${prefix}${version}`);
-    for (const partial of this.version.partial) {
-      tags.push(`${prefix}${partial}`);
-    }
-    if (this.version.latest) {
-      const latestTag = `${this.flavor.prefixLatest ? this.flavor.prefix : ''}latest${this.flavor.suffixLatest ? this.flavor.suffix : ''}`;
-      tags.push(`${prefix}${Meta.sanitizeTag(latestTag)}`);
+      tags.push(...generateTags());
     }
     return tags;
   }
@@ -541,12 +522,12 @@ export class Meta {
     const res: Array<string> = [
       `org.opencontainers.image.title=${this.repo.name || ''}`,
       `org.opencontainers.image.description=${this.repo.description || ''}`,
-      `org.opencontainers.image.url=${this.repo.html_url || ''}`,
-      `org.opencontainers.image.source=${this.repo.html_url || ''}`,
+      `org.opencontainers.image.url=${this.repo.url || ''}`,
+      `org.opencontainers.image.source=${this.repo.url || ''}`,
       `org.opencontainers.image.version=${this.version.main || ''}`,
       `org.opencontainers.image.created=${this.date.toISOString()}`,
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
-      `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
+      `org.opencontainers.image.licenses=${this.repo.license || ''}`
     ];
     extra.forEach(label => {
       res.push(this.setGlobalExp(label));
@@ -646,7 +627,7 @@ export class Meta {
   }
 
   private generateBakeFile(dt, suffix?: string): string {
-    const bakeFile = path.join(ToolkitContext.tmpDir(), `docker-metadata-action-bake${suffix ? `-${suffix}` : ''}.json`);
+    const bakeFile = path.join(os.tmpdir(), `docker-metadata-action-bake${suffix ? `-${suffix}` : ''}.json`);
     fs.writeFileSync(bakeFile, JSON.stringify({target: {[this.inputs.bakeTarget]: dt}}, null, 2));
     return bakeFile;
   }

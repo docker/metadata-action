@@ -1,57 +1,145 @@
-[![GitHub release](https://img.shields.io/github/release/docker/metadata-action.svg?style=flat-square)](https://github.com/docker/metadata-action/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/LiquidLogicLabs/docker-metadata-action.svg?style=flat-square)](https://github.com/LiquidLogicLabs/docker-metadata-action/releases/latest)
 [![GitHub marketplace](https://img.shields.io/badge/marketplace-docker--metadata--action-blue?logo=github&style=flat-square)](https://github.com/marketplace/actions/docker-metadata-action)
-[![CI workflow](https://img.shields.io/github/actions/workflow/status/docker/metadata-action/ci.yml?branch=master&label=ci&logo=github&style=flat-square)](https://github.com/docker/metadata-action/actions?workflow=ci)
-[![Test workflow](https://img.shields.io/github/actions/workflow/status/docker/metadata-action/test.yml?branch=master&label=test&logo=github&style=flat-square)](https://github.com/docker/metadata-action/actions?workflow=test)
-[![Codecov](https://img.shields.io/codecov/c/github/docker/metadata-action?logo=codecov&style=flat-square)](https://codecov.io/gh/docker/metadata-action)
+[![CI workflow](https://img.shields.io/github/actions/workflow/status/LiquidLogicLabs/docker-metadata-action/ci.yml?branch=master&label=ci&logo=github&style=flat-square)](https://github.com/LiquidLogicLabs/docker-metadata-action/actions?workflow=ci)
+[![Test workflow](https://img.shields.io/github/actions/workflow/status/LiquidLogicLabs/docker-metadata-action/test.yml?branch=master&label=test&logo=github&style=flat-square)](https://github.com/LiquidLogicLabs/docker-metadata-action/actions?workflow=test)
+[![Codecov](https://img.shields.io/codecov/c/github/LiquidLogicLabs/docker-metadata-action?logo=codecov&style=flat-square)](https://codecov.io/gh/LiquidLogicLabs/docker-metadata-action)
 
 ## About
 
-GitHub Action to extract metadata from Git reference and GitHub events. This action
-is particularly useful if used with [Docker Build Push](https://github.com/docker/build-push-action)
+> **Fork Notice**: This is a fork of [docker/metadata-action](https://github.com/docker/metadata-action) that has been modified to remove all dependencies on GitHub APIs. This allows it to work with any git repository, not just GitHub-hosted ones.
+
+### Key Differences from Original
+
+- **No GitHub API Dependencies**: Uses direct git commands via the `simple-git` library instead of GitHub API calls
+- **Universal Git Support**: Works with any git repository (GitHub, GitLab, Bitbucket, self-hosted, etc.)
+- **Faster Execution**: Direct git commands are faster than API calls
+- **No Rate Limits**: Doesn't consume GitHub API quota
+- **Local Testing**: Can be tested locally without GitHub connection
+- **Same Interface**: Maintains full compatibility with the original action's inputs and outputs
+
+### What Was Removed
+
+- `@actions/github` - GitHub API wrapper
+- `@docker/actions-toolkit` - Docker's toolkit that wraps GitHub API
+- All GitHub-specific context and event handling
+
+### What Was Added
+
+- `simple-git` - Clean wrapper around git CLI commands
+- Direct git repository metadata extraction
+- Local testing capabilities
+
+GitHub Action to extract metadata from Git references for Docker image tagging and labeling.
+This action is particularly useful if used with [Docker Build Push](https://github.com/docker/build-push-action)
 action to tag and label Docker images.
+
+### Compatibility
+
+✅ **Fully Compatible**: All inputs, outputs, and functionality work exactly the same as the original action
+✅ **Universal Git**: Works with any git hosting platform (GitHub, GitLab, Bitbucket, self-hosted, etc.)
+✅ **Local Testing**: Can be tested locally using `act` or by running the scripts directly
+✅ **CI/CD Agnostic**: Works in any CI/CD system that has git access
+
+### Limitations
+
+⚠️ **No Pull Request Context**: PR-specific metadata is not available from git alone
+⚠️ **No GitHub Events**: GitHub event context (`push`, `pull_request`, etc.) is not available
+⚠️ **Simplified Base Ref**: `{{base_ref}}` expression may return empty in some cases
+
+## Local Testing
+
+You can test the action locally using [act](https://github.com/nektos/act) before pushing to GitHub:
+
+### Install act
+
+```bash
+# macOS
+brew install act
+
+# Linux
+curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+
+# Windows
+choco install act-cli
+```
+
+### Run Tests
+
+```bash
+# Run common tests (default)
+./act-build.sh
+
+# Run specific job from a workflow
+./act-build.sh ci.yml context      # Run 'context' job from ci.yml
+./act-build.sh ci.yml flavor       # Run 'flavor' job from ci.yml
+
+# Run all jobs in a workflow
+./act-build.sh ci.yml              # Run all jobs in ci.yml
+./act-build.sh test.yml            # Run all jobs in test.yml
+
+# Backward compatibility - assumes ci.yml
+./act-build.sh context             # Runs ci.yml context job
+
+# List all workflows and jobs
+./act-build.sh list
+
+# See usage and examples
+./act-build.sh help
+```
+
+The script will build the action and run it through the existing GitHub Actions workflows using act,
+providing a realistic test environment that matches GitHub's infrastructure.
 
 ![Screenshot](.github/metadata-action.png)
 
 ___
 
-* [Usage](#usage)
-  * [Basic](#basic)
-  * [Semver](#semver)
-  * [Bake definition](#bake-definition)
-* [Customizing](#customizing)
-  * [inputs](#inputs)
-  * [outputs](#outputs)
-  * [environment variables](#environment-variables)
-* [`context` input](#context-input)
-* [`images` input](#images-input)
-* [`flavor` input](#flavor-input)
-* [`tags` input](#tags-input)
-  * [`type=schedule`](#typeschedule)
-  * [`type=semver`](#typesemver)
-  * [`type=pep440`](#typepep440)
-  * [`type=match`](#typematch)
-  * [`type=edge`](#typeedge)
-  * [`type=ref`](#typeref)
-  * [`type=raw`](#typeraw)
-  * [`type=sha`](#typesha)
-* [Notes](#notes)
-  * [Image name and tag sanitization](#image-name-and-tag-sanitization)
-  * [Latest tag](#latest-tag)
-  * [`priority` attribute](#priority-attribute)
-  * [Global expressions](#global-expressions)
-    * [`{{branch}}`](#branch)
-    * [`{{tag}}`](#tag)
-    * [`{{sha}}`](#sha)
-    * [`{{base_ref}}`](#base_ref)
-    * [`{{is_default_branch}}`](#is_default_branch)
-    * [`{{is_not_default_branch}}`](#is_not_default_branch)
-    * [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
-    * [`{{commit_date '<format>' tz='<timezone>'}}`](#commit_date-format-tztimezone)
-  * [Major version zero](#major-version-zero)
-  * [JSON output object](#json-output-object)
-  * [Overwrite labels and annotations](#overwrite-labels-and-annotations)
-  * [Annotations](#annotations)
-* [Contributing](#contributing)
+- [About](#about)
+  - [Key Differences from Original](#key-differences-from-original)
+  - [What Was Removed](#what-was-removed)
+  - [What Was Added](#what-was-added)
+  - [Compatibility](#compatibility)
+  - [Limitations](#limitations)
+- [Local Testing](#local-testing)
+  - [Install act](#install-act)
+  - [Run Tests](#run-tests)
+- [Usage](#usage)
+  - [Basic](#basic)
+  - [Semver](#semver)
+  - [Bake definition](#bake-definition)
+- [Customizing](#customizing)
+  - [inputs](#inputs)
+  - [outputs](#outputs)
+  - [environment variables](#environment-variables)
+- [`images` input](#images-input)
+- [`flavor` input](#flavor-input)
+- [`tags` input](#tags-input)
+  - [`type=schedule`](#typeschedule)
+  - [`type=semver`](#typesemver)
+  - [`type=pep440`](#typepep440)
+  - [`type=match`](#typematch)
+  - [`type=edge`](#typeedge)
+  - [`type=ref`](#typeref)
+  - [`type=raw`](#typeraw)
+  - [`type=sha`](#typesha)
+- [Notes](#notes)
+  - [Image name and tag sanitization](#image-name-and-tag-sanitization)
+  - [Latest tag](#latest-tag)
+  - [`priority` attribute](#priority-attribute)
+  - [Global expressions](#global-expressions)
+    - [`{{branch}}`](#branch)
+    - [`{{tag}}`](#tag)
+    - [`{{sha}}`](#sha)
+    - [`{{base_ref}}`](#base_ref)
+    - [`{{is_default_branch}}`](#is_default_branch)
+    - [`{{is_not_default_branch}}`](#is_not_default_branch)
+    - [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
+    - [`{{commit_date '<format>' tz='<timezone>'}}`](#commit_date-format-tztimezone)
+  - [Major version zero](#major-version-zero)
+  - [JSON output object](#json-output-object)
+  - [Overwrite labels and annotations](#overwrite-labels-and-annotations)
+  - [Annotations](#annotations)
+- [Contributing](#contributing)
 
 ## Usage
 
@@ -77,11 +165,11 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: name/app
       -
@@ -131,11 +219,11 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: |
             name/app
@@ -210,7 +298,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: |
             name/app
@@ -295,16 +383,15 @@ The following inputs can be used as `step.with` keys:
 
 | Name              | Type   | Description                                                                  |
 |-------------------|--------|------------------------------------------------------------------------------|
-| `context`         | String | Where to get context data. Allowed options are: `workflow` (default), `git`. |
-| `images`          | List   | List of Docker images to use as base name for tags                           |
-| `tags`            | List   | List of [tags](#tags-input) as key-value pair attributes                     |
-| `flavor`          | List   | [Flavor](#flavor-input) to apply                                             |
-| `labels`          | List   | List of custom labels                                                        |
-| `annotations`     | List   | List of custom annotations                                                   |
-| `sep-tags`        | String | Separator to use for tags output (default `\n`)                              |
-| `sep-labels`      | String | Separator to use for labels output (default `\n`)                            |
-| `sep-annotations` | String | Separator to use for annotations output (default `\n`)                       |
-| `bake-target`     | String | Bake target name (default `docker-metadata-action`)                          |
+| `images`          | List   | List of Docker images to use as base name for tags                          |
+| `tags`            | List   | List of [tags](#tags-input) as key-value pair attributes                    |
+| `flavor`          | List   | [Flavor](#flavor-input) to apply                                            |
+| `labels`          | List   | List of custom labels                                                       |
+| `annotations`     | List   | List of custom annotations                                                  |
+| `sep-tags`        | String | Separator to use for tags output (default `\n`)                             |
+| `sep-labels`      | String | Separator to use for labels output (default `\n`)                           |
+| `sep-annotations` | String | Separator to use for annotations output (default `\n`)                      |
+| `bake-target`     | String | Bake target name (default `docker-metadata-action`)                         |
 
 ### outputs
 
@@ -314,7 +401,7 @@ The following outputs are available:
 |-------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `version`               | String | Docker image version                                                                                                                                            |
 | `tags`                  | String | Docker tags                                                                                                                                                     |
-| `tag-names`             | String | Docker tag names without image base name                                                                                                                        |
+| `tag-names`             | String | Docker tag names without the image base name                                                                                                                    |
 | `labels`                | String | Docker labels                                                                                                                                                   |
 | `annotations`           | String | [Annotations](https://github.com/moby/buildkit/blob/master/docs/annotations.md)                                                                                 |
 | `json`                  | String | JSON output of tags and labels                                                                                                                                  |
@@ -326,6 +413,7 @@ Alternatively, each output is also exported as an environment variable when `DOC
 
 * `DOCKER_METADATA_OUTPUT_VERSION`
 * `DOCKER_METADATA_OUTPUT_TAGS`
+* `DOCKER_METADATA_OUTPUT_TAG_NAMES`
 * `DOCKER_METADATA_OUTPUT_LABELS`
 * `DOCKER_METADATA_OUTPUT_ANNOTATIONS`
 * `DOCKER_METADATA_OUTPUT_JSON`
@@ -350,20 +438,6 @@ So it can be used with our [Docker Build Push action](https://github.com/docker/
 | `DOCKER_METADATA_SHORT_SHA_LENGTH`   | Number | Specifies the length of the [short commit SHA](#typesha) to ensure uniqueness. Default is `7`, but can be increased for larger repositories. |
 | `DOCKER_METADATA_ANNOTATIONS_LEVELS` | String | Comma separated list of annotations levels to set for annotations output separated (default `manifest`)                                      |
 | `DOCKER_METADATA_SET_OUTPUT_ENV`     | Bool   | If `true`, sets each output as an environment variable (default `true`)                                                                      |
-
-## `context` input
-
-`context` defines where to get context metadata:
-
-```yaml
-# default
-context: workflow
-# or
-context: git
-```
-
-* `workflow`: Get context metadata from the workflow (GitHub context). See https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-* `git`: Get context metadata from the workflow and overrides some of them with current Git context, such as `ref` and `sha`.
 
 ## `images` input
 
@@ -728,7 +802,7 @@ increase this length for larger repositories by setting the
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: |
             name/app
@@ -875,7 +949,7 @@ workflow run. Will be empty for a branch reference:
 > return the expected branch when the push tag event occurs. It's also
 > [not documented in GitHub docs](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#push).
 > We keep it for backward compatibility, but it's **not recommended relying on it**.
-> More context in [#192](https://github.com/docker/metadata-action/pull/192#discussion_r854673012). 
+> More context in [#192](https://github.com/LiquidLogicLabs/docker-metadata-action/pull/192#discussion_r854673012). 
 
 #### `{{is_default_branch}}`
 
@@ -939,7 +1013,7 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         id: meta
         with:
           images: name/app
@@ -965,7 +1039,7 @@ this:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: name/app
           labels: |
@@ -987,7 +1061,7 @@ of the `metadata-action`:
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: name/app
       -
@@ -1003,7 +1077,7 @@ The same can be done with the [`bake-action`](https://github.com/docker/bake-act
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: name/app
       -
@@ -1032,7 +1106,7 @@ Please consult the documentation of your registry.
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: LiquidLogicLabs/docker-metadata-action@v0.1.0
         with:
           images: name/app
         env:
