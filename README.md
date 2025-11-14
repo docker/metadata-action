@@ -794,7 +794,7 @@ tags: |
 ### `priority` attribute
 
 `priority=<int>` attribute is used to sort tags in the final list. The higher
-the value, the higher the priority. The first tag in the list (higher priority)
+the value, the higher the priority. The highest-priority tag in the `tags` input list
 will be used as the image version for generated OCI label and [`version` output](#outputs).
 Each tags `type` attribute has a default priority:
 
