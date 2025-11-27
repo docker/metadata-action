@@ -464,7 +464,7 @@ tags: |
   # handlebars
   type=schedule,pattern={{date 'YYYYMMDD'}}
   # handlebars with timezone
-  type=schedule,pattern={{date 'YYYYMMDD-hhmmss' tz='Asia/Tokyo'}}
+  type=schedule,pattern={{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}
 ```
 
 Will be used on [schedule event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule).
