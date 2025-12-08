@@ -403,9 +403,11 @@ flavor: |
 
 * `latest=<auto|true|false>`: Handle [latest tag](#latest-tag) (default `auto`)
 * `prefix=<string>,onlatest=<true|false>`: A global prefix for each generated
-  tag. If `onlatest` (default `false) is set to `true`, also for the [latest tag](#latest-tag).
+  tag.
 * `suffix=<string>,onlatest=<true|false>`: A global suffix for each generated
-  tag. If `onlatest` (default `false) is set to `true`, also for the [latest tag](#latest-tag).
+  tag.
+
+The `prefix` and `suffix` flavor settings can set `onlatest=true` (default: `false`) to additionally apply the affix to the [`latest` tag](#latest-tag) (_when it is added via the `flavor.latest` condition_).
 
 ## `tags` input
 
