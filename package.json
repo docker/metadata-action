@@ -28,7 +28,7 @@
   "packageManager": "yarn@4.9.2",
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.1",
+    "@actions/github": "^7.0.0",
     "@docker/actions-toolkit": "^0.68.0",
     "@renovate/pep440": "^1.0.0",
     "csv-parse": "^6.1.0",

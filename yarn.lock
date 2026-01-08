@@ -96,6 +96,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@actions/github@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@actions/github@npm:7.0.0"
+  dependencies:
+    "@actions/http-client": "npm:^3.0.1"
+    "@octokit/core": "npm:^5.0.1"
+    "@octokit/plugin-paginate-rest": "npm:^9.2.2"
+    "@octokit/plugin-rest-endpoint-methods": "npm:^10.4.0"
+    "@octokit/request": "npm:^8.4.1"
+    "@octokit/request-error": "npm:^5.1.1"
+    undici: "npm:^5.28.5"
+  checksum: 10/829c6402f927839714692f4e1f48359d306be0fd21ef3843feaf3db6541e5e7f85447b0bf794beeebad0b8f4a2644f7f92143cb4a8311541b29f5ddfc585cec1
+  languageName: node
+  linkType: hard
+
 "@actions/glob@npm:^0.1.0":
   version: 0.1.2
   resolution: "@actions/glob@npm:0.1.2"
@@ -123,6 +138,16 @@ __metadata:
     tunnel: "npm:^0.0.6"
     undici: "npm:^5.28.5"
   checksum: 10/7ed597cf91953cb56f74ece13187914fee629cb81cd11357676425388dd239508be63d0eff7930e2b066034f2a86dd24b313c09717f878aaf8ed3f5a6853b816
+  languageName: node
+  linkType: hard
+
+"@actions/http-client@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@actions/http-client@npm:3.0.1"
+  dependencies:
+    tunnel: "npm:^0.0.6"
+    undici: "npm:^5.28.5"
+  checksum: 10/aac5a88023a44bd0ea658a31308a73ab6a3da9dd36ded5d7311adf5e41f4379d37091aa9390de654d8d5a81435c02c2b5316ff3166066cd14eec5e66f1e0c3d0
   languageName: node
   linkType: hard
 
@@ -3627,7 +3652,7 @@ __metadata:
   resolution: "docker-metadata-action@workspace:."
   dependencies:
     "@actions/core": "npm:^1.11.1"
-    "@actions/github": "npm:^6.0.1"
+    "@actions/github": "npm:^7.0.0"
     "@docker/actions-toolkit": "npm:^0.68.0"
     "@eslint/compat": "npm:^2.0.0"
     "@eslint/eslintrc": "npm:^3.3.3"
