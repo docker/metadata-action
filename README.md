@@ -532,6 +532,10 @@ with the following expressions:
 > if specified) as tag because they are updated frequently, and contain many
 > breaking changes that are (by the author's design) not yet fit for public
 > consumption.
+>
+> If you expect to process pre-release versions that prepend or retain a `v` prefix
+> for the image tag, do not add the prefix in `pattern` (as shown in the table above),
+> instead add `,prefix=v` which will [avoid inconsistent tag generation][caveat::pre-release-tag].
 
 Extended attributes and default values:
 
@@ -585,6 +589,10 @@ with the following expressions:
 > specified) as tag because they are updated frequently, and contain many
 > breaking changes that are (by the author's design) not yet fit for public
 > consumption.
+>
+> If you expect to process pre-release versions that prepend or retain a `v` prefix
+> for the image tag, do not add the prefix in `pattern` (as shown in the table above),
+> instead add `,prefix=v` which will [avoid inconsistent tag generation][caveat::pre-release-tag].
 
 Extended attributes and default values:
 
@@ -1051,3 +1059,5 @@ More information about annotations in the [BuildKit documentation](https://githu
 
 Want to contribute? Awesome! You can find information about contributing to
 this project in the [CONTRIBUTING.md](/.github/CONTRIBUTING.md)
+
+[caveat::pre-release-tag]: https://github.com/docker/metadata-action/issues/422#issuecomment-3797351389
