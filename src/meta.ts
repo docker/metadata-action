@@ -12,6 +12,7 @@ import {Inputs, Context} from './context';
 import * as icl from './image';
 import * as tcl from './tag';
 import * as fcl from './flavor';
+import * as acl from './annotation';
 
 const defaultShortShaLength = 7;
 
@@ -30,6 +31,8 @@ export class Meta {
   private readonly images: icl.Image[];
   private readonly tags: tcl.Tag[];
   private readonly flavor: fcl.Flavor;
+  private readonly annotations: acl.Annotation[];
+  private readonly labels: acl.Annotation[];
   private readonly date: Date;
 
   constructor(inputs: Inputs, context: Context, repo: GitHubRepo) {
@@ -39,6 +42,8 @@ export class Meta {
     this.images = icl.Transform(inputs.images);
     this.tags = tcl.Transform(inputs.tags);
     this.flavor = fcl.Transform(inputs.flavor);
+    this.annotations = acl.Transform(inputs.annotations);
+    this.labels = acl.Transform(inputs.labels);
     this.date = new Date();
     this.version = this.getVersion();
   }
@@ -530,14 +535,14 @@ export class Meta {
   }
 
   public getLabels(): Array<string> {
-    return this.getOCIAnnotationsWithCustoms(this.inputs.labels);
+    return this.getOCIAnnotationsWithCustoms(this.labels);
   }
 
   public getAnnotations(): Array<string> {
-    return this.getOCIAnnotationsWithCustoms(this.inputs.annotations);
+    return this.getOCIAnnotationsWithCustoms(this.annotations);
   }
 
-  private getOCIAnnotationsWithCustoms(extra: string[]): Array<string> {
+  private getOCIAnnotationsWithCustoms(annotations: acl.Annotation[]): Array<string> {
     const res: Array<string> = [
       `org.opencontainers.image.title=${this.repo.name || ''}`,
       `org.opencontainers.image.description=${this.repo.description || ''}`,
@@ -548,10 +553,12 @@ export class Meta {
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
-    extra.forEach(label => {
-      res.push(this.setGlobalExp(label));
+    annotations.forEach(annotation => {
+      if (annotation.enable && annotation.value != null) {
+        const expandedValue = this.setGlobalExp(annotation.value);
+        res.push(`${annotation.name}=${expandedValue}`);
+      }
     });
-
     return Array.from(
       new Map<string, string>(
         res
