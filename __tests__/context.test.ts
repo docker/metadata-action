@@ -2,12 +2,12 @@ import {afterEach, beforeEach, describe, expect, test, it, vi} from 'vitest';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
-import {Context} from '@actions/github/lib/context';
-import {Git} from '@docker/actions-toolkit/lib/git';
-import {GitHub} from '@docker/actions-toolkit/lib/github';
-import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
+import {Context} from '@actions/github/lib/context.js';
+import {Git} from '@docker/actions-toolkit/lib/git.js';
+import {GitHub} from '@docker/actions-toolkit/lib/github.js';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
 
-import * as context from '../src/context';
+import * as context from '../src/context.js';
 
 const toolkit = new Toolkit({githubToken: 'fake-github-token'});
 

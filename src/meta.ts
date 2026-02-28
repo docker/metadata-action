@@ -5,13 +5,13 @@ import moment from 'moment-timezone';
 import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
 import * as core from '@actions/core';
-import {Context as ToolkitContext} from '@docker/actions-toolkit/lib/context';
-import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
+import {Context as ToolkitContext} from '@docker/actions-toolkit/lib/context.js';
+import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github.js';
 
-import {Inputs, Context} from './context';
-import * as icl from './image';
-import * as tcl from './tag';
-import * as fcl from './flavor';
+import {Inputs, Context} from './context.js';
+import * as icl from './image.js';
+import * as tcl from './tag.js';
+import * as fcl from './flavor.js';
 
 const defaultShortShaLength = 7;
 

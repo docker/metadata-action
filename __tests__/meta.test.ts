@@ -3,15 +3,15 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-import {Context} from '@actions/github/lib/context';
-import {GitHub} from '@docker/actions-toolkit/lib/github';
-import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
-import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github';
+import {Context} from '@actions/github/lib/context.js';
+import {GitHub} from '@docker/actions-toolkit/lib/github.js';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
+import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github.js';
 
-import {ContextSource, getContext, getInputs, Inputs} from '../src/context';
-import {Meta, Version} from '../src/meta';
+import {ContextSource, getContext, getInputs, Inputs} from '../src/context.js';
+import {Meta, Version} from '../src/meta.js';
 
-import repoFixture from './fixtures/repo.json';
+import repoFixture from './fixtures/repo.json' with {type: 'json'};
 
 vi.spyOn(GitHub.prototype, 'repoData').mockImplementation((): Promise<GitHubRepo> => {
   return <Promise<GitHubRepo>>(repoFixture as unknown);
@@ -85,7 +85,7 @@ const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exV
 
 describe('null', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'null01',
@@ -144,7 +144,7 @@ describe('null', () => {
 
 describe('push', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'push01',
@@ -867,7 +867,7 @@ describe('push', () => {
 
 describe('tag', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'tag01',
@@ -2046,7 +2046,7 @@ describe('tag', () => {
 
 describe('latest', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'latest01',
@@ -2388,7 +2388,7 @@ describe('latest', () => {
 
 describe('pr', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'pr01',
@@ -3170,7 +3170,7 @@ describe('pr-head-sha', () => {
 
 describe('schedule', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'schedule01',
@@ -3434,7 +3434,7 @@ describe('schedule', () => {
 
 describe('release', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'release01',
@@ -3536,7 +3536,7 @@ describe('release', () => {
 
 describe('raw', () => {
   // prettier-ignore
-  // eslint-disable-next-line @vitest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   test.each([
     [
       'raw01',
