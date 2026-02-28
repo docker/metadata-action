@@ -1,33 +1,11 @@
-import {afterEach, beforeEach, describe, expect, test, it, vi} from 'vitest';
-import * as dotenv from 'dotenv';
-import * as fs from 'fs';
-import * as path from 'path';
+import {beforeEach, describe, expect, test, it, vi} from 'vitest';
 import {Context} from '@actions/github/lib/context.js';
 import {Git} from '@docker/actions-toolkit/lib/git.js';
-import {GitHub} from '@docker/actions-toolkit/lib/github.js';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
 
 import * as context from '../src/context.js';
 
 const toolkit = new Toolkit({githubToken: 'fake-github-token'});
-
-beforeEach(() => {
-  vi.clearAllMocks();
-  vi.spyOn(GitHub, 'context', 'get').mockImplementation((): Context => {
-    const ctx = new Context();
-    const payload = ctx.payload as {
-      commits?: Array<{id: string; timestamp: string}>;
-      head_commit?: {id: string; timestamp: string};
-    };
-    if (ctx.sha && !payload.commits?.length && !payload.head_commit) {
-      payload.head_commit = {
-        id: ctx.sha,
-        timestamp: '2024-11-13T13:42:28.000Z'
-      };
-    }
-    return ctx;
-  });
-});
 
 describe('getInputs', () => {
   beforeEach(() => {
@@ -113,24 +91,12 @@ describe('getInputs', () => {
 });
 
 describe('getContext', () => {
-  const originalEnv = process.env;
-  beforeEach(() => {
-    process.env = {
-      ...originalEnv,
-      ...dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures/event_create_branch.env')))
-    };
-  });
-  afterEach(() => {
-    process.env = originalEnv;
-  });
-
   it('workflow', async () => {
     const ctx = await context.getContext(context.ContextSource.workflow, toolkit);
     expect(ctx.ref).toEqual('refs/heads/dev');
     expect(ctx.sha).toEqual('5f3331d7f7044c18ca9f12c77d961c4d7cf3276a');
     expect(ctx.commitDate).toEqual(new Date('2024-11-13T13:42:28.000Z'));
   });
-
   it('git', async () => {
     vi.spyOn(Git, 'context').mockImplementation((): Promise<Context> => {
       return Promise.resolve({

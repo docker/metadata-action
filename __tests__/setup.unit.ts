@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {createRequire} from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
 import {vi} from 'vitest';
@@ -12,13 +13,17 @@ process.env = Object.assign({}, process.env, {
   RUNNER_TOOL_CACHE: path.join(tmpDir, 'runner-tool-cache')
 });
 
-vi.mock('@actions/github', () => ({
+const require = createRequire(import.meta.url);
+type RequireCacheEntry = NonNullable<(typeof require.cache)[string]>;
+
+const githubMock = {
   context: {
     repo: {
       owner: 'docker',
       repo: 'actions-toolkit'
     },
-    ref: 'refs/heads/master',
+    ref: 'refs/heads/dev',
+    sha: '5f3331d7f7044c18ca9f12c77d961c4d7cf3276a',
     runId: 2188748038,
     runNumber: 15,
     payload: {
@@ -232,4 +237,23 @@ vi.mock('@actions/github', () => ({
       }
     }
   })
-}));
+};
+
+vi.mock('@actions/github', () => githubMock);
+
+for (const mod of ['@actions/github', '@docker/actions-toolkit/node_modules/@actions/github']) {
+  try {
+    const resolved = require.resolve(mod);
+    vi.doMock(resolved, () => githubMock);
+    require.cache[resolved] = {
+      id: resolved,
+      filename: resolved,
+      loaded: true,
+      exports: githubMock,
+      children: [],
+      paths: []
+    } as RequireCacheEntry;
+  } catch {
+    // Ignore unresolved optional paths; vi.mock handles module-level mocking.
+  }
+}
