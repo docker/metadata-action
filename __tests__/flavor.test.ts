@@ -1,4 +1,4 @@
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, test} from 'vitest';
 
 import {Flavor, Transform} from '../src/flavor';
 
@@ -175,7 +175,7 @@ describe('transform', () => {
       if (!invalid) {
         console.error(err);
       }
-      // eslint-disable-next-line jest/no-conditional-expect
+      // eslint-disable-next-line @vitest/no-conditional-expect
       expect(true).toBe(invalid);
     }
   });
