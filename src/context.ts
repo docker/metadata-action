@@ -1,9 +1,10 @@
 import * as core from '@actions/core';
-import {Context as GithubContext} from '@actions/github/lib/context';
-import {Util} from '@docker/actions-toolkit/lib/util';
-import {Git} from '@docker/actions-toolkit/lib/git';
-import {GitHub} from '@docker/actions-toolkit/lib/github';
-import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
+
+import {Context as GithubContext} from '@actions/github/lib/context.js';
+import {Util} from '@docker/actions-toolkit/lib/util.js';
+import {Git} from '@docker/actions-toolkit/lib/git.js';
+import {GitHub} from '@docker/actions-toolkit/lib/github.js';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
 
 export interface Context extends GithubContext {
   commitDate: Date;

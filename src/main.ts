@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import * as core from '@actions/core';
 import * as actionsToolkit from '@docker/actions-toolkit';
-import {Toolkit} from '@docker/actions-toolkit/lib/toolkit';
-import {Util} from '@docker/actions-toolkit/lib/util';
+import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
+import {Util} from '@docker/actions-toolkit/lib/util.js';
 
-import {getContext, getInputs, Inputs} from './context';
-import {Meta, Version} from './meta';
+import {getContext, getInputs, Inputs} from './context.js';
+import {Meta, Version} from './meta.js';
 
 actionsToolkit.run(
   // main
