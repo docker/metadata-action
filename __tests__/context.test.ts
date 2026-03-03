@@ -1,5 +1,4 @@
 import {beforeEach, describe, expect, test, it, vi} from 'vitest';
-import {Context} from '@actions/github/lib/context.js';
 import {Git} from '@docker/actions-toolkit/lib/git.js';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
 
@@ -98,11 +97,11 @@ describe('getContext', () => {
     expect(ctx.commitDate).toEqual(new Date('2024-11-13T13:42:28.000Z'));
   });
   it('git', async () => {
-    vi.spyOn(Git, 'context').mockImplementation((): Promise<Context> => {
+    vi.spyOn(Git, 'context').mockImplementation((): Promise<context.Context> => {
       return Promise.resolve({
         ref: 'refs/heads/git-test',
         sha: 'git-test-sha'
-      } as Context);
+      } as context.Context);
     });
     vi.spyOn(Git, 'commitDate').mockImplementation(async (): Promise<Date> => {
       return new Date('2023-01-01T13:42:28.000Z');
