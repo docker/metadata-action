@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-import {GitHub} from '@docker/actions-toolkit/lib/github.js';
+import {GitHub} from '@docker/actions-toolkit/lib/github/github.js';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
-import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github.js';
+import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github/github.js';
 
 import {ContextSource, getContext, getInputs, Inputs} from '../src/context.js';
 import type {Context as MetadataContext} from '../src/context.js';
