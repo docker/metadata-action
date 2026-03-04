@@ -3,12 +3,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-import {Context} from '@actions/github/lib/context.js';
 import {GitHub} from '@docker/actions-toolkit/lib/github.js';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
 import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github.js';
 
 import {ContextSource, getContext, getInputs, Inputs} from '../src/context.js';
+import type {Context as MetadataContext} from '../src/context.js';
 import {Meta, Version} from '../src/meta.js';
 
 import repoFixture from './fixtures/repo.json' with {type: 'json'};
@@ -38,16 +38,28 @@ beforeEach(() => {
       delete process.env[key];
     }
   });
-
-  vi.spyOn(GitHub, 'context', 'get').mockImplementation((): Context => {
-    //@ts-expect-error partial info
+  vi.spyOn(GitHub, 'context', 'get').mockImplementation((): MetadataContext => {
+    const repository = process.env.GITHUB_REPOSITORY || 'docker/repo';
+    const [owner, repo] = repository.includes('/') ? repository.split('/', 2) : ['docker', 'repo'];
+    const eventPath = process.env.GITHUB_EVENT_PATH;
+    const payload = eventPath && fs.existsSync(eventPath) ? JSON.parse(fs.readFileSync(eventPath, 'utf8')) : {};
     return {
-      ...new Context(),
-      repo: {
-        owner: 'docker',
-        repo: 'repo'
-      }
-    };
+      payload,
+      eventName: process.env.GITHUB_EVENT_NAME || '',
+      sha: process.env.GITHUB_SHA || '',
+      ref: process.env.GITHUB_REF || '',
+      workflow: process.env.GITHUB_WORKFLOW || '',
+      action: process.env.GITHUB_ACTION || '',
+      actor: process.env.GITHUB_ACTOR || '',
+      job: process.env.GITHUB_JOB || '',
+      runAttempt: +(process.env.GITHUB_RUN_ATTEMPT || 1),
+      runNumber: +(process.env.GITHUB_RUN_NUMBER || 0),
+      runId: +(process.env.GITHUB_RUN_ID || 0),
+      apiUrl: process.env.GITHUB_API_URL || 'https://api.github.com',
+      serverUrl: process.env.GITHUB_SERVER_URL || 'https://github.com',
+      graphqlUrl: process.env.GITHUB_GRAPHQL_URL || 'https://api.github.com/graphql',
+      repo: {owner, repo}
+    } as MetadataContext;
   });
 });
 
