@@ -6,7 +6,7 @@ import * as pep440 from '@renovate/pep440';
 import * as semver from 'semver';
 import * as core from '@actions/core';
 import {Context as ToolkitContext} from '@docker/actions-toolkit/lib/context.js';
-import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github.js';
+import {GitHubRepo} from '@docker/actions-toolkit/lib/types/github/github.js';
 
 import {Inputs, Context} from './context.js';
 import * as icl from './image.js';

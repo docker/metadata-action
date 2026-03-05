@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 
 import {Util} from '@docker/actions-toolkit/lib/util.js';
 import {Git} from '@docker/actions-toolkit/lib/git.js';
-import {GitHub} from '@docker/actions-toolkit/lib/github.js';
+import {GitHub} from '@docker/actions-toolkit/lib/github/github.js';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
 
 type GithubContext = typeof GitHub.context;
