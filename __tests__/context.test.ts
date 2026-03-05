@@ -79,6 +79,67 @@ describe('getInputs', () => {
         tags: [],
       }
     ],
+    [
+      3,
+      new Map<string, string>([
+        ['labels', 'mylabel=foo#bar\n#comment\nanother=bar'],
+      ]),
+      {
+        context: context.ContextSource.workflow,
+        bakeTarget: 'docker-metadata-action',
+        flavor: [],
+        githubToken: '',
+        images: [],
+        labels: ['mylabel=foo#bar', 'another=bar'],
+        annotations: [],
+        sepLabels: '\n',
+        sepTags: '\n',
+        sepAnnotations: '\n',
+        tags: [],
+      }
+    ],
+    [
+      4,
+      new Map<string, string>([
+        ['annotations', 'org.opencontainers.image.url=https://example.com/path#readme\n#comment\norg.opencontainers.image.source=https://github.com/docker/metadata-action'],
+      ]),
+      {
+        context: context.ContextSource.workflow,
+        bakeTarget: 'docker-metadata-action',
+        flavor: [],
+        githubToken: '',
+        images: [],
+        labels: [],
+        annotations: [
+          'org.opencontainers.image.url=https://example.com/path#readme',
+          'org.opencontainers.image.source=https://github.com/docker/metadata-action'
+        ],
+        sepLabels: '\n',
+        sepTags: '\n',
+        sepAnnotations: '\n',
+        tags: [],
+      }
+    ],
+    [
+      5,
+      new Map<string, string>([
+        ['tags', 'type=raw,value=foo#bar\n#comment'],
+        ['flavor', 'prefix=v#1\n#comment'],
+      ]),
+      {
+        context: context.ContextSource.workflow,
+        bakeTarget: 'docker-metadata-action',
+        flavor: ['prefix=v#1'],
+        githubToken: '',
+        images: [],
+        labels: [],
+        annotations: [],
+        sepLabels: '\n',
+        sepTags: '\n',
+        sepAnnotations: '\n',
+        tags: ['type=raw,value=foo#bar'],
+      }
+    ],
   ];
   test.each(cases)('[%d] given %o as inputs, returns %o', async (num: number, inputs: Map<string, string>, expected: context.Inputs) => {
     inputs.forEach((value: string, name: string) => {
