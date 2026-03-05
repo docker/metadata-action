@@ -66,5 +66,5 @@ outputs:
     description: 'Bake definition file with tags and labels'
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
