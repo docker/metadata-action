@@ -76,26 +76,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout
-        uses: actions/checkout@v6
-      -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: name/app
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
-          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -130,12 +126,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout
-        uses: actions/checkout@v6
-      -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
             name/app
@@ -147,15 +140,14 @@ jobs:
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
-          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -210,7 +202,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
             name/app
@@ -222,7 +214,7 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@v7
         with:
           files: |
             ./docker-bake.hcl
@@ -269,7 +261,7 @@ similar to the previous one:
 ```yaml
       -
         name: Build
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@v7
         with:
           files: |
             ./docker-bake.hcl
@@ -336,7 +328,7 @@ Alternatively, each output is also exported as an environment variable when `DOC
 So it can be used with our [Docker Build Push action](https://github.com/docker/build-push-action/):
 
 ```yaml
-- uses: docker/build-push-action@v6
+- uses: docker/build-push-action@v7
   with:
     build-args: |
       DOCKER_METADATA_OUTPUT_JSON
@@ -728,7 +720,7 @@ increase this length for larger repositories by setting the
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
             name/app
@@ -939,13 +931,13 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         id: meta
         with:
           images: name/app
       -
         name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -965,7 +957,7 @@ this:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: name/app
           labels: |
@@ -987,12 +979,12 @@ of the `metadata-action`:
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: name/app
       -
         name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           tags: ${{ steps.meta.outputs.tags }}
           annotations: ${{ steps.meta.outputs.annotations }}
@@ -1003,12 +995,12 @@ The same can be done with the [`bake-action`](https://github.com/docker/bake-act
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: name/app
       -
         name: Build
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@v7
         with:
           files: |
             ./docker-bake.hcl
@@ -1032,14 +1024,14 @@ Please consult the documentation of your registry.
 ```yaml
       -
         name: Docker meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: name/app
         env:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
       -
         name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           tags: ${{ steps.meta.outputs.tags }}
           annotations: ${{ steps.meta.outputs.annotations }}
