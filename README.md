@@ -1051,3 +1051,7 @@ More information about annotations in the [BuildKit documentation](https://githu
 
 Want to contribute? Awesome! You can find information about contributing to
 this project in the [CONTRIBUTING.md](/.github/CONTRIBUTING.md)
+
+ #   T r a i n i n g   C o m m e n t 
+ T h i s   i s   a   m i n o r   c h a n g e   f o r   t h e   t r a i n i n g   m a n u a l .  
+ 
