@@ -34,6 +34,11 @@ ___
   * [`type=ref`](#typeref)
   * [`type=raw`](#typeraw)
   * [`type=sha`](#typesha)
+* [`annotations` and `labels` inputs](#annotations-and-labels-inputs)
+  * [Default labels and annotations](#default-labels-and-annotations)
+  * [Customize labels and annotations](#customize-labels-and-annotations)
+  * [Annotation outputs](#annotation-outputs)
+  * [Annotation levels](#annotation-levels)
 * [Notes](#notes)
   * [Image name and tag sanitization](#image-name-and-tag-sanitization)
   * [Latest tag](#latest-tag)
@@ -49,8 +54,6 @@ ___
     * [`{{commit_date '<format>' tz='<timezone>'}}`](#commit_date-format-tztimezone)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
-  * [Overwrite labels and annotations](#overwrite-labels-and-annotations)
-  * [Annotations](#annotations)
 * [Contributing](#contributing)
 
 ## Usage
@@ -745,6 +748,128 @@ tags: |
   type=sha,enable=true,priority=100,prefix=sha-,suffix=,format=short
 ```
 
+## `annotations` and `labels` inputs
+
+### Default labels and annotations
+
+The action will set the following default labels and annotations based on repository metadata:
+
+- `org.opencontainers.image.title`
+- `org.opencontainers.image.description`
+- `org.opencontainers.image.url`
+- `org.opencontainers.image.source`
+- `org.opencontainers.image.version`
+- `org.opencontainers.image.created`
+- `org.opencontainers.image.revision`
+- `org.opencontainers.image.licenses`
+
+### Customize labels and annotations
+
+If some [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
+generated are not suitable as labels/annotations, you can overwrite them like
+this:
+
+```yaml
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+          labels: |
+            maintainer=CrazyMax
+            org.opencontainers.image.title=MyCustomTitle
+            org.opencontainers.image.description=Another description
+            org.opencontainers.image.vendor=MyCompany
+```
+
+Alternatively, you may wish to omit certain labels and annotations from the action output. For example, you may have `LABEL` directives in a Dockerfile that you would prefer to use instead of the labels set by this action. You can omit labels and annotations with `enable=false`.
+
+```yaml
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+          labels: |
+            name=org.opencontainers.image.url,enable=false
+```
+
+### Annotation outputs
+
+Since Buildx 0.12, it is possible to set annotations to your image through the
+`--annotation` flag.
+
+With the [`build-push-action`](https://github.com/docker/build-push-action/),
+you can set the `annotations` input with the value of the `annotations` output
+of the `metadata-action`:
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+      -
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+```
+
+The same can be done with the [`bake-action`](https://github.com/docker/bake-action/):
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+      -
+        name: Build
+        uses: docker/bake-action@v6
+        with:
+          files: |
+            ./docker-bake.hcl
+            cwd://${{ steps.meta.outputs.bake-file-tags }}
+            cwd://${{ steps.meta.outputs.bake-file-annotations }}
+          targets: build
+```
+
+### Annotation levels
+
+Note that annotations can be attached at many different levels within a manifest.
+By default, the generated annotations will be attached to image manifests,
+but different registries may expect annotations at different places;
+a common practice is to read annotations at _image indexes_ if present,
+which are often used by multi-arch builds to index platform-specific images.
+If you want to specify level(s) for your annotations, you can use the
+[`DOCKER_METADATA_ANNOTATIONS_LEVELS` environment variable](#environment-variables)
+with a comma separated list of all levels the annotations should be attached to (defaults to `manifest`).
+The following configuration demonstrates the ability to attach annotations to both image manifests and image indexes,
+though your registry may only need annotations at the index level. (That is, `index` alone may be enough.)
+Please consult the documentation of your registry.
+
+```yaml
+      -
+        name: Docker meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+      -
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+```
+
+More information about annotations in the [BuildKit documentation](https://github.com/moby/buildkit/blob/master/docs/annotations.md).
+
 ## Notes
 
 ### Image name and tag sanitization
@@ -954,98 +1079,6 @@ that you can reuse them further in your workflow using the [`fromJSON` function]
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
 ```
-
-### Overwrite labels and annotations
-
-If some [OCI Image Format Specification](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
-generated are not suitable as labels/annotations, you can overwrite them like
-this:
-
-```yaml
-      -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: name/app
-          labels: |
-            maintainer=CrazyMax
-            org.opencontainers.image.title=MyCustomTitle
-            org.opencontainers.image.description=Another description
-            org.opencontainers.image.vendor=MyCompany
-```
-
-### Annotations
-
-Since Buildx 0.12, it is possible to set annotations to your image through the
-`--annotation` flag.
-
-With the [`build-push-action`](https://github.com/docker/build-push-action/),
-you can set the `annotations` input with the value of the `annotations` output
-of the `metadata-action`:
-
-```yaml
-      -
-        name: Docker meta
-        uses: docker/metadata-action@v5
-        with:
-          images: name/app
-      -
-        name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          tags: ${{ steps.meta.outputs.tags }}
-          annotations: ${{ steps.meta.outputs.annotations }}
-```
-
-The same can be done with the [`bake-action`](https://github.com/docker/bake-action/):
-
-```yaml
-      -
-        name: Docker meta
-        uses: docker/metadata-action@v5
-        with:
-          images: name/app
-      -
-        name: Build
-        uses: docker/bake-action@v6
-        with:
-          files: |
-            ./docker-bake.hcl
-            cwd://${{ steps.meta.outputs.bake-file-tags }}
-            cwd://${{ steps.meta.outputs.bake-file-annotations }}
-          targets: build
-```
-
-Note that annotations can be attached at many different levels within a manifest.
-By default, the generated annotations will be attached to image manifests,
-but different registries may expect annotations at different places;
-a common practice is to read annotations at _image indexes_ if present,
-which are often used by multi-arch builds to index platform-specific images.
-If you want to specify level(s) for your annotations, you can use the
-[`DOCKER_METADATA_ANNOTATIONS_LEVELS` environment variable](#environment-variables)
-with a comma separated list of all levels the annotations should be attached to (defaults to `manifest`).
-The following configuration demonstrates the ability to attach annotations to both image manifests and image indexes,
-though your registry may only need annotations at the index level. (That is, `index` alone may be enough.)
-Please consult the documentation of your registry.
-
-```yaml
-      -
-        name: Docker meta
-        uses: docker/metadata-action@v5
-        with:
-          images: name/app
-        env:
-          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
-      -
-        name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          tags: ${{ steps.meta.outputs.tags }}
-          annotations: ${{ steps.meta.outputs.annotations }}
-```
-
-More information about annotations in the [BuildKit documentation](https://github.com/moby/buildkit/blob/master/docs/annotations.md).
 
 ## Contributing
 
