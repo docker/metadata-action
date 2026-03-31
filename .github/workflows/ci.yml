@@ -634,4 +634,4 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       -
         name: Dump context
-        uses: crazy-max/ghaction-dump-context@5355a8e5e6ac5a302e746a1c4b7747a0393863c8 # v2.3.0
+        uses: crazy-max/ghaction-dump-context@5d2753e7076f4568c7729971e25231f32147e2d8 # v3.0.0
