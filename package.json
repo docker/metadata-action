@@ -29,7 +29,7 @@
     "@docker/actions-toolkit": "^0.79.0",
     "@renovate/pep440": "^1.0.0",
     "csv-parse": "^6.1.0",
-    "handlebars": "^4.7.8",
+    "handlebars": "^4.7.9",
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.1",
     "semver": "^7.7.4"
