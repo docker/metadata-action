@@ -1814,7 +1814,6 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 
 The following npm packages may be included in this product:
 
- - jackspeak@2.3.6
  - path-scurry@1.11.1
  - path-scurry@2.0.0
 
@@ -1880,6 +1879,7 @@ software or this license, under any kind of legal claim.***
 
 The following npm packages may be included in this product:
 
+ - jackspeak@3.4.3
  - jackspeak@4.1.1
  - minimatch@10.1.1
  - minimatch@10.2.4
@@ -3217,7 +3217,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 
 The following npm package may be included in this product:
 
- - lodash@4.17.23
+ - lodash@4.18.1
 
 This package contains the following license:
 
@@ -3492,6 +3492,7 @@ The following npm packages may be included in this product:
 
  - brace-expansion@1.1.12
  - brace-expansion@2.0.1
+ - brace-expansion@2.0.2
 
 These packages each contain the following license:
 
@@ -4177,7 +4178,7 @@ IN THE SOFTWARE.
 
 The following npm packages may be included in this product:
 
- - glob@10.3.15
+ - glob@10.5.0
  - glob@11.0.3
 
 These packages each contain the following license:
@@ -4252,7 +4253,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 The following npm packages may be included in this product:
 
  - minimatch@5.1.6
- - minimatch@9.0.4
+ - minimatch@9.0.9
 
 These packages each contain the following license:
 
