@@ -656,7 +656,7 @@ export class Meta {
   }
 
   private static sanitizeTag(tag: string): string {
-    return tag.replace(/[^a-zA-Z0-9._-]+/g, '-');
+    return tag.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^[^a-zA-Z0-9_]+/, '');
   }
 
   private static shortSha(sha: string): string {
