@@ -4661,11 +4661,12 @@ THE SOFTWARE.
 
 -----------
 
-The following npm package may be included in this product:
+The following npm packages may be included in this product:
 
  - csv-parse@6.1.0
+ - csv-parse@6.2.1
 
-This package contains the following license:
+These packages each contain the following license:
 
 The MIT License (MIT)
 
