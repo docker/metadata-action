@@ -358,7 +358,12 @@ export class Meta {
     if (val.length == 0) {
       return version;
     }
-    val = Meta.sanitizeTag(val);
+    const sanitized = Meta.sanitizeTag(val);
+    if (sanitized.length == 0) {
+      core.warning(`Skipping tag "${val}": sanitization resulted in an empty string.`);
+      return version;
+    }
+    val = sanitized;
     if (version.main == undefined) {
       version.main = val;
     } else if (val !== version.main) {
