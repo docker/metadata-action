@@ -4019,7 +4019,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 The following npm packages may be included in this product:
 
  - @isaacs/brace-expansion@5.0.1
- - brace-expansion@5.0.4
+ - brace-expansion@5.0.6
 
 These packages each contain the following license:
 
