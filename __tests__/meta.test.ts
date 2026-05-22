@@ -76,6 +76,27 @@ describe('isRawStatement', () => {
   });
 });
 
+describe('global expressions', () => {
+  test('throws for unknown global expression', async () => {
+    process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'event_push_master.env')));
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const context = await getContext(ContextSource.workflow, toolkit);
+
+    expect(() => {
+      new Meta(
+        {
+          ...getInputs(),
+          images: ['user/app'],
+          tags: [`type=raw,value=latest,enable={{is_prerelease}}`]
+        },
+        context,
+        repo
+      );
+    }).toThrow('{{is_prerelease}} is not a valid global expression');
+  });
+});
+
 const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>, exAnnotations: Array<string> | undefined) => {
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
   const toolkit = new Toolkit();
