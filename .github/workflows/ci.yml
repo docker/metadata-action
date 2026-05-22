@@ -348,7 +348,7 @@ jobs:
             type=sha
       -
         name: Build and push to local registry
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
         with:
           context: ./test
           file: ./test/Dockerfile
@@ -396,7 +396,7 @@ jobs:
             type=sha
       -
         name: Build
-        uses: docker/bake-action@82490499d2e5613fcead7e128237ef0b0ea210f7 # v7.0.0
+        uses: docker/bake-action@a66e1c87e2eca0503c343edf1d208c716d54b8a8 # v7.1.0
         with:
           files: |
             ./test/docker-bake.hcl
@@ -434,7 +434,7 @@ jobs:
           sep-tags: ${{ matrix.sep }}
       -
         name: Tags
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             console.log(`${{ steps.meta.outputs.tags }}`);
@@ -465,7 +465,7 @@ jobs:
             maintainer=Foo
       -
         name: Build
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
         with:
           context: ./test
           file: ./test/output.Dockerfile
@@ -534,7 +534,7 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
       -
         name: Build
-        uses: docker/bake-action@82490499d2e5613fcead7e128237ef0b0ea210f7 # v7.0.0
+        uses: docker/bake-action@a66e1c87e2eca0503c343edf1d208c716d54b8a8 # v7.1.0
         with:
           files: |
             ./test/docker-bake.hcl
@@ -586,7 +586,7 @@ jobs:
         uses: ./
       -
         name: Build
-        uses: docker/bake-action@82490499d2e5613fcead7e128237ef0b0ea210f7 # v7.0.0
+        uses: docker/bake-action@a66e1c87e2eca0503c343edf1d208c716d54b8a8 # v7.1.0
         with:
           source: .
           files: |
