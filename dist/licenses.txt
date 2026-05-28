@@ -5710,7 +5710,7 @@ https://github.com/bitinn/node-fetch
 
 The following npm package may be included in this product:
 
- - moment-timezone@0.6.1
+ - moment-timezone@0.6.2
 
 This package contains the following license:
 
