@@ -2838,7 +2838,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docker-metadata-action@workspace:."
   dependencies:
-    "@actions/core": "npm:^3.0.0"
+    "@actions/core": "npm:^3.0.1"
     "@actions/github": "npm:^9.1.1"
     "@docker/actions-toolkit": "npm:^0.90.0"
     "@eslint/js": "npm:^9.39.3"
