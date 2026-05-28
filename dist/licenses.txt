@@ -4796,7 +4796,6 @@ The following npm packages may be included in this product:
  - once@1.4.0
  - semver@7.6.0
  - semver@7.7.3
- - semver@7.7.4
  - semver@7.8.1
  - which@2.0.2
  - wrappy@1.0.2
