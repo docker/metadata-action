@@ -400,7 +400,7 @@ export class Meta {
     const context = this.context;
     const currentDate = this.date;
     const commitDate = this.context.commitDate;
-    return handlebars.compile(val)({
+    const globalExp = {
       branch: function () {
         if (!/^refs\/heads\//.test(context.ref)) {
           return '';
@@ -480,7 +480,19 @@ export class Meta {
         });
         return m.tz(tz).format(format);
       }
-    });
+    };
+    const expressions = Object.keys(globalExp);
+    const template = handlebars.parseWithoutProcessing(val);
+    for (const node of template.body) {
+      const statement = node as {type: string; path?: {type: string; original: string}};
+      if (statement.type !== 'MustacheStatement' || statement.path?.type !== 'PathExpression') {
+        continue;
+      }
+      if (!expressions.includes(statement.path.original)) {
+        throw new Error(`{{${statement.path.original}}} is not a valid global expression`);
+      }
+    }
+    return handlebars.compile(val)(globalExp);
   }
 
   private getImageNames(): Array<string> {
