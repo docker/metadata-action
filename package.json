@@ -27,7 +27,7 @@
   "dependencies": {
     "@actions/core": "^3.0.1",
     "@actions/github": "^9.1.1",
-    "@docker/actions-toolkit": "^0.91.0",
+    "@docker/actions-toolkit": "^0.92.0",
     "@renovate/pep440": "^1.0.0",
     "csv-parse": "^7.0.0",
     "handlebars": "^4.7.9",
