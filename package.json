@@ -29,7 +29,7 @@
     "@actions/github": "^9.1.1",
     "@docker/actions-toolkit": "^0.91.0",
     "@renovate/pep440": "^1.0.0",
-    "csv-parse": "^6.2.1",
+    "csv-parse": "^7.0.0",
     "handlebars": "^4.7.9",
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.2",
