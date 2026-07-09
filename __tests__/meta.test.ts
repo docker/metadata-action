@@ -76,6 +76,53 @@ describe('isRawStatement', () => {
   });
 });
 
+describe('global expressions', () => {
+  // prettier-ignore
+  test.each([
+    [
+      'top-level',
+      `type=raw,value=latest,enable={{is_prerelease}}`
+    ],
+    [
+      'param',
+      `type=raw,value={{date is_prerelease}}`
+    ],
+    [
+      'hash value',
+      `type=raw,value={{date 'YYYYMMDD' tz=is_prerelease}}`
+    ],
+    [
+      'subexpression',
+      `type=raw,value={{date (is_prerelease)}}`
+    ],
+    [
+      'block param',
+      `type=raw,value={{#if is_prerelease}}latest{{/if}}`
+    ],
+    [
+      'nested program',
+      `type=raw,value={{#is_default_branch}}{{is_prerelease}}{{/is_default_branch}}`
+    ],
+  ])('throws for unknown global expression as %s', async (_name: string, tag: string) => {
+    process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'event_push_master.env')));
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const context = await getContext(ContextSource.workflow, toolkit);
+
+    expect(() => {
+      new Meta(
+        {
+          ...getInputs(),
+          images: ['user/app'],
+          tags: [tag]
+        },
+        context,
+        repo
+      );
+    }).toThrow('{{is_prerelease}} is not a valid global expression');
+  });
+});
+
 const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabels: Array<string>, exAnnotations: Array<string> | undefined) => {
   process.env = dotenv.parse(fs.readFileSync(path.join(__dirname, 'fixtures', envFile)));
   const toolkit = new Toolkit();
@@ -2760,16 +2807,16 @@ describe('pr', () => {
       {
         images: ['org/app'],
         tags: [
-          `type=raw,value={{commit_date YYYY-MM-DD-HHmmSS}}`,
+          `type=raw,value={{commit_date 'YYYY-MM-DD-HHmmSS'}}`,
         ]
       } as Inputs,
       {
-        main: "2020-01-10T00-30-00Z",
+        main: "2020-01-10-003000",
         partial: [],
         latest: false
       } as Version,
       [
-        'org/app:2020-01-10T00-30-00Z'
+        'org/app:2020-01-10-003000'
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -2779,7 +2826,7 @@ describe('pr', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=2020-01-10T00-30-00Z"
+        "org.opencontainers.image.version=2020-01-10-003000"
       ],
       undefined
     ],
@@ -3136,16 +3183,16 @@ describe('pr-head-sha', () => {
       {
         images: ['org/app'],
         tags: [
-          `type=raw,value=src-{{commit_date YYYY-MM-DD}}`,
+          `type=raw,value=src-{{commit_date 'YYYY-MM-DD'}}`,
         ]
       } as Inputs,
       {
-        main: "src-2020-01-10T00-30-00Z",
+        main: "src-2020-01-10",
         partial: [],
         latest: false
       } as Version,
       [
-        "org/app:src-2020-01-10T00-30-00Z",
+        "org/app:src-2020-01-10",
       ],
       [
         "org.opencontainers.image.created=2020-01-10T00:30:00.000Z",
@@ -3155,7 +3202,7 @@ describe('pr-head-sha', () => {
         "org.opencontainers.image.source=https://github.com/octocat/Hello-World",
         "org.opencontainers.image.title=Hello-World",
         "org.opencontainers.image.url=https://github.com/octocat/Hello-World",
-        "org.opencontainers.image.version=src-2020-01-10T00-30-00Z",
+        "org.opencontainers.image.version=src-2020-01-10",
       ]
     ],
   ])('given %o with %o event', async (name: string, envFile: string, inputs: Inputs, exVersion: Version, exTags: Array<string>, exLabelsAnnotations: Array<string>) => {

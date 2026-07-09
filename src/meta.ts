@@ -400,7 +400,7 @@ export class Meta {
     const context = this.context;
     const currentDate = this.date;
     const commitDate = this.context.commitDate;
-    return handlebars.compile(val)({
+    const globalExp = {
       branch: function () {
         if (!/^refs\/heads\//.test(context.ref)) {
           return '';
@@ -480,7 +480,60 @@ export class Meta {
         });
         return m.tz(tz).format(format);
       }
-    });
+    };
+    const expressions = Object.keys(globalExp);
+    const template = handlebars.parseWithoutProcessing(val);
+    const nodes: unknown[] = [...template.body];
+    for (const node of nodes) {
+      if (node == undefined || typeof node !== 'object') {
+        continue;
+      }
+      const statement = node as Record<string, unknown>;
+      switch (statement.type) {
+        case 'ContentStatement':
+        case 'CommentStatement':
+        case 'StringLiteral':
+        case 'BooleanLiteral':
+        case 'NumberLiteral':
+        case 'UndefinedLiteral':
+        case 'NullLiteral': {
+          break;
+        }
+        case 'Program': {
+          nodes.push(...((statement.body as unknown[] | undefined) || []));
+          break;
+        }
+        case 'Hash': {
+          nodes.push(...((statement.pairs as unknown[] | undefined) || []));
+          break;
+        }
+        case 'HashPair': {
+          nodes.push(statement.value);
+          break;
+        }
+        case 'MustacheStatement':
+        case 'Decorator':
+        case 'SubExpression':
+        case 'BlockStatement':
+        case 'DecoratorBlock': {
+          nodes.push(...((statement.params as unknown[] | undefined) || []), statement.hash, statement.program, statement.inverse, statement.path);
+          break;
+        }
+        case 'PartialStatement':
+        case 'PartialBlockStatement': {
+          nodes.push(...((statement.params as unknown[] | undefined) || []), statement.hash, statement.program, statement.name);
+          break;
+        }
+        case 'PathExpression': {
+          const expression = statement.original;
+          if (typeof expression == 'string' && !expressions.includes(expression)) {
+            throw new Error(`{{${expression}}} is not a valid global expression`);
+          }
+          break;
+        }
+      }
+    }
+    return handlebars.compile(val)(globalExp);
   }
 
   private getImageNames(): Array<string> {
