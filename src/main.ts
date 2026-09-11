@@ -12,8 +12,10 @@ actionsToolkit.run(
   async () => {
     const inputs: Inputs = getInputs();
     const toolkit = new Toolkit({githubToken: inputs.githubToken});
-    const context = await getContext(inputs.context, toolkit);
-    const repo = await toolkit.github.repoData();
+    const [context, repo] = await Promise.all([
+      getContext(inputs.context, toolkit),
+      toolkit.github.repoData()
+    ]);
     const setOutput = outputEnvEnabled() ? setOutputAndEnv : core.setOutput;
 
     await core.group(`Context info`, async () => {
