@@ -46,6 +46,7 @@ ___
     * [`{{is_default_branch}}`](#is_default_branch)
     * [`{{is_not_default_branch}}`](#is_not_default_branch)
     * [`{{date '<format>' tz='<timezone>'}}`](#date-format-tztimezone)
+    * [`{{commit_count}}`](#commit_count)
     * [`{{commit_date '<format>' tz='<timezone>'}}`](#commit_date-format-tztimezone)
   * [Major version zero](#major-version-zero)
   * [JSON output object](#json-output-object)
@@ -907,6 +908,26 @@ Default `tz` is UTC.
 | `{{date 'YYYYMMDD'}}`                        | `20200110`                              |
 | `{{date 'dddd, MMMM Do YYYY, h:mm:ss a'}}`   | `Friday, January 10th 2020, 3:25:50 pm` |
 | `{{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}` | `20200110-093000`                       |
+
+#### `{{commit_count}}`
+
+Returns the number of commits reachable from `HEAD` in the selected Git checkout,
+using `git rev-list --count HEAD`. Requires `context: git` or `context: git:<path>`;
+using this expression with workflow context produces an error.
+
+Shallow checkouts count only the available history. Use `fetch-depth: 0` to fetch
+the full history when you need the complete count:
+
+```yaml
+- uses: actions/checkout@v7
+  with:
+    fetch-depth: 0
+- uses: docker/metadata-action@v6
+  with:
+    context: git
+    images: name/app
+    tags: type=raw,value=rev-{{commit_count}}
+```
 
 #### `{{commit_date '<format>' tz='<timezone>'}}`
 

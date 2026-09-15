@@ -169,12 +169,15 @@ describe('getContext', () => {
   it('workflow does not read Git context', async () => {
     const gitContext = vi.spyOn(Git, 'context');
     const gitCommitDate = vi.spyOn(Git, 'commitDate');
+    const gitCommitCount = vi.spyOn(Git, 'commitCount');
     const ctx = await context.getContext(context.ContextSource.workflow, toolkit);
     expect(ctx.ref).toEqual('refs/heads/dev');
     expect(ctx.sha).toEqual('5f3331d7f7044c18ca9f12c77d961c4d7cf3276a');
     expect(ctx.commitDate).toEqual(new Date('2024-11-13T13:42:28.000Z'));
     expect(gitContext).not.toHaveBeenCalled();
     expect(gitCommitDate).not.toHaveBeenCalled();
+    expect(gitCommitCount).not.toHaveBeenCalled();
+    expect(ctx.commitCount).toBeUndefined();
   });
   it.each<[string, string | undefined]>([
     ['git', undefined],
@@ -191,9 +194,12 @@ describe('getContext', () => {
     vi.spyOn(Git, 'commitDate').mockImplementation(async (): Promise<Date> => {
       return new Date('2023-01-01T13:42:28.000Z');
     });
+    vi.spyOn(Git, 'commitCount').mockResolvedValue(42);
     const ctx = await context.getContext(source, toolkit);
     expect(Git.context).toHaveBeenCalledWith(workdir);
     expect(Git.commitDate).toHaveBeenCalledWith('git-test-sha', workdir);
+    expect(Git.commitCount).toHaveBeenCalledWith(workdir);
+    expect(ctx.commitCount).toEqual(42);
     expect(ctx.ref).toEqual('refs/heads/git-test');
     expect(ctx.sha).toEqual('git-test-sha');
     expect(ctx.commitDate).toEqual(new Date('2023-01-01T13:42:28.000Z'));
@@ -218,11 +224,13 @@ describe('getContext', () => {
     try {
       git(['init', '--initial-branch=selected-checkout']);
       git(['-c', 'user.name=Test', '-c', 'user.email=test@example.com', '-c', 'commit.gpgsign=false', 'commit', '--allow-empty', '-m', 'initial']);
+      git(['-c', 'user.name=Test', '-c', 'user.email=test@example.com', '-c', 'commit.gpgsign=false', 'commit', '--allow-empty', '-m', 'second']);
       const sha = git(['rev-parse', 'HEAD']);
       const ctx = await context.getContext(`git:${workdir}`, toolkit);
       expect(ctx.ref).toEqual('refs/heads/selected-checkout');
       expect(ctx.sha).toEqual(sha);
       expect(ctx.commitDate).toEqual(new Date(commitDate));
+      expect(ctx.commitCount).toEqual(2);
 
       git(['checkout', '--detach', 'HEAD']);
       git(['branch', '-D', 'selected-checkout']);
@@ -230,8 +238,18 @@ describe('getContext', () => {
       expect(detachedContext.ref).toEqual('');
       expect(detachedContext.sha).toEqual(sha);
       expect(detachedContext.commitDate).toEqual(new Date(commitDate));
+      expect(detachedContext.commitCount).toEqual(2);
       const meta = new Meta({...context.getInputs(), images: ['name/app'], tags: ['type=sha,format=long'], flavor: []}, detachedContext, repoFixture);
       expect(meta.getTags()).toEqual([`name/app:sha-${sha}`]);
+
+      const shallowDir = path.join(checkoutDir, 'shallow');
+      git(['init', shallowDir]);
+      git(['-C', shallowDir, 'fetch', '--depth=1', '--no-tags', checkoutDir, sha]);
+      git(['-C', shallowDir, 'checkout', '--detach', 'FETCH_HEAD']);
+      const shallowContext = await context.getContext(`git:${shallowDir}`, toolkit);
+      expect(shallowContext.commitCount).toEqual(1);
+      const shallowMeta = new Meta({...context.getInputs(), images: ['name/app'], tags: ['type=raw,value=rev-{{commit_count}}'], flavor: []}, shallowContext, repoFixture);
+      expect(shallowMeta.getTags()).toEqual(['name/app:rev-1']);
     } finally {
       fs.rmSync(checkoutDir, {recursive: true, force: true});
     }

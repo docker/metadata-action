@@ -63,6 +63,42 @@ beforeEach(() => {
   });
 });
 
+describe('commit_count', () => {
+  test('expands the count in tags, flavor, labels, and annotations', async () => {
+    const toolkit = new Toolkit({githubToken: 'fake-github-token'});
+    const context = await getContext(ContextSource.workflow, toolkit);
+    context.commitCount = 42;
+    const meta = new Meta(
+      {
+        ...getInputs(),
+        images: ['name/app'],
+        tags: ['type=raw,value=rev-{{commit_count}}'],
+        flavor: ['suffix=-{{commit_count}}'],
+        labels: ['com.example.commit-count={{commit_count}}'],
+        annotations: ['com.example.commit-count={{commit_count}}']
+      },
+      context,
+      await toolkit.github.repoData()
+    );
+    expect(meta.getTags()).toEqual(['name/app:rev-42-42']);
+    expect(meta.getLabels()).toContain('com.example.commit-count=42');
+    expect(meta.getAnnotations()).toContain('com.example.commit-count=42');
+  });
+
+  test.each(['tags', 'labels', 'annotations'])('rejects commit_count in %s with workflow context', async input => {
+    const toolkit = new Toolkit({githubToken: 'fake-github-token'});
+    const context = await getContext(ContextSource.workflow, toolkit);
+    const inputs = {...getInputs(), images: ['name/app'], tags: ['type=raw,value=test'], labels: [], annotations: [], flavor: []};
+    inputs[input] = [input === 'tags' ? 'type=raw,value={{commit_count}}' : 'com.example.commit-count={{commit_count}}'];
+    const repo = await toolkit.github.repoData();
+    expect(() => {
+      const meta = new Meta(inputs, context, repo);
+      meta.getLabels();
+      meta.getAnnotations();
+    }).toThrow('The commit_count expression requires Git context (context: git or git:<path>)');
+  });
+});
+
 describe('isRawStatement', () => {
   // prettier-ignore
   test.each([

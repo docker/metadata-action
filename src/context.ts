@@ -9,6 +9,7 @@ type GithubContext = typeof GitHub.context;
 
 export interface Context extends GithubContext {
   commitDate: Date;
+  commitCount?: number;
 }
 
 export interface Inputs {
@@ -90,6 +91,7 @@ async function getContextFromGit(workdir?: string): Promise<Context> {
 
   return {
     commitDate: await Git.commitDate(ctx.sha, workdir),
+    commitCount: await Git.commitCount(workdir),
     ...ctx
   } as Context;
 }
