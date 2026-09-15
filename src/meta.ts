@@ -416,6 +416,12 @@ export class Meta {
       sha: function () {
         return Meta.shortSha(context.sha);
       },
+      commit_count: function () {
+        if (context.commitCount === undefined) {
+          throw new Error('The commit_count expression requires Git context (context: git or git:<path>)');
+        }
+        return context.commitCount;
+      },
       base_ref: function () {
         if (/^refs\/tags\//.test(context.ref) && context.payload?.base_ref != undefined) {
           return context.payload.base_ref.replace(/^refs\/heads\//g, '');
