@@ -285,18 +285,18 @@ The following inputs can be used as `step.with` keys:
 >   org.opencontainers.image.vendor=MyCompany
 > ```
 
-| Name              | Type   | Description                                                                  |
-|-------------------|--------|------------------------------------------------------------------------------|
-| `context`         | String | Where to get context data. Allowed options are: `workflow` (default), `git`. |
-| `images`          | List   | List of Docker images to use as base name for tags                           |
-| `tags`            | List   | List of [tags](#tags-input) as key-value pair attributes                     |
-| `flavor`          | List   | [Flavor](#flavor-input) to apply                                             |
-| `labels`          | List   | List of custom labels                                                        |
-| `annotations`     | List   | List of custom annotations                                                   |
-| `sep-tags`        | String | Separator to use for tags output (default `\n`)                              |
-| `sep-labels`      | String | Separator to use for labels output (default `\n`)                            |
-| `sep-annotations` | String | Separator to use for annotations output (default `\n`)                       |
-| `bake-target`     | String | Bake target name (default `docker-metadata-action`)                          |
+| Name              | Type   | Description                                                                                |
+|-------------------|--------|--------------------------------------------------------------------------------------------|
+| `context`         | String | Where to get context data. Allowed options are: `workflow` (default), `git`, `git:<path>`. |
+| `images`          | List   | List of Docker images to use as base name for tags                                         |
+| `tags`            | List   | List of [tags](#tags-input) as key-value pair attributes                                   |
+| `flavor`          | List   | [Flavor](#flavor-input) to apply                                                           |
+| `labels`          | List   | List of custom labels                                                                      |
+| `annotations`     | List   | List of custom annotations                                                                 |
+| `sep-tags`        | String | Separator to use for tags output (default `\n`)                                            |
+| `sep-labels`      | String | Separator to use for labels output (default `\n`)                                          |
+| `sep-annotations` | String | Separator to use for annotations output (default `\n`)                                     |
+| `bake-target`     | String | Bake target name (default `docker-metadata-action`)                                        |
 
 ### outputs
 
@@ -356,6 +356,24 @@ context: git
 
 * `workflow`: Get context metadata from the workflow (GitHub context). See https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
 * `git`: Get context metadata from the workflow and overrides some of them with current Git context, such as `ref` and `sha`.
+
+Use `context: git:<path>` when the repository is checked out to a custom path.
+The path can be absolute or relative to the current working directory
+(normally `$GITHUB_WORKSPACE`):
+
+```yaml
+- uses: actions/checkout@v7
+  with:
+    path: source
+- uses: docker/metadata-action@v6
+  with:
+    context: git:source
+    images: name/app
+    tags: type=sha
+```
+
+The selected checkout supplies the Git ref, SHA, and commit date. Other repository
+metadata still comes from the workflow repository.
 
 ## `images` input
 

@@ -1,8 +1,14 @@
-import {beforeEach, describe, expect, test, it, vi} from 'vitest';
+import {afterEach, beforeEach, describe, expect, test, it, vi} from 'vitest';
+import {execFileSync} from 'child_process';
+import fs from 'fs';
+import path from 'path';
+
 import {Git} from '@docker/actions-toolkit/lib/git.js';
 import {Toolkit} from '@docker/actions-toolkit/lib/toolkit.js';
 
 import * as context from '../src/context.js';
+import {Meta} from '../src/meta.js';
+import repoFixture from './fixtures/repo.json' with {type: 'json'};
 
 const toolkit = new Toolkit({githubToken: 'fake-github-token'});
 
@@ -14,6 +20,11 @@ describe('getInputs', () => {
       }
       return object;
     }, {});
+  });
+
+  it('reads a Git context with a path', () => {
+    setInput('context', 'git:nested checkout');
+    expect(context.getInputs().context).toEqual('git:nested checkout');
   });
 
   // prettier-ignore
@@ -151,13 +162,26 @@ describe('getInputs', () => {
 });
 
 describe('getContext', () => {
-  it('workflow', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('workflow does not read Git context', async () => {
+    const gitContext = vi.spyOn(Git, 'context');
+    const gitCommitDate = vi.spyOn(Git, 'commitDate');
     const ctx = await context.getContext(context.ContextSource.workflow, toolkit);
     expect(ctx.ref).toEqual('refs/heads/dev');
     expect(ctx.sha).toEqual('5f3331d7f7044c18ca9f12c77d961c4d7cf3276a');
     expect(ctx.commitDate).toEqual(new Date('2024-11-13T13:42:28.000Z'));
+    expect(gitContext).not.toHaveBeenCalled();
+    expect(gitCommitDate).not.toHaveBeenCalled();
   });
-  it('git', async () => {
+  it.each<[string, string | undefined]>([
+    ['git', undefined],
+    ['git:', ''],
+    ['git:source', 'source'],
+    ['git:C:\\nested checkout', 'C:\\nested checkout']
+  ])('reads %s', async (source, workdir) => {
     vi.spyOn(Git, 'context').mockImplementation((): Promise<context.Context> => {
       return Promise.resolve({
         ref: 'refs/heads/git-test',
@@ -167,10 +191,50 @@ describe('getContext', () => {
     vi.spyOn(Git, 'commitDate').mockImplementation(async (): Promise<Date> => {
       return new Date('2023-01-01T13:42:28.000Z');
     });
-    const ctx = await context.getContext(context.ContextSource.git, toolkit);
+    const ctx = await context.getContext(source, toolkit);
+    expect(Git.context).toHaveBeenCalledWith(workdir);
+    expect(Git.commitDate).toHaveBeenCalledWith('git-test-sha', workdir);
     expect(ctx.ref).toEqual('refs/heads/git-test');
     expect(ctx.sha).toEqual('git-test-sha');
     expect(ctx.commitDate).toEqual(new Date('2023-01-01T13:42:28.000Z'));
+  });
+
+  it.each(['workflow:source', 'gitfoo:source', 'invalid'])('rejects invalid context %s', async source => {
+    await expect(context.getContext(source, toolkit)).rejects.toThrow(`Invalid context source: ${source}`);
+  });
+
+  it.each(['relative', 'absolute'])('reads a selected checkout using a %s path', async pathType => {
+    const checkoutDir = fs.mkdtempSync(path.join(process.cwd(), 'git context-'));
+    const workdir = pathType === 'relative' ? path.relative(process.cwd(), checkoutDir) : checkoutDir;
+    const commitDate = '2024-01-02T03:04:05Z';
+    const git = (args: string[]) =>
+      execFileSync('git', args, {
+        cwd: checkoutDir,
+        encoding: 'utf8',
+        stdio: 'pipe',
+        env: {...process.env, GIT_AUTHOR_DATE: commitDate, GIT_COMMITTER_DATE: commitDate}
+      }).trim();
+
+    try {
+      git(['init', '--initial-branch=selected-checkout']);
+      git(['-c', 'user.name=Test', '-c', 'user.email=test@example.com', '-c', 'commit.gpgsign=false', 'commit', '--allow-empty', '-m', 'initial']);
+      const sha = git(['rev-parse', 'HEAD']);
+      const ctx = await context.getContext(`git:${workdir}`, toolkit);
+      expect(ctx.ref).toEqual('refs/heads/selected-checkout');
+      expect(ctx.sha).toEqual(sha);
+      expect(ctx.commitDate).toEqual(new Date(commitDate));
+
+      git(['checkout', '--detach', 'HEAD']);
+      git(['branch', '-D', 'selected-checkout']);
+      const detachedContext = await context.getContext(`git:${workdir}`, toolkit);
+      expect(detachedContext.ref).toEqual('');
+      expect(detachedContext.sha).toEqual(sha);
+      expect(detachedContext.commitDate).toEqual(new Date(commitDate));
+      const meta = new Meta({...context.getInputs(), images: ['name/app'], tags: ['type=sha,format=long'], flavor: []}, detachedContext, repoFixture);
+      expect(meta.getTags()).toEqual([`name/app:sha-${sha}`]);
+    } finally {
+      fs.rmSync(checkoutDir, {recursive: true, force: true});
+    }
   });
 });
 

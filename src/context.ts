@@ -12,7 +12,7 @@ export interface Context extends GithubContext {
 }
 
 export interface Inputs {
-  context: ContextSource;
+  context: string;
   images: string[];
   tags: string[];
   flavor: string[];
@@ -27,7 +27,7 @@ export interface Inputs {
 
 export function getInputs(): Inputs {
   return {
-    context: (core.getInput('context') || ContextSource.workflow) as ContextSource,
+    context: core.getInput('context') || ContextSource.workflow,
     images: Util.getInputList('images', {ignoreComma: true, comment: '#', commentNoInfix: true}),
     tags: Util.getInputList('tags', {ignoreComma: true, comment: '#', commentNoInfix: true}),
     flavor: Util.getInputList('flavor', {ignoreComma: true, comment: '#', commentNoInfix: true}),
@@ -46,7 +46,10 @@ export enum ContextSource {
   git = 'git'
 }
 
-export async function getContext(source: ContextSource, toolkit: Toolkit): Promise<Context> {
+export async function getContext(source: string, toolkit: Toolkit): Promise<Context> {
+  if (source.startsWith(`${ContextSource.git}:`)) {
+    return await getContextFromGit(source.slice(ContextSource.git.length + 1));
+  }
   switch (source) {
     case ContextSource.workflow:
       return await getContextFromWorkflow(toolkit);
@@ -82,11 +85,11 @@ async function getContextFromWorkflow(toolkit: Toolkit): Promise<Context> {
   } as Context;
 }
 
-async function getContextFromGit(): Promise<Context> {
-  const ctx = await Git.context();
+async function getContextFromGit(workdir?: string): Promise<Context> {
+  const ctx = await Git.context(workdir);
 
   return {
-    commitDate: await Git.commitDate(ctx.sha),
+    commitDate: await Git.commitDate(ctx.sha, workdir),
     ...ctx
   } as Context;
 }
