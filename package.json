@@ -31,7 +31,7 @@
     "@renovate/pep440": "^1.0.0",
     "csv-parse": "^7.0.2",
     "handlebars": "^4.7.9",
-    "moment": "^2.30.1",
+    "moment": "^2.31.0",
     "moment-timezone": "^0.6.3",
     "semver": "^7.8.5"
   },
