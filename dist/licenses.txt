@@ -5056,7 +5056,7 @@ THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - moment-timezone@0.6.3
+ - moment-timezone@0.6.4
 
 This package contains the following license:
 

@@ -2910,7 +2910,7 @@ __metadata:
     globals: "npm:^17.3.0"
     handlebars: "npm:^4.7.9"
     moment: "npm:^2.30.1"
-    moment-timezone: "npm:^0.6.3"
+    moment-timezone: "npm:^0.6.4"
     prettier: "npm:^3.8.1"
     semver: "npm:^7.8.5"
     typescript: "npm:^5.9.3"
@@ -4610,12 +4610,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "moment-timezone@npm:0.6.3"
+"moment-timezone@npm:^0.6.4":
+  version: 0.6.4
+  resolution: "moment-timezone@npm:0.6.4"
   dependencies:
     moment: "npm:^2.29.4"
-  checksum: 10/55ae516386b87fc2207d7911ef61ecef240ba4b21aece36d0b9f33802e1457db0c21b197ae4fde3b6d819d4bde3d835da0ba3c08de740b158e067c874d16082a
+  checksum: 10/efa60fc46c83278e01921a229399883ddb2128df078fe282384f929fec7ed71f6101e6e21a14cb36ba8d03febfd9a769dff9e7ed017245d8b65e042abb71de39
   languageName: node
   linkType: hard
 
