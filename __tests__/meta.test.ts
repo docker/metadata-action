@@ -1,4 +1,4 @@
-import {beforeEach, describe, expect, test, vi} from 'vitest';
+import {afterEach, beforeEach, describe, expect, test, vi} from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
@@ -94,6 +94,53 @@ const tagsLabelsTest = async (name: string, envFile: string, inputs: Inputs, exV
   const annotations = meta.getAnnotations();
   expect(annotations).toEqual(exAnnotations ?? exLabels);
 };
+
+describe('SOURCE_DATE_EPOCH', () => {
+  beforeEach(() => {
+    delete process.env.SOURCE_DATE_EPOCH;
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    delete process.env.SOURCE_DATE_EPOCH;
+  });
+
+  const getMetadataDates = async (): Promise<{date: Date; created: Date}> => {
+    const toolkit = new Toolkit();
+    const repo = await toolkit.github.repoData();
+    const meta = new Meta(getInputs(), await getContext(ContextSource.workflow, toolkit), repo);
+    return meta as unknown as {date: Date; created: Date};
+  };
+
+  test('uses SOURCE_DATE_EPOCH for the OCI created timestamp', async () => {
+    vi.stubEnv('SOURCE_DATE_EPOCH', '946782245');
+    const dates = await getMetadataDates();
+    expect(dates.created.getTime()).toBe(946782245000);
+    expect(dates.date.getTime()).not.toBe(946782245000);
+  });
+
+  test('supports the Unix epoch', async () => {
+    vi.stubEnv('SOURCE_DATE_EPOCH', '0');
+    expect((await getMetadataDates()).created.getTime()).toBe(0);
+  });
+
+  test('uses the current time when SOURCE_DATE_EPOCH is unset', async () => {
+    const before = Date.now();
+    const created = (await getMetadataDates()).created.getTime();
+    expect(created).toBeGreaterThanOrEqual(before);
+    expect(created).toBeLessThanOrEqual(Date.now());
+  });
+
+  test.each(['', '-1', '1.5', 'not-a-date'])('rejects invalid SOURCE_DATE_EPOCH value %j', async sourceDateEpoch => {
+    vi.stubEnv('SOURCE_DATE_EPOCH', sourceDateEpoch);
+    await expect(getMetadataDates()).rejects.toThrow('SOURCE_DATE_EPOCH is not a valid non-negative integer');
+  });
+
+  test('rejects an out-of-range SOURCE_DATE_EPOCH value', async () => {
+    vi.stubEnv('SOURCE_DATE_EPOCH', '9007199254740992');
+    await expect(getMetadataDates()).rejects.toThrow('SOURCE_DATE_EPOCH is out of range');
+  });
+});
 
 describe('null', () => {
   // prettier-ignore

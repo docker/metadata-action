@@ -342,6 +342,7 @@ So it can be used with our [Docker Build Push action](https://github.com/docker/
 | `DOCKER_METADATA_SHORT_SHA_LENGTH`   | Number | Specifies the length of the [short commit SHA](#typesha) to ensure uniqueness. Default is `7`, but can be increased for larger repositories. |
 | `DOCKER_METADATA_ANNOTATIONS_LEVELS` | String | Comma separated list of annotations levels to set for annotations output separated (default `manifest`)                                      |
 | `DOCKER_METADATA_SET_OUTPUT_ENV`     | Bool   | If `true`, sets each output as an environment variable (default `true`)                                                                      |
+| `SOURCE_DATE_EPOCH`                  | Number | Unix timestamp used for generated `org.opencontainers.image.created` labels and annotations instead of the current time                      |
 
 ## `context` input
 

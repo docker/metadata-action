@@ -31,6 +31,7 @@ export class Meta {
   private readonly tags: tcl.Tag[];
   private readonly flavor: fcl.Flavor;
   private readonly date: Date;
+  private readonly created: Date;
 
   constructor(inputs: Inputs, context: Context, repo: GitHubRepo) {
     this.inputs = inputs;
@@ -40,7 +41,27 @@ export class Meta {
     this.tags = tcl.Transform(inputs.tags);
     this.flavor = fcl.Transform(inputs.flavor);
     this.date = new Date();
+    this.created = Meta.getCreatedDate();
     this.version = this.getVersion();
+  }
+
+  private static getCreatedDate(): Date {
+    const sourceDateEpoch = process.env.SOURCE_DATE_EPOCH;
+    if (sourceDateEpoch === undefined) {
+      return new Date();
+    }
+
+    if (!/^\d+$/.test(sourceDateEpoch)) {
+      throw new Error(`SOURCE_DATE_EPOCH is not a valid non-negative integer: ${sourceDateEpoch}`);
+    }
+
+    const seconds = Number(sourceDateEpoch);
+    const date = new Date(seconds * 1000);
+    if (!Number.isSafeInteger(seconds) || Number.isNaN(date.getTime())) {
+      throw new Error(`SOURCE_DATE_EPOCH is out of range: ${sourceDateEpoch}`);
+    }
+
+    return date;
   }
 
   private getVersion(): Version {
@@ -544,7 +565,7 @@ export class Meta {
       `org.opencontainers.image.url=${this.repo.html_url || ''}`,
       `org.opencontainers.image.source=${this.repo.html_url || ''}`,
       `org.opencontainers.image.version=${this.version.main || ''}`,
-      `org.opencontainers.image.created=${this.date.toISOString()}`,
+      `org.opencontainers.image.created=${this.created.toISOString()}`,
       `org.opencontainers.image.revision=${this.context.sha || ''}`,
       `org.opencontainers.image.licenses=${this.repo.license?.spdx_id || ''}`
     ];
